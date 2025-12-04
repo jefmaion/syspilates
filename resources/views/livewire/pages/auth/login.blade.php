@@ -64,4 +64,8 @@ new #[Layout('layouts.guest')] class extends Component
             <button type="submit" class="btn btn-primary w-100">{{ __('Log in') }}</button>
         </div>
     </form>
+
+    <x-slot:link>
+        <div class="text-center text-secondary mt-3">Don't have account yet? <a href="{{ route('register') }}" tabindex="-1">Signup</a></div>
+    </x-slot:link>
 </div>
