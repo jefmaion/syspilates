@@ -9,5 +9,20 @@
 <style>
     @import url("https://rsms.me/inter/inter.css");
 </style>
+<style>
+  @import url("https://rsms.me/inter/inter.css");
+
+  @media (min-width: 992px) {
+
+    :host,
+    :root {
+      margin-left: 0;
+    }
+  }
+
+  body {
+    overflow-y: scroll;
+  }
+</style>
 @yield('header')
 <script data-navigate-once src="{{ asset('template/dist/js/tabler.js') }}?{{ date('i') }}" defer></script>
