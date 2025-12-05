@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ config('app.name', 'Laravel') }}</title>
+<title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 <link href="{{ asset('template/dist/css/tabler.css') }}" rel="stylesheet" />
 <link href="{{ asset('template/dist/css/tabler-themes.css?1744816591') }}" rel="stylesheet" />
 <link href="{{ asset('template/preview/css/demo.css?1744816591') }}" rel="stylesheet" />
