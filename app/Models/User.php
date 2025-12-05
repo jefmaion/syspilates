@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,7 +13,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -43,7 +46,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
@@ -58,7 +61,7 @@ class User extends Authenticatable
                 }
 
                 $first = $parts[0];
-                $last = $parts[count($parts) - 1];
+                $last  = $parts[count($parts) - 1];
 
                 return "{$first} {$last}";
             }
@@ -72,7 +75,7 @@ class User extends Authenticatable
                 // usa o shortName já calculado
                 $shortName = $this->short_name; // camelCase vira snake_case no acesso
 
-                $parts = explode(' ', $shortName);
+                $parts    = explode(' ', $shortName);
                 $initials = '';
 
                 foreach ($parts as $p) {

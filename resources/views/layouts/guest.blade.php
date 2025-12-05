@@ -16,7 +16,7 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
     <body>
-        <script src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
+        <script data-navigate-once src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
         <div class="page page-center">
             <div class="container container-tight py-4">
                 <div class="text-center mb-4">
@@ -289,9 +289,9 @@
                 </div>
             </form>
         </div>
-        <script src="{{ asset('template/dist/js/tabler.min.js') }}"></script>
+        <script data-navigate-once src="{{ asset('template/dist/js/tabler.min.js') }}"></script>
         {{-- <script src="{{ asset('template/preview/js/demo.min.js') }}"></script> --}}
-        <script>
+        <script data-navigate-once>
             document.addEventListener("DOMContentLoaded", function () {
                 var themeConfig = {
                     theme: "light",
