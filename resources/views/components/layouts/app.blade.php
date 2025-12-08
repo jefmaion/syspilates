@@ -5,6 +5,7 @@
         <title>{{ $title ?? 'Page Title' }}</title>
     </head>
     <body>
+        <script data-navigate-track src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
         {{ $slot }}
         @include('layouts.parts.scripts')
     </body>
