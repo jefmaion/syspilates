@@ -42,7 +42,7 @@ new #[Layout('layouts.guest')] class extends Component
                 {{ __('Password') }}
                 @if (Route::has('password.request'))
                 <span class="form-label-description">
-                    <a href="{{ route('password.request') }}" wire:navigate>{{ __('Forgot your password?') }}</a>
+                    <a href="{{ route('password.request') }}" wire:navigate >{{ __('Forgot your password?') }}</a>
                 </span>
                 @endif
             </label>

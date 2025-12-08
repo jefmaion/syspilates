@@ -93,7 +93,7 @@ new class extends Component
             {{ __('Delete Account') }}
         </button>
 
-        <div class="modal show" id="modal-delete-account" tabindex="-1" role="dialog" aria-hidden="true" wire:ignore.self>
+        <div class="modal modal-blur fade " id="modal-delete-account" tabindex="-1" role="dialog" aria-hidden="true" wire:ignore.self>
             <div class="modal-dialog modsal-sm modal-dialog-centered" role="document">
                 <form wire:submit="deleteUser">
                     <div class="modal-content">

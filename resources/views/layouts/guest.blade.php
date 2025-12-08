@@ -292,7 +292,7 @@
         <script data-navigate-once src="{{ asset('template/dist/js/tabler.min.js') }}"></script>
         {{-- <script src="{{ asset('template/preview/js/demo.min.js') }}"></script> --}}
         <script data-navigate-once>
-            document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("livewire:navigated", function () {
                 var themeConfig = {
                     theme: "light",
                     "theme-base": "gray",

@@ -2,11 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @include('layouts.parts.header')
-    <title>{{ $title ?? 'Page Title' }}</title>
-    
+    <title>COMBO {{ $title ?? 'Page Title' }}</title>
 </head>
 <body>
-    <script data-navigate-track src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
+    <script data-navigate-track src="{{ asset('template/dist/js/tabler-theme.min.js') }}?{{ date('i') }}" defer></script>
     <div class="page">
         <!--  BEGIN SIDEBAR  -->
         @include('layouts.parts.sidebar')
@@ -17,13 +16,14 @@
         <!-- END NAVBAR  -->
 
         <div class="page-wrapper">
+
             <!-- BEGIN PAGE HEADER -->
             @if(isset($header))
-                <div class="page-header d-print-none">
-                    <div class="container-fluid">
-                        {{$header}}
-                    </div>
+            <div class="page-header d-print-none">
+                <div class="container-fluid">
+                    {{$header}}
                 </div>
+            </div>
             @endif
             <!-- END PAGE HEADER -->
 

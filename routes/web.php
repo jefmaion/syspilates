@@ -2,9 +2,13 @@
 
 declare(strict_types = 1);
 
+use App\Livewire\Example;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
+Route::middleware('auth')->group(function () {
+    Route::get('example', Example::class)->name('example.index');
+});
 
 // Route::redirect('/', 'login');
 
