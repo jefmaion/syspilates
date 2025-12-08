@@ -3,10 +3,10 @@
 <head>
     @include('layouts.parts.header')
     <title>{{ $title ?? 'Page Title' }}</title>
-    
 </head>
 <body>
-    <script data-navigate-track src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
+    <script data-navigate-track>const themeConfig = @json(config('tabler.theme-config'));</script>
+    <script data-navigate-track src="{{ asset('js/tabler-theme-custom.js') }}"></script>
     <div class="page">
         <!--  BEGIN SIDEBAR  -->
         @include('layouts.parts.sidebar')
@@ -19,11 +19,11 @@
         <div class="page-wrapper">
             <!-- BEGIN PAGE HEADER -->
             @if(isset($header))
-                <div class="page-header d-print-none">
-                    <div class="container-fluid">
-                        {{$header}}
-                    </div>
+            <div class="page-header d-print-none">
+                <div class="container-fluid">
+                    {{$header}}
                 </div>
+            </div>
             @endif
             <!-- END PAGE HEADER -->
 
@@ -34,9 +34,6 @@
                 </div>
             </div>
             <!-- END PAGE BODY -->
-
-            @include('layouts.parts.settings ')
-
             <!--  BEGIN FOOTER  -->
             @include('layouts.parts.footer')
             <!--  END FOOTER  -->
@@ -44,4 +41,5 @@
     </div>
     @include('layouts.parts.scripts')
 </body>
+
 </html>

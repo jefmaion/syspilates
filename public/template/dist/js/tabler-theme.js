@@ -16,7 +16,7 @@
 	 */
 	const themeConfig = {
 	  "theme": "light",
-	  "theme-base": "gray",
+	  "theme-base": "stone",
 	  "theme-font": "sans-serif",
 	  "theme-primary": "blue",
 	  "theme-radius": "1"

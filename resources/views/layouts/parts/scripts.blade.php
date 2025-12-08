@@ -1,4 +1,4 @@
-<script data-navigate-once>
+{{-- <script data-navigate-once>
     document.addEventListener("livewire:navigated", function() {
         var themeConfig = {
             theme: "light",
@@ -48,5 +48,5 @@
         });
         checkItems();
     });
-</script>
+</script> --}}
 @yield('scripts')

@@ -16,7 +16,8 @@
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
     <body>
-        <script data-navigate-once src="{{ asset('template/dist/js/tabler-theme.min.js') }}"></script>
+            <script data-navigate-track>const themeConfig = @json(config('tabler.theme-config'));</script>
+    <script data-navigate-track src="{{ asset('js/tabler-theme-custom.js') }}"></script>
         <div class="page page-center">
             <div class="container container-tight py-4">
                 <div class="text-center mb-4">
