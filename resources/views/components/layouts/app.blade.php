@@ -12,7 +12,7 @@
         <!--  END SIDEBAR  -->
 
         <!-- BEGIN NAVBAR  -->
-        @include('layouts.parts.navbar')
+        <livewire:layout.navigation />
         <!-- END NAVBAR  -->
 
         <div class="page-wrapper">

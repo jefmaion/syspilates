@@ -6,10 +6,10 @@ namespace App\Livewire;
 
 use Livewire\Component;
 
-class Example extends Component
+class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.example');
+        return view('livewire.dashboard');
     }
 }

@@ -13,11 +13,7 @@
         <!-- END NAVBAR  -->
         <div class="page-wrapper">
             <div class="container-xl">
-                <div class="page-header d-print-none">
-                    @if (isset($header))
-                    {{ $header }}
-                    @endif
-                </div>
+                
                 <div class="page-body">
                     {{ $slot }}
                 </div>

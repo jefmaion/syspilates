@@ -9,7 +9,22 @@
 
         <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item dropdown">
-                <x-user-navigation-dropdown></x-user-navigation-dropdown>
+                <x-user-navigation-dropdown>
+                    <a href="{{ route('profile') }}" wire:navigate class="dropdown-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-1">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path d="M4 8v-2a2 2 0 0 1 2 -2h2" />
+                            <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+                            <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+                            <path d="M16 20h2a2 2 0 0 0 2 -2v-2" />
+                            <path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" />
+                        </svg>
+                        {{ __('Profile') }}
+                    </a>
+                </x-user-navigation-dropdown>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
@@ -28,7 +43,7 @@
                     </span>
                     <span class="nav-link-title"> {{ __('Dashboard') }} </span>
                 </x-nav-link>
-                <x-nav-link href="#" wire:navigate>
+                {{-- <x-nav-link href="#" wire:navigate>
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -97,7 +112,7 @@
 
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
             </ul>
             <!-- END NAVBAR MENU -->
