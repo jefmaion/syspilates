@@ -26,7 +26,7 @@ class Sidebar extends Component
             }
 
             // marca ativo
-            $item['active'] = request()->routeIs($item['route']);
+            $item['active'] = ! empty($item['route']) ? request()->routeIs($item['route'] . '*') : false;
             $item['show']   = false;
 
             // se tiver submenu, processa recursivamente

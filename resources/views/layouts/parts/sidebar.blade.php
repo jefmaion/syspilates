@@ -42,7 +42,7 @@
             
             <ul class="navbar-nav pt-lg-3">
                 @foreach(config('tabler.sidebar-menu') as $title => $item)
-                @php $isActive = request()->routeIs($item['route']) @endphp
+                @php $isActive = request()->routeIs($item['route'].'.*') @endphp
                 <li class="nav-item @if($isActive) active @endif @if(isset($item['submenu'])) dropdown @endif">
                     <a class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"  @if(isset($item['submenu'])) href="#navbar-{{ $title }}"
                         data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" @else href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>

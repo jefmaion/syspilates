@@ -6,8 +6,8 @@ return [
 
     /** Configure the theme for Tabler.io */
     'theme-config' => [
-        'theme'         => 'dark',  /** light, dark */
-        'theme-base'    => 'zinc',  /** slate, gray, zinc, neutral, stone */
+        'theme'         => 'light',  /** light, dark */
+        'theme-base'    => 'slate',  /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',  /** sans-serif, serif, monospace, comic */
         'theme-primary' => 'azure',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal,m cyan    */
         'theme-radius'  => '1.5',  /** 0, 0.5, 1, 1.5, 2 */
@@ -16,49 +16,37 @@ return [
     /** Sidebar menu items */
     'sidebar-menu' => [
 
-        'Bem-Vindo' => 'nav-header',
+        'Aulas ' => 'nav-header',
 
-        'Painel de Controle' => [
-            'route' => 'dashboard',
-            'icon'  => file_get_contents(resource_path('views/components/icons/home.blade.php')),
-        ],
-
-        'Perfil' => [
-            'route' => 'profile',
-            'icon'  => file_get_contents(resource_path('views/components/icons/profile.blade.php')),
-        ],
-
-        'Menu Item 1' => [
+        'Calendário' => [
             'route' => '',
-            'icon'  => file_get_contents(resource_path('views/components/icons/home.blade.php')),
-
-            'submenu' => [
-
-                'Sub Item 1' => [
-                    'route'   => '',
-                    'icon'    => '',
-                    'submenu' => [
-                        'Sub Sub Item 2' => [
-                            'route' => '',
-                            'icon'  => file_get_contents(resource_path('views/components/icons/home.blade.php')),
-                            'tag'   => ['color' => 'bg-green', 'label' => 'Opa'],
-                        ],
-                    ],
-                ],
-                'Sub Item 2' => [
-                    'route' => '',
-                    'icon'  => '',
-                ],
-                'Sub Item 3' => [
-                    'route' => false,
-                    'icon'  => '',
-                ],
-            ],
+            'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
+        ],
+        'Aulas' => [
+            'route' => '',
+            'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
         ],
 
-        'Menu Item 2' => [
-            'route' => false,
-            'icon'  => '',
+        'Cadastros' => 'nav-header',
+
+        'Matrículas' => [
+            'route' => '',
+            'icon'  => file_get_contents(resource_path('views/components/icons/registration.blade.php')),
+        ],
+
+        'Alunos' => [
+            'route' => '',
+            'icon'  => file_get_contents(resource_path('views/components/icons/users.blade.php')),
+        ],
+
+        'Professores' => [
+            'route' => '',
+            'icon'  => file_get_contents(resource_path('views/components/icons/instructor.blade.php')),
+        ],
+
+        'Modalidades' => [
+            'route' => 'modality',
+            'icon'  => file_get_contents(resource_path('views/components/icons/list.blade.php')),
         ],
 
     ],
