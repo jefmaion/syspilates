@@ -16,11 +16,25 @@ return new class () extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->date('birthdate')->nullable();
+            $table->string('nickname', 100)->nullable();
+            $table->string('gender', 2)->nullable();
+            $table->string('cpf')->nullable()->unique();
+            $table->string('phone1', 20)->nullable();
+            $table->string('phone2', 20)->nullable();
+            $table->string('zipcode', 20)->nullable();
+            $table->string('address', 500)->nullable();
+            $table->string('district', 500)->nullable();
+            $table->string('city', 500)->nullable();
+            $table->string('complement', 500)->nullable();
+            $table->string('number', 500)->nullable();
+            $table->string('state', 500)->nullable();
+            $table->string('avatar', 500)->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

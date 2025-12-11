@@ -10,16 +10,19 @@ use Livewire\Form;
 
 class ModalityForm extends Form
 {
-    public Modality $modality;
+    public ?Modality $modality = null;
 
-    public string $name;
+    public string $name = '';
 
-    public string  $acronym;
+    public ?string  $acronym = null;
 
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [
-            'name'    => ['required', Rule::unique('modalities', 'name')->ignore($this->modality?->id)],
+            'name'    => ['required', 'max:100', Rule::unique('modalities', 'name')->ignore($this->modality?->id)],
             'acronym' => ['max:3'],
         ];
     }
@@ -40,7 +43,7 @@ class ModalityForm extends Form
     {
         $this->validate();
 
-        session()->flash('success', 'Modalidade alterada com sucesso!');
+        session()->flash('info', 'Modalidade alterada com sucesso!');
 
         $this->modality->update([
             'name'    => $this->name,

@@ -7,7 +7,7 @@ return [
     /** Configure the theme for Tabler.io */
     'theme-config' => [
         'theme'         => 'light',  /** light, dark */
-        'theme-base'    => 'slate',  /** slate, gray, zinc, neutral, stone */
+        'theme-base'    => 'stone',  /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',  /** sans-serif, serif, monospace, comic */
         'theme-primary' => 'azure',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal,m cyan    */
         'theme-radius'  => '1.5',  /** 0, 0.5, 1, 1.5, 2 */
@@ -35,7 +35,7 @@ return [
         ],
 
         'Alunos' => [
-            'route' => '',
+            'route' => 'student',
             'icon'  => file_get_contents(resource_path('views/components/icons/users.blade.php')),
         ],
 

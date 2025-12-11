@@ -8,7 +8,6 @@ use App\Livewire\Forms\ModalityForm;
 use App\Models\Modality;
 use Illuminate\View\View;
 use Livewire\Component;
-use Livewire\Features\SupportRedirects\Redirector as SupportRedirectsRedirector;
 
 class UpdateModality extends Component
 {
@@ -19,11 +18,11 @@ class UpdateModality extends Component
         $this->form->populate($modality);
     }
 
-    public function save(): SupportRedirectsRedirector
+    public function save(): void
     {
         $this->form->update();
 
-        return $this->redirect(route('modality'), navigate: true);
+        $this->redirect(route('modality'), navigate: true);
     }
 
     public function render(): View

@@ -18,6 +18,7 @@
         <!-- END NAVBAR  -->
 
         <div class="page-wrapper">
+            @include('layouts.parts.alert')
             {{ $slot }}
             <!--  BEGIN FOOTER  -->
             @include('layouts.parts.footer')

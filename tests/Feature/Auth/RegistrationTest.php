@@ -19,6 +19,8 @@ test('new users can register', function () {
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
         ->set('password', 'password')
+        // ->set('birthdate', fake()->date())
+        // ->set('cpf', fake()->unique()->randomDigit())
         ->set('password_confirmation', 'password');
 
     $component->call('register');

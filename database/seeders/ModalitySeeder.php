@@ -15,5 +15,9 @@ class ModalitySeeder extends Seeder
     public function run(): void
     {
         Modality::create(['name' => 'Pilates', 'acronym' => 'PLT']);
+
+        for ($i = 0;$i <= 20;$i++) {
+            Modality::create(['name' => fake()->word(), 'acronym' => fake()->randomLetter()]);
+        }
     }
 }

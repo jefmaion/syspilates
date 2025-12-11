@@ -7,6 +7,9 @@ use App\Livewire\Modality\CreateModality;
 use App\Livewire\Modality\ModalityPage;
 use App\Livewire\Modality\UpdateModality;
 use App\Livewire\Profile;
+use App\Livewire\Student\CreateStudent;
+use App\Livewire\Student\StudentPage;
+use App\Livewire\Student\UpdateStudent;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'login');
@@ -15,6 +18,14 @@ Route::middleware('auth')->group(function () {
     Route::get('modality', ModalityPage::class)->name('modality');
     Route::get('modality/create', CreateModality::class)->name('modality.create');
     Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
+
+    Route::get('student', StudentPage::class)->name('student');
+    Route::get('student/create', CreateStudent::class)->name('student.create');
+    Route::get('student/{student}/edit', UpdateStudent::class)->name('student.edit');
+
+    // Route::get('instructor', InstructorPage::class)->name('instructor');
+    // Route::get('instructor/create', CreateInstructor::class)->name('instructor.create');
+    // Route::get('instructor/{instructor}/edit', UpdateInstructor::class)->name('instructor.edit');
 
     Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('profile', Profile::class)->name('profile');

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ModalitySeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }

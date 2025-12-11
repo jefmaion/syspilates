@@ -9,6 +9,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Auditable as AuditingAuditable;
@@ -33,11 +34,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,6 +56,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
+            'birthdate'         => 'date',
         ];
     }
 
@@ -103,5 +101,13 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
                 return $initials;
             }
         );
+    }
+
+    /**
+     * @return HasOne<Student, User>
+     */
+    public function student(): HasOne
+    {
+        return $this->hasOne(Student::class);
     }
 }

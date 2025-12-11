@@ -9,7 +9,6 @@ use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportEvents\Event;
-use Livewire\Features\SupportRedirects\Redirector;
 
 class DeleteModality extends Component
 {
@@ -23,9 +22,10 @@ class DeleteModality extends Component
         return $this->dispatch('show-modal', modal: 'modal-delete');
     }
 
-    public function delete(): Redirector
+    public function delete(): void
     {
         $this->modality->delete();
+        session()->flash('info', 'Modalidade excluída com sucesso!');
         $this->redirect(route('modality'), navigate:true);
     }
 
