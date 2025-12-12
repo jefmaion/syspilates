@@ -25,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(! app()->isProduction());
         Carbon::setLocale(config('app.locale')); // usa o locale do Laravel
+        date_default_timezone_set('America/Sao_Paulo');
     }
 }
