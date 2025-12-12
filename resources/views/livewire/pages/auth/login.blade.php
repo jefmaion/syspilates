@@ -32,7 +32,8 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Email Address -->
         <div class="mb-3">
             <label class="form-label">{{ __('Email') }}</label>
-            <input type="email" wire:model="form.email" id="email" name="email" class="form-control @error('form.email') is-invalid @enderror" required autofocus
+            <input type="email" wire:model="form.email" id="email" name="email"
+                class="form-control @error('form.email') is-invalid @enderror" required autofocus
                 autocomplete="username" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
@@ -42,12 +43,13 @@ new #[Layout('layouts.guest')] class extends Component
                 {{ __('Password') }}
                 @if (Route::has('password.request'))
                 <span class="form-label-description">
-                    <a href="{{ route('password.request') }}" wire:navigate >{{ __('Forgot your password?') }}</a>
+                    <a href="{{ route('password.request') }}" wire:navigate>{{ __('Forgot your password?') }}</a>
                 </span>
                 @endif
             </label>
             <div class="input-group input-group-flat">
-                <input type="password" wire:model="form.password" id="password" class="form-control @error('form.password') is-invalid @enderror" required
+                <input type="password" wire:model="form.password" id="password"
+                    class="form-control @error('form.password') is-invalid @enderror" required
                     autocomplete="current-password" />
                 <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
             </div>
@@ -61,11 +63,18 @@ new #[Layout('layouts.guest')] class extends Component
             </label>
         </div>
         <div class="form-footer">
-            <button type="submit" class="btn btn-primary w-100">{{ __('Log in') }}</button>
+            <button type="submit" class="btn btn-primary w-100">
+                <span wire:loading.remove>{{ __('Log in') }}</span>
+                <span wire:loading>
+                    <span class="spinner-border spinner-border-sm"></span>
+                    Entrando...
+                </span>
+            </button>
         </div>
     </form>
 
     <x-slot:link>
-        <div class="text-center text-secondary mt-3">{{ __("Don't have an account?") }} <a href="{{ route('register') }}" tabindex="-1">{{ __("Signup") }}</a></div>
+        <div class="text-center text-secondary mt-3">{{ __("Don't have an account?") }} <a
+                href="{{ route('register') }}" tabindex="-1">{{ __("Signup") }}</a></div>
     </x-slot:link>
 </div>

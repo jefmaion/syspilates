@@ -6,7 +6,7 @@
             x-init="setTimeout(() => show = false, 10000)"
             x-show="show"
             x-transition.opacity.duration.500ms>
-        <div class="alert alert-dismissible alert-{{ $type }}">
+        <div class="alert alert-dismissible mb-0 alert-{{ $type }}">
             {{ session($type) }}
             <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
         </div>

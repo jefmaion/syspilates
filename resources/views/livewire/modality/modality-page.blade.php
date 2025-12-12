@@ -18,7 +18,7 @@
 
     </x-page.page-header>
 
-    <x-page.page-body>
+    <x-page.page-card-body>
         @if($modalities->isNotEmpty())
             <x-table.table>
                 <thead>
@@ -56,5 +56,5 @@
         @endif
 
         <livewire:modality.delete-modality />
-    </x-page.page-body>
+    </x-page.page-card-body>
 </div>

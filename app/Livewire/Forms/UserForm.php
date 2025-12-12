@@ -67,15 +67,17 @@ class UserForm extends Form
         }
     }
 
-    public function rules()
+    public function rules(): array | string
     {
         return [
-            'name' => ['required'],
-            // 'email' => ['required', Rule::unique('users', 'email')->ignore($this->_user->id ?? null)],
+            'name'      => ['required'],
+            'email'     => ['nullable', 'email', Rule::unique('users', 'email')->ignore($this->user?->id)],
             'birthdate' => ['required', 'date'],
-            // 'gender'    => ['required'],
-            'cpf'    => ['required', Rule::unique('users', 'cpf')->ignore($this->user?->id)],
-            'phone1' => ['required'],
+            'gender'    => ['required'],
+            'cpf'       => ['required', Rule::unique('users', 'cpf')->ignore($this->user?->id)],
+            'phone1'    => ['required'],
+            'state'     => ['max:2'],
+            'number'    => ['max:5'],
         ];
     }
 

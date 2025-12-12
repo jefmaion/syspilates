@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     @include('layouts.parts.header')
-    <title>{{ $title ?? 'Page Title' }}</title>
 </head>
 
 <body>
     @include('layouts.parts.theme')
     <div class="page">
-        <!--  BEGIN SIDEBAR  -->
         <livewire:layout.sidebar />
-        <!--  END SIDEBAR  -->
-
-        <!-- BEGIN NAVBAR  -->
         <livewire:layout.navigation />
-        <!-- END NAVBAR  -->
-
         <div class="page-wrapper">
             @include('layouts.parts.alert')
             {{ $slot }}
-            <!--  BEGIN FOOTER  -->
             @include('layouts.parts.footer')
-            <!--  END FOOTER  -->
         </div>
     </div>
     @include('layouts.parts.scripts')
@@ -37,7 +27,6 @@
 			return tabler.bootstrap.Modal.getOrCreateInstance('#' + modal)
 		}
 
-
 		window.addEventListener('show-modal-delete', (params) => {
             return getModal('modal-delete').show()
         });
@@ -47,7 +36,6 @@
         });
 
 		window.addEventListener('flash-message', (params) => {
-			
             const flash = document.getElementById('alert-message');
 			alert(flash);
 			if (flash) {
