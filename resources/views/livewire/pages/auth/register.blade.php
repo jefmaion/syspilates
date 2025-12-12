@@ -64,7 +64,15 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="form-footer">
-            <button type="submit" class="btn btn-primary w-100">{{ __('Register') }}</button>
+            <button type="submit" class="btn btn-primary w-100">
+                <span wire:loading.remove>{{ __('Register') }}</span>
+                <span wire:loading>
+                    <span class="spinner-border spinner-border-sm"></span>
+                    Registrando...
+                </span>
+                
+                
+                </button>
         </div>
 
         <x-slot:link>

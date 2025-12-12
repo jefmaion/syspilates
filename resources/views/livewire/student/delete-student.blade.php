@@ -1,1 +1,0 @@
-<x-modal.modal-delete />
