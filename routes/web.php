@@ -3,6 +3,9 @@
 declare(strict_types = 1);
 
 use App\Livewire\Dashboard;
+use App\Livewire\Instructor\InstructorForm;
+use App\Livewire\Instructor\InstructorPage;
+use App\Livewire\Instructor\InstructorShow;
 use App\Livewire\Modality\CreateModality;
 use App\Livewire\Modality\ModalityPage;
 use App\Livewire\Modality\UpdateModality;
@@ -23,6 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get('student/create', StudentForm::class)->name('student.create');
     Route::get('student/{student}/edit', StudentForm::class)->name('student.edit');
     Route::get('student/{student}/show', StudentShow::class)->name('student.show');
+
+    Route::get('instructor', InstructorPage::class)->name('instructor');
+    Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
+    Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
+    Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
 
     // Route::get('instructor', InstructorPage::class)->name('instructor');
     // Route::get('instructor/create', CreateInstructor::class)->name('instructor.create');

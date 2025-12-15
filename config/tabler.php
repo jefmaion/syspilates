@@ -40,7 +40,7 @@ return [
         ],
 
         'Professores' => [
-            'route' => '',
+            'route' => 'instructor',
             'icon'  => file_get_contents(resource_path('views/components/icons/instructor.blade.php')),
         ],
 

@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-use App\Livewire\Student\StudentForm;
-use App\Models\Student;
+use App\Livewire\Instructor\InstructorForm;
+use App\Models\Instructor;
 use App\Models\User;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
-    Livewire::test(StudentForm::class)
+    Livewire::test(InstructorForm::class)
         ->assertStatus(200);
 });
 
 it('should be able to validate required fields', function () {
-    Livewire::test(StudentForm::class)
+    Livewire::test(InstructorForm::class)
         ->set('user.name', '')
         ->set('user.cpf', '')
         ->set('user.phone1', '')
@@ -27,8 +27,8 @@ it('should be able to validate required fields', function () {
         ]);
 });
 
-it('should be able to create a student', function () {
-    Livewire::test(StudentForm::class)
+it('should be able to create a instructor', function () {
+    Livewire::test(InstructorForm::class)
         ->set('user.name', 'User Name')
         ->set('user.cpf', '5555')
         ->set('user.birthdate', '2010-10-10')
@@ -37,28 +37,28 @@ it('should be able to create a student', function () {
         ->set('form.profession', 'profession')
         ->call('store')
         ->assertHasNoErrors()
-        ->assertDispatched('student-created');
+        ->assertDispatched('instructor-created');
 
     $user = User::where('name', 'User Name')->first();
 
     expect($user)->not()->toBeNull();
 
-    $student = Student::where('user_id', $user->id)->first();
-    expect($student)->not->toBeNull();
-    expect($student->user_id)->toBe($user->id);
+    $instructor = Instructor::where('user_id', $user->id)->first();
+    expect($instructor)->not->toBeNull();
+    expect($instructor->user_id)->toBe($user->id);
 });
 
-it('should be able to update a student', function () {
-    $student = Student::factory()->create();
+it('should be able to update a instructor', function () {
+    $instructor = Instructor::factory()->create();
 
     $newName = 'New Name';
 
-    Livewire::test(StudentForm::class, ['student' => $student])
+    Livewire::test(InstructorForm::class, ['instructor' => $instructor])
         ->set('user.name', $newName)
         ->set('form.profession', 'new profession')
         ->call('update')
         ->assertHasNoErrors()
-        ->assertDispatched('student-updated');
+        ->assertDispatched('instructor-updated');
 
-    expect($student->refresh()->user->name)->toBe($newName);
+    expect($instructor->refresh()->user->name)->toBe($newName);
 });

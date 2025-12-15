@@ -4,22 +4,25 @@ declare(strict_types = 1);
 
 namespace App\View\Components\Form;
 
-use App\Enums\GenderEnum;
+use App\Models\Modality;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 
-class SelectGender extends Component
+class SelectModality extends Component
 {
-    /** @var array<int, GenderEnum> */
-    public array $genders = [];
+    /**
+ * @var Collection<int, Modality>
+ */
+    public Collection $modalities;
 
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        $this->genders = GenderEnum::cases();
+        $this->modalities = Modality::all();
     }
 
     /**
@@ -27,6 +30,6 @@ class SelectGender extends Component
      */
     public function render(): View | Closure | string
     {
-        return view('components.form.select-gender');
+        return view('components.form.select-modality');
     }
 }
