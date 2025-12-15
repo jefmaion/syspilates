@@ -68,6 +68,17 @@
             "@php artisan test"
         ],
 
+         "test-file": [
+             "@php artisan config:clear --ansi",
+            "@php artisan test tests/Feature/Livewire/%1"
+         ],
+
+        "stan": "phpstan analyse || true",
+        "check": [
+            "@test",
+            "@stan"
+        ],
+
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

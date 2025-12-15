@@ -2,24 +2,24 @@
 
 declare(strict_types = 1);
 
-use App\Livewire\Student\StudentShow;
-use App\Models\Student;
+use App\Livewire\Instructor\InstructorShow;
+use App\Models\Instructor;
 use App\Models\User;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
 it('renders successfully', function () {
-    $student = Student::factory()->create();
+    $instructor = Instructor::factory()->create();
 
-    Livewire::test(StudentShow::class, ['student' => $student])
+    Livewire::test(InstructorShow::class, ['instructor' => $instructor])
         ->assertStatus(200);
 });
 
 it('should be route defined', function () {
     actingAs(User::factory()->create());
 
-    $student = Student::factory()->create();
-    $this->get(route('student.show', $student))
+    $instructor = Instructor::factory()->create();
+    $this->get(route('instructor.show', $instructor))
         ->assertOk();
 });

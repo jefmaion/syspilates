@@ -46,6 +46,12 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
+        'birthdate'         => 'date',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -53,11 +59,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
      */
     protected function casts(): array
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'birthdate'         => 'date',
-        ];
+        return $this->casts;
     }
 
     /**
@@ -104,10 +106,18 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     }
 
     /**
-     * @return HasOne<Student, User>
+     * @return HasOne<Student, $this>
      */
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);
+    }
+
+    /**
+     * @return HasOne<Instructor, $this>
+     */
+    public function instructor(): HasOne
+    {
+        return $this->hasOne(Instructor::class);
     }
 }

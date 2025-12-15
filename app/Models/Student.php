@@ -15,8 +15,7 @@ class Student extends BaseModel
     public $guarded = ['id'];
 
     /**
-     *
-     * @return BelongsTo<User,Student>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

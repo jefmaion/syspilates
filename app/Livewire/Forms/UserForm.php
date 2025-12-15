@@ -19,7 +19,7 @@ class UserForm extends Form
 
     public string $email = '';
 
-    public string $birthdate = '';
+    public ?string $birthdate = null;
 
     public string $gender = '';
 
@@ -67,6 +67,9 @@ class UserForm extends Form
         }
     }
 
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array | string
     {
         return [
@@ -98,7 +101,7 @@ class UserForm extends Form
         $this->name       = $this->user->name ?? '';
         $this->nickname   = $this->user->nickname ?? '';
         $this->avatar     = $this->user->avatar ?? '';
-        $this->birthdate  = isset($this->user) ? $this->user->birthdate->format('Y-m-d') : '';
+        $this->birthdate  = $this->user?->birthdate?->format('Y-m-d') ?? '';
         $this->gender     = $this->user->gender ?? '';
         $this->cpf        = $this->user->cpf ?? '';
         $this->phone1     = $this->user->phone1 ?? '';
