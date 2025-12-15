@@ -24,15 +24,16 @@ class Instructor extends BaseModel
     }
 
     /**
-     * @return BelongsToMany<Modality, $this>
-     *
-     * @property-read string $pivot->commission_type
-     * @property-read float $pivot->commission_value
-     * @property-read bool $pivot->calculate_on_justified_absence
-     */
+ * @return BelongsToMany<
+ *     Modality,
+ *     $this,
+ *     InstructorModality
+ * >
+ */
     public function modalities(): BelongsToMany
     {
         return $this->belongsToMany(Modality::class)
+            ->using(InstructorModality::class)
             ->withPivot([
                 'commission_type',
                 'commission_value',

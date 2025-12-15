@@ -13,23 +13,23 @@
                         <div class="row ">
                             <div class="col-12 mb-3">
                                 <label class="form-label required">Modalidade</label>
-                                <x-form.select-modality wire:model='modality_id' />
+                                <x-form.select-modality wire:model='form.modality_id' />
                             </div>
                             <div class="col-12">
                                 <div>
                                 <label class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="radios" value="percent" wire:click='setComissionLabel()' wire:model.live='commission_type' checked="">
+                                  <input class="form-check-input" type="radio" name="radios" value="percent" wire:click='setComissionLabel()' wire:model='form.commission_type' checked="">
                                   <span class="form-check-label">Comissão em Percentual (%)</span>
                                 </label>
                                 <label class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" name="radios" value="fixed" wire:click='setComissionLabel()' wire:model.live='commission_type'>
+                                  <input class="form-check-input" type="radio" name="radios" value="fixed" wire:click='setComissionLabel()' wire:model='form.commission_type'>
                                   <span class="form-check-label">Comissão em valor fixo</span>
                                 </label>
                               </div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">{{ $label }}</label>
-                                <x-form.input-text wire:model="commission_value" />
+                                <x-form.input-text wire:model="form.commission_value" />
                             </div>
 
                             <div class="col-md-12">

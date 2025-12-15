@@ -21,6 +21,8 @@ class InstructorForm extends Component
 
     public bool $edit = false;
 
+    public bool $modal = true;
+
     #[On('create-instructor')]
     public function create(): void
     {

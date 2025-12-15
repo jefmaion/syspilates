@@ -16,10 +16,10 @@ it('can add a modality to an instructor with commission settings', function () {
     $modality   = Modality::factory()->create();
 
     Livewire::test(InstructorModalityForm::class, ['instructor' => $instructor])
-        ->set('modality_id', $modality->id)
-        ->set('commission_type', 'percent')
-        ->set('commission_value', 12.5)
-        ->set('calculate_on_justified_absence', true)
+        ->set('form.modality_id', $modality->id)
+        ->set('form.commission_type', 'percent')
+        ->set('form.commission_value', 12.5)
+        ->set('form.calculate_on_justified_absence', true)
         ->call('add')
         ->assertStatus(200);
 

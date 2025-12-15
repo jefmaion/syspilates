@@ -1,5 +1,5 @@
 <div>
-    <livewire:instructor.instructor-form />
+    
     <livewire:instructor.instructor-modality-form :instructor="$instructor" />
     @section('title')
     Detalhes do Professor
@@ -90,57 +90,54 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs nasv-fill" data-bs-toggle="tabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a href="#tabs-home-7" wire:click.prevent="tabs('tabs-home-7')"
-                                    class="nav-link {{ $tab === 'tabs-home-7' ? 'active' : '' }}" data-bs-toggle="tab"
+                                <a href="#tab-class-history" wire:click.prevent="tabs('tab-class-history')"
+                                    class="nav-link {{ $tab === 'tab-class-history' ? 'active' : '' }}" data-bs-toggle="tab"
                                     aria-selected="true" role="tab">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon me-2 icon-2">
-                                        <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
-                                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-                                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
-                                    </svg>Aulas
+                                    Histórico de Aulas
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tabs-profile-7" wire:click.prevent="tabs('tabs-profile-7')"
-                                    class="nav-link {{ $tab === 'tabs-profile-7' ? 'active' : '' }}"
+                                <a href="#tab-instructor-modality" wire:click.prevent="tabs('tab-instructor-modality')"
+                                    class="nav-link {{ $tab === 'tab-instructor-modality' ? 'active' : '' }}"
                                     data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon me-2 icon-2">
-                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                    </svg>Modalidades
+                                    Modalidades
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
-                                    class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}"
+                                <a href="#tab-payments" wire:click.prevent="tabs('tab-payments')"
+                                    class="nav-link {{ $tab === 'tab-payments' ? 'active' : '' }}"
                                     data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/activity -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon me-2 icon-2">
-                                        <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
-                                    </svg>Activity
+                                    Financeiro
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-userdata" wire:click.prevent="tabs('tab-userdata')"
+                                    class="nav-link {{ $tab === 'tab-userdata' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
+                                    Dados Cadastrais
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-access" wire:click.prevent="tabs('tab-access')"
+                                    class="nav-link {{ $tab === 'tab-access' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">
+                                    Acesso ao sistema
                                 </a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane {{ $tab === 'tabs-home-7' ? 'active show' : '' }} " id="tabs-home-7"
+                            <div class="tab-pane {{ $tab === 'tab-class-history' ? 'active show' : '' }} " id="tab-class-history"
                                 role="tabpanel">
                                 <h4>Home tab</h4>
 
 
 
                             </div>
-                            <div class="tab-pane {{ $tab === 'tabs-profile-7' ? 'active show' : '' }}"
-                                id="tabs-profile-7" role="tabpanel">
+                            <div class="tab-pane {{ $tab === 'tab-instructor-modality' ? 'active show' : '' }}"
+                                id="tab-instructor-modality" role="tabpanel">
                                 <h4>Modalidades</h4>
                                 <div>
 
@@ -179,12 +176,11 @@
                                     </x-table.table>
                                 </div>
                             </div>
-                            <div class="tab-pane {{ $tab === 'tabs-activity-7' ? 'active show' : '' }}"
-                                id="tabs-activity-7" role="tabpanel">
+                            <div class="tab-pane {{ $tab === 'tab-userdata' ? 'active show' : '' }}"
+                                id="tab-userdata" role="tabpanel">
                                 <h4>Activity tab</h4>
                                 <div>
-                                    Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi
-                                    sit mauris accumsan nibh habitant senectus
+                                    <livewire:instructor.instructor-form :modal="false" :instructor="$instructor"  />
                                 </div>
                             </div>
                         </div>
