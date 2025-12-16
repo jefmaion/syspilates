@@ -1,8 +1,5 @@
 <div>
-    @section('title')
-    Alunos
-    @endsection
-
+    @section('title') Alunos @endsection
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
@@ -35,13 +32,19 @@
                 @foreach($instructors as $item)
                 <tr class="align-middle">
                     <td scope="row" class="align-middle">
-                        <div class="d-flex align-items-center">
+                        {{-- <div class="d-flex align-items-center">
                             <span class="avatar avatar-sm me-2  {{ ($item->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->user->initials }}</span>
                             <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
-                        </div>
+                        </div> --}}
+                        <x-page.user-block :user="$item->user">
+                            <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
+                        </x-page.user-block>
                     </td>
                     <td>{{ $item->user->phone1 }}</td>
-                    <td><span class="badge bg-green-lt">Ativo</span></td>
+                    <td>
+                    
+                    <span class="badge bg-{{ $item->user->active ? 'green' : 'secondary' }}-lt">{{ $item->user->status }}</span>
+                    </td>
                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap">

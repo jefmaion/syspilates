@@ -10,6 +10,9 @@ use App\Livewire\Modality\CreateModality;
 use App\Livewire\Modality\ModalityPage;
 use App\Livewire\Modality\UpdateModality;
 use App\Livewire\Profile;
+use App\Livewire\Registration\CreateRegistration;
+use App\Livewire\Registration\RegistrationPage;
+use App\Livewire\Registration\RegistrationShow;
 use App\Livewire\Student\StudentForm;
 use App\Livewire\Student\StudentPage;
 use App\Livewire\Student\StudentShow;
@@ -31,6 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
     Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
     Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
+
+    Route::get('registration', RegistrationPage::class)->name('registration');
+    Route::get('registration/create', CreateRegistration::class)->name('registration.create');
+    Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
 
     // Route::get('instructor', InstructorPage::class)->name('instructor');
     // Route::get('instructor/create', CreateInstructor::class)->name('instructor.create');

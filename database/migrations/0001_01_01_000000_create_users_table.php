@@ -35,6 +35,7 @@ return new class () extends Migration
             $table->string('number', 500)->nullable();
             $table->string('state', 500)->nullable();
             $table->string('avatar', 500)->nullable();
+            $table->boolean('active')->default(true);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

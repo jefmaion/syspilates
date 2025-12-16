@@ -10,4 +10,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 class BaseModel extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+
+    public $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

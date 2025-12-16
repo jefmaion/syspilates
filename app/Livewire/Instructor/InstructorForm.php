@@ -63,6 +63,7 @@ class InstructorForm extends Component
         $user = $this->user->create();
         $this->form->create($user);
         $this->dispatch('hide-modal', modal:'modal-form-instructor');
+        $this->dispatch('show-alert', message:'Professor cadastrado com sucesso!');
         $this->dispatch('instructor-created');
     }
 
@@ -73,6 +74,7 @@ class InstructorForm extends Component
         $this->form->update();
 
         $this->dispatch('hide-modal', modal:'modal-form-instructor');
+        $this->dispatch('show-alert', message:'Dados alterados com sucesso!');
         $this->dispatch('instructor-updated');
     }
 
