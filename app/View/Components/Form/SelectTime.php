@@ -18,8 +18,9 @@ class SelectTime extends Component
     public function __construct()
     {
         for ($i = 7; $i <= 20; $i++) {
-            $key               = $i . ':00';
-            $this->times[$key] = $key;
+            $hour                      = str_pad((string)$i, 2, '0', STR_PAD_LEFT); // 07, 08, 09, 10...
+            $key                       = $hour . ':00';
+            $this->times[$key . ':00'] = $key;
         }
     }
 

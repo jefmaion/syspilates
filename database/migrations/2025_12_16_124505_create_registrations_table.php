@@ -18,7 +18,15 @@ return new class () extends Migration
             $table->timestamps();
             $table->foreignId('student_id')->nullable()->index();
             $table->foreignId('modality_id')->nullable()->index();
-            $table->enum('status', ['A', 'C', 'F']);
+            $table->integer('duration');
+            $table->integer('class_per_week');
+            $table->date('start');
+            $table->date('end');
+            $table->decimal('value');
+            $table->integer('deadline');
+            $table->enum('status', ['sheduled', 'active', 'finished', 'canceled']);
+            $table->datetime('cancel_date')->nullable();
+            $table->text('cancel_comments')->nullable();
         });
     }
 

@@ -22,7 +22,7 @@ class SelectStudent extends Component
      */
     public function __construct()
     {
-        $this->students = Student::with('user')->get();
+        $this->students = Student::with('user')->get()->sortBy('user.name')->values();
     }
 
     /**

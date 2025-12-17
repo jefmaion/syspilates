@@ -6,25 +6,28 @@ namespace App\Enums;
 
 enum RegistrationStatusEnum: string
 {
-    case ACTIVE    = 'A';
-    case CANCELED  = 'C';
-    case FINALIZED = 'F';
+    case SCHEDULED = 'scheduled';
+    case ACTIVE    = 'active';
+    case CANCELED  = 'canceled';
+    case CLOSED    = 'closed';
 
     public function label(): string
     {
         return match ($this) {
+            self::SCHEDULED => 'Agendada',
             self::ACTIVE    => 'Ativo',
             self::CANCELED  => 'Cancelado',
-            self::FINALIZED => 'Finalizado',
+            self::CLOSED    => 'Finalizado',
         };
     }
 
     public function color(): string
     {
         return match ($this) {
+            self::SCHEDULED => 'primary',
             self::ACTIVE    => 'success',
             self::CANCELED  => 'warning',
-            self::FINALIZED => 'secondary',
+            self::CLOSED    => 'secondary',
         };
     }
 }

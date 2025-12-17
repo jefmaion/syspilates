@@ -1,0 +1,88 @@
+:root {
+  --fc-border-color: var(--tblr-border-color);
+  --fc-daygrid-event-dot-width: 5px;
+  --fc-event-bg-color: var(--tblr-primary-lt);
+  --fc-event-border-color: var(--tblr-primary-200);
+  --fc-event-text-color: var(--tblr-body-color)
+}
+
+.fc-toolbar-title {
+  font-size: var(--tblr-font-size-h3) !important;
+  font-weight: var(--tblr-font-weight-medium)
+}
+
+.fc-daygrid-dot-event {
+  background-color: var(--fc-event-bg-color);
+  border: 1px solid var(--fc-event-border-color);
+  color: var(--fc-event-text-color);
+  padding-top: 1px;
+  padding-bottom: 1px
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  font-weight: inherit
+}
+
+.fc-col-header-cell {
+  background-color: var(--tblr-bg-surface-secondary);
+  color: var(--tblr-secondary);
+  text-transform: uppercase;
+  font-weight: var(--tblr-font-weight-medium);
+  font-size: var(--tblr-font-size-h5);
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+  line-height: 1
+}
+
+.fc-event-time {
+  font-weight: var(--tblr-font-weight-bold) !important
+}
+
+.fc-col-header-cell-cushion {
+  color: inherit
+}
+
+.fc-daygrid-day-number {
+  color: var(--tblr-secondary)
+}
+
+.fc-button {
+  color: var(--tblr-body-color) !important;
+  background-color: transparent !important;
+  border-color: var(--tblr-border-color) !important;
+  font-weight: var(--tblr-font-weight-medium) !important
+}
+
+.fc-daygrid-block-event .fc-event-time,
+.fc-daygrid-block-event .fc-event-title {
+  padding: 1px;
+}
+
+.fc-h-event .fc-event-title {
+  display: inline-block;
+  left: 0px;
+  max-width: 100%;
+  overflow: hidden;
+  right: 0px;
+  vertical-align: top;
+}
+
+.fc-sticky {
+  position: sticky;
+}
+
+.fc,
+.fc *,
+.fc ::after,
+.fc ::before {
+  box-sizing: border-box;
+}
+
+.fc-h-event .fc-event-main {
+  color: var(--fc-event-text-color) !important;
+}
+
+.fc-timegrid-event-harness>.fc-timegrid-event {
+  inset: 0px;
+  position: relative !important;
+}

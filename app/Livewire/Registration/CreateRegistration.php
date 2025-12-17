@@ -18,15 +18,18 @@ class CreateRegistration extends Component
     public function create()
     {
         $this->resetValidation();
+        $this->resetExcept('form');
+        $this->form->start = date('Y-m-d');
         $this->dispatch('show-modal', modal:'modal-create-registration');
     }
 
     #[On('store-registration')]
     public function save()
     {
-        $this->form->create();
+        $registration = $this->form->create();
         $this->dispatch('hide-modal', modal:'modal-create-registration');
         $this->dispatch('refresh-registrations');
+        $this->redirect(route('registration.show', $registration), navigate:true);
     }
 
     public function render(): View | Closure | string

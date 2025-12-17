@@ -15,10 +15,18 @@
                             <label for="" class="form-label">Aluno</label>
                             <x-form.select-student name="form.student_id" wire:model='form.student_id' />
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="" class="form-label">Modalidade</label>
                             <x-form.select-modality name="form.modality_id" wire:model='form.modality_id' />
                         </div>
+
+
+                    </div>
+
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="" class="form-label">Plano</label>
                             <x-form.select-duration name="form.duration" wire:model='form.duration' />
@@ -34,21 +42,26 @@
                             <label for="" class="form-label">Dia Vencimento</label>
                             <x-form.input-text name="form.deadline" wire:model='form.deadline' />
                         </div>
+                    </div>
 
+                </div>
+
+                <div class="modal-body">
+                    
+                    <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="" class="form-label">Início das Aulas</label>
                             <x-form.input-text type="date" name="form.start" wire:model='form.start' />
                         </div>
 
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-9 mb-3">
                             <label for="" class="form-label">Aulas p/ Semana</label>
                             <x-form.input-text name="form.class_per_week" wire:model.live='form.class_per_week' />
                         </div>
                     </div>
 
-                    <p><strong>Dia das Aulas</strong></p>
-
-                    
+             
+                    @if(!empty($form->class_per_week))
                     
                     <div class="table-responsive">
                         <table class="table">
@@ -76,6 +89,8 @@
                             </tbody>
                         </table>
                     </div>
+
+                    @endif
 
                 </div>
                 <div class="modal-footer">

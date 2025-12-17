@@ -4,76 +4,60 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Registration;
 
+use App\Livewire\Forms\RegistrationForm;
 use App\Models\Registration;
+use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
-use Carbon\CarbonPeriod;
 use Closure;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
 class RegistrationShow extends Component
 {
+    use PaginationCollectionTrait;
     use PaginationTrait;
-
-    protected $queryString = ['page'];
 
     public Registration $registration;
 
-    public $page = 1;
+    public RegistrationForm $form;
 
     public $_classes = [];
+
+    public $schedule = [];
+
+    public $tab;
+
+    public $cancel_comments;
+
+    public function tabs(string $tab): void
+    {
+        $this->tab = $tab;
+    }
 
     public function mount(Registration $registration)
     {
         $this->registration = $registration;
-
-        $this->generateClasses();
+        $this->form->populate($this->registration);
     }
 
-    public function generateClasses()
+    public function changeClassDays()
     {
-        $this->registration->load('schedule.instructor.user');
+        $this->registration->schedule()->delete();
+        $this->registration->schedule()->createMany($this->form->schedule);
 
-        $plan      = $this->registration->plan;
-        $schedules = $this->registration->schedule;
+        $this->dispatch('hide-modal', modal:'modal-classes');
 
-        $period = CarbonPeriod::create($plan->start, $plan->end);
+        lw_alert($this, 'Salvo com sucesso!');
 
-        $this->_classes = [];
-
-        foreach ($period as $date) {
-            foreach ($schedules as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday) {
-                    $this->_classes[] = [
-                        'date'       => $date,
-                        'time'       => $schedule->time,
-                        'instructor' => $schedule->instructor,
-                    ];
-                }
-            }
-        }
+        return $this->dispatch('$refresh');
     }
 
     public function render(): View | Closure | string
     {
-        $perPage        = $this->pages;
-        $currentPage    = LengthAwarePaginator::resolveCurrentPage();
-        $itemCollection = Collection::make($this->_classes);
-
-        $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
-
-        $paginados = new LengthAwarePaginator(
-            $currentPageItems,
-            count($itemCollection),
-            $perPage,
-            $currentPage,
-            ['path' => LengthAwarePaginator::resolveCurrentPath()]
-        );
+        // $this->pages = 5;
 
         return view('livewire.registration.registration-show', [
-            'classes' => $paginados,
+            'classes' => $this->paginate($this->registration->preClasses(), $this->pages),
         ]);
     }
 }

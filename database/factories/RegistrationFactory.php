@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Modality;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,10 +21,19 @@ class RegistrationFactory extends Factory
      */
     public function definition(): array
     {
+        $date     = fake()->date();
+        $duration = fake()->randomElements([30, 60, 90, 120, 150, 180])[0];
+
         return [
-            'student_id'  => Student::inRandomOrder()->first()->id,
-            'modality_id' => Modality::inRandomOrder()->first()->id,
-            'status'      => fake()->randomElement(['A', 'C', 'F']),
+            'student_id'     => Student::inRandomOrder()->first()->id,
+            'modality_id'    => Modality::inRandomOrder()->first()->id,
+            'duration'       => $duration,
+            'class_per_week' => rand(1, 3),
+            'value'          => fake()->randomFloat(2, 0, 500),
+            'deadline'       => rand(1, 28),
+            'start'          => $date,
+            'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),
+            'status'         => 'active',
         ];
     }
 }

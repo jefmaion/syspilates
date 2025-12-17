@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Enums\RegistrationStatusEnum;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,8 +17,39 @@ class Registration extends BaseModel
     public $guarded = ['id'];
 
     public $casts = [
+        'start'  => 'date',
+        'end'    => 'date',
         'status' => RegistrationStatusEnum::class,
+        'value'  => 'float',
     ];
+
+    public function isCanceled()
+    {
+        return $this->status->value === RegistrationStatusEnum::CANCELED->value;
+    }
+
+    public function preClasses()
+    {
+        $this->load('schedule.instructor.user');
+        $period = CarbonPeriod::create($this->start, $this->end);
+
+        $classes = [];
+
+        foreach ($period as $date) {
+            foreach ($this->schedule as $schedule) {
+                if ($date->dayOfWeek === $schedule->weekday) {
+                    $classes[] = [
+                        'date'       => $date,
+                        'time'       => $schedule->time,
+                        'datetime'   => $date . 'T' . $schedule->time,
+                        'instructor' => $schedule->instructor,
+                    ];
+                }
+            }
+        }
+
+        return $classes;
+    }
 
     public function schedule()
     {

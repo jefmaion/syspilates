@@ -2,27 +2,20 @@
 
 declare(strict_types = 1);
 
-namespace App\View\Components\Form;
+namespace App\View\Components\Page;
 
-use App\Models\Modality;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 
-class SelectModality extends Component
+class Spinner extends Component
 {
-    /**
- * @var Collection<int, Modality>
- */
-    public Collection $modalities;
-
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        $this->modalities = Modality::orderBy('name')->get();
+        //
     }
 
     /**
@@ -30,6 +23,6 @@ class SelectModality extends Component
      */
     public function render(): View | Closure | string
     {
-        return view('components.form.select-modality');
+        return view('components.page.spinner');
     }
 }

@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use App\Livewire\Calendar\CalendarPage;
+use App\Livewire\Calendar\FullCalendar;
 use App\Livewire\Dashboard;
 use App\Livewire\Instructor\InstructorForm;
 use App\Livewire\Instructor\InstructorPage;
@@ -38,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::get('registration', RegistrationPage::class)->name('registration');
     Route::get('registration/create', CreateRegistration::class)->name('registration.create');
     Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
+
+    Route::get('calendar', CalendarPage::class)->name('calendar');
+    Route::get('calendar/events', [FullCalendar::class, 'events'])->name('events');
 
     // Route::get('instructor', InstructorPage::class)->name('instructor');
     // Route::get('instructor/create', CreateInstructor::class)->name('instructor.create');

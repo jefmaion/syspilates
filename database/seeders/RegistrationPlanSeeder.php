@@ -14,6 +14,6 @@ class RegistrationPlanSeeder extends Seeder
      */
     public function run(): void
     {
-        RegistrationPlan::factory(5)->create();
+        // RegistrationPlan::factory(5)->create();
     }
 }

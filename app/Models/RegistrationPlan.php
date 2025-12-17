@@ -16,5 +16,6 @@ class RegistrationPlan extends BaseModel
     public $casts = [
         'start' => 'date',
         'end'   => 'date',
+        'value' => 'float',
     ];
 }
