@@ -54,7 +54,8 @@ class RegistrationShow extends Component
     }
 
     #[On('registration-updated')]
-    public function refr() {
+    public function refr()
+    {
     }
 
     public function render(): View | Closure | string

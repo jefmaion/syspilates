@@ -1,4 +1,4 @@
-<div class="d-flex mb-4 justify-content-between">
+<div {{ $attributes->merge(['class' => 'd-flex w-100 fs-4 justify-content-between']) }}>
     <div class="text-secondary">
         <span class="d-none d-sm-inline">Mostrar</span>
         <div class="mx-2 d-inline-block">

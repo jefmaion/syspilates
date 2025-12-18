@@ -13,7 +13,7 @@ class InstructorShow extends Component
 {
     public Instructor $instructor;
 
-    public string $tab = 'tabs-home-7';
+    public string $tab = 'tab-instructor-modality';
 
     public int $active;
 

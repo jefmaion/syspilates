@@ -12,9 +12,11 @@
 
     </x-page.page-header>
 
-    <x-page.page-body>
-        <div class="row">
-            <div class="col-12 col-md-3 d-flex flex-column">
+
+
+        <x-page.page-show>
+
+            <x-slot:left>
                 <div class="card flsex-fill mb-3">
                     <div class="card-body p-4 text-center">
                         <span class="avatar avatar-xl mb-3">
@@ -23,58 +25,77 @@
                         <h3 class="m-0 mb-1"><a href="#">{{ $instructor->user->name }}</a></h3>
                         <div class="text-secondary">{{ $instructor->profession }}</div>
                         <div class="mt-3">
-                            <span class="badge bg-{{ $instructor->user->active ? 'green' : 'secondary' }}-lt">{{ $instructor->user->status }}</span>
+                            <span class="badge bg-{{ $instructor->user->active ? 'green' : 'secondary' }}-lt">{{
+                                $instructor->user->status }}</span>
                         </div>
-
-
-
                     </div>
                     <div class="card-body">
 
-<div class="d-flex">
-                      <a href="{{ route('instructor') }}" class="btn btn-link me-2" wire:navigate>Voltar</a>
-                      <a href="#" class="btn btn-primary ms-auto">Go somewhere</a>
-                    </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('instructor') }}" class="btn btn-link me-2" wire:navigate>Voltar</a>
+                            <div class="dropdown">
+                                <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
+                                <div class="dropdown-menu">
+                                    <span class="dropdown-header">Dropdown header</span>
+                                    <a class="dropdown-item" wire:click='block' wire:model='active' href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                            </path>
+                                            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                        </svg>
+                                        Bloquear Acesso
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                            <path d="M13.5 6.5l4 4"></path>
+                                        </svg>
+                                        Excluir
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
 
                 <div class="card flex-fill">
                     <div class="card-header">
-                        Informações
+                        <h3 class="card-title">Informações</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="mt-3 text-left">
-                            <div class="d-flex justify-content-between align-items-center border-top py-3">
-                                <span><strong>Professor desde:</strong></span>
-                                <span>{{ $instructor->created_at->format('d/m/Y') }}</span>
-                            </div>
-                             <div class="d-flex justify-content-between align-items-center border-top py-3">
-                                <span><strong>Telefone:</strong></span>
-                                <span>{{ $instructor->user->phone1 }}</span>
-                            </div>
+                    <div class="cardS-body">
 
-                             <div class="d-flex justify-content-between align-items-center border-top py-3">
-                                <span><strong>Email:</strong></span>
-                                <span>{{ $instructor->user->email }}</span>
-                            </div>
-
-
-                        </div>
+                        <table class="table table-striped table-vcenter mb-0">
+                            <tr>
+                                <td><strong>Professor desde:</strong></td>
+                                <td class="text-end">{{ $instructor->created_at->format('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telefone:</strong></td>
+                                <td class="text-end">{{ $instructor->user->phone1 }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td class="text-end">{{ $instructor->user->email }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-9 d-flex mt-3 mt-md-0">
+            </x-slot:left>
+
+            <x-slot:right>
                 <div class="card flex-fill">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a href="#tab-class-history" wire:click.prevent="tabs('tab-class-history')"
-                                    class="nav-link {{ $tab === 'tab-class-history' ? 'active' : '' }}"
-                                    data-bs-toggle="tab" aria-selected="true" role="tab">
-                                    Histórico de Aulas
-                                </a>
-                            </li>
                             <li class="nav-item" role="presentation">
                                 <a href="#tab-instructor-modality" wire:click.prevent="tabs('tab-instructor-modality')"
                                     class="nav-link {{ $tab === 'tab-instructor-modality' ? 'active' : '' }}"
@@ -82,6 +103,14 @@
                                     Modalidades
                                 </a>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-class-history" wire:click.prevent="tabs('tab-class-history')"
+                                    class="nav-link {{ $tab === 'tab-class-history' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" aria-selected="true" role="tab">
+                                    Histórico de Aulas
+                                </a>
+                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <a href="#tab-payments" wire:click.prevent="tabs('tab-payments')"
                                     class="nav-link {{ $tab === 'tab-payments' ? 'active' : '' }}" data-bs-toggle="tab"
@@ -144,8 +173,6 @@
                                             <td>{{ ($modality->pivot->calculate_on_justified_absence) ? 'Sim' : 'Não' }}
                                             </td>
                                             <td>
-
-
                                                 <x-buttons.button-link href="#"
                                                     wire:click="$dispatch('edit-modality', {modalityId: {{ $modality->id }}})"
                                                     class="btn-warning btn-sm">
@@ -159,6 +186,7 @@
                                                     <x-icons.trash /> <span class="d-none d-sm-inline">Remover</span>
                                                 </x-buttons.button-link>
                                             </td>
+
                                         </tr>
                                         @endforeach
                                     </x-table.table>
@@ -181,7 +209,9 @@
                                                         <span class="col">Permitir acesso ao sistema</span>
                                                         <span class="col-auto">
                                                             <label class="form-check form-check-single form-switch">
-                                                                <input class="form-check-input" type="checkbox" wire:click='block' wire:model='active' {{ ($instructor->user->active) ? 'checked' : '' }} >
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    wire:click='block' wire:model='active' {{
+                                                                    ($instructor->user->active) ? 'checked' : '' }} >
                                                             </label>
                                                         </span>
                                                     </label>
@@ -200,8 +230,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </x-slot:right>
 
-    </x-page.page-body>
+        </x-page.page-show>
+
+
 </div>

@@ -219,8 +219,9 @@
                                             <td>{{ $class['time'] }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
+
                                                     <span
-                                                        class="avatar avatar-sm me-2  {{ ($class['instructor']->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
+                                                        class="avatar avatar-sm me-2  {{ ($class['instructor']?->user?->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
                                                         $class['instructor']->user->initials }}</span>
                                                     {{ $class['instructor']->user->name }}
                                                 </div>

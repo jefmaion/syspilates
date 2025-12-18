@@ -22,9 +22,9 @@ class InstructorFactory extends Factory
     {
         return [
             'user_id'    => User::factory()->create()->id,
-            'profession' => fake()->text(10),
-            'document'   => fake()->text(10),
-            'comments'   => fake()->text(100),
+            'profession' => fake()->randomElements(['Fisioterapeuta', 'Educador(a) Físico', 'Osteopata'])[0],
+            'document'   => fake()->randomElements(['CRM', 'CRO', 'CREFITO'])[0] . '-' . fake()->numberBetween(100000, 999999),
+            'comments'   => fake()->sentence(20),
         ];
     }
 
@@ -32,10 +32,10 @@ class InstructorFactory extends Factory
     {
         return $this->afterCreating(function ($instructor) use ($count) {
             // cria entre 1 e 3 modalidades
-            $modalities = Modality::factory()->count(rand(1, 3))->create();
 
-            foreach ($modalities as $modality) {
-                $instructor->modalities()->attach($modality->id, [
+            // foreach ($modalities as $modality) {
+            for ($i = 1;$i <= $count;$i++) {
+                $instructor->modalities()->attach(Modality::inRandomOrder()->first()->id, [
                     'commission_type'                => fake()->randomElement(['percent', 'fixed']),
                     'commission_value'               => fake()->randomFloat(2, 5, 50),
                     'calculate_on_justified_absence' => fake()->boolean(),
