@@ -4,7 +4,6 @@
     Detalhes da Matrícula
     @endsection
     <x-page.page-header>
-        <div class="page-pretitle">Overview</div>
         <h2 class="page-title">
             <x-icons.users />
             Detalhes da Matrícula
@@ -18,6 +17,7 @@
 
         <div class="row">
             <div class="col-3 d-flex">
+
                 <div class="card flex-fill">
                     <div class="card-body p-4 text-center">
                         <span class="avatar avatar-xl mb-3">

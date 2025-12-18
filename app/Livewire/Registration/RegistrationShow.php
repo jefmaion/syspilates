@@ -10,6 +10,7 @@ use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
 use Closure;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class RegistrationShow extends Component
@@ -50,6 +51,10 @@ class RegistrationShow extends Component
         lw_alert($this, 'Salvo com sucesso!');
 
         return $this->dispatch('$refresh');
+    }
+
+    #[On('registration-updated')]
+    public function refr() {
     }
 
     public function render(): View | Closure | string

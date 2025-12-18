@@ -7,18 +7,20 @@
         </h2>
         <x-slot name="actions">
             <div class="btn-list">
-                <a href="#" wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-5 d-none d-sm-inline-block">
+                <a href="#" wire:click='$dispatch("create-instructor")'
+                    class="btn btn-primary btn-5 d-none d-sm-inline-block">
                     <x-icons.plus class="icon icon-1" /> Novo
                 </a>
-                <a wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-6 d-sm-none btn-icon" aria-label="Novo">
+                <a wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-6 d-sm-none btn-icon"
+                    aria-label="Novo">
                     <x-icons.plus class="icon icon-1" />
                 </a>
             </div>
         </x-slot>
     </x-page.page-header>
 
-    <x-page.page-card-body>
-        <x-table.table>
+    <x-page.page-card>
+        <x-table.table class="fs-4" >
             <thead>
                 <tr>
                     <th scope="col" wsidth="50%">Nome</th>
@@ -33,22 +35,41 @@
                 <tr class="align-middle">
                     <td scope="row" class="align-middle">
                         {{-- <div class="d-flex align-items-center">
-                            <span class="avatar avatar-sm me-2  {{ ($item->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->user->initials }}</span>
+                            <span
+                                class="avatar avatar-sm me-2  {{ ($item->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
+                                $item->user->initials }}</span>
                             <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
                         </div> --}}
                         <x-page.user-block :user="$item->user">
-                            <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
+                            <a href="{{ route('instructor.show', $item) }}" wire:navigate>
+                                <div class="flex-fill">
+                                    <div class="font-weight-medium"> <strong>{{ $item->user->name }}</strong></div>
+                                    <div class="text-secondary"><a href="#" class="text-reset">{{ $item->profession}}</a>
+                                    </div>
+
+                                </div>
+
+                            </a>
+
                         </x-page.user-block>
                     </td>
-                    <td>{{ $item->user->phone1 }}</td>
+                    <td class="d-flex">
+                        <div class="flex-fill">
+                            <div><strong>{{ $item->user->phone1 }}</strong></div>
+                            <div class="text-muted"><small>{{ $item->user->email}}</small></div>
+                        </div>
+                        </td>
                     <td>
-                    
-                    <span class="badge bg-{{ $item->user->active ? 'green' : 'secondary' }}-lt">{{ $item->user->status }}</span>
+
+                        <span class="badge bg-{{ $item->user->active ? 'green' : 'secondary' }}-lt">{{
+                            $item->user->status }}</span>
                     </td>
                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap">
-                            <x-buttons.button-link href="#" wire:click="$dispatch('edit-instructor', { instructor: {{ $item->id }} })"  class="btn-wsarning bg-orange-lt btn-sm">
+                            <x-buttons.button-link href="#"
+                                wire:click="$dispatch('edit-instructor', { instructor: {{ $item->id }} })"
+                                class="btn-wsarning bg-orange-lt btn-sm">
                                 <x-icons.edit class="" /><span class="d-none d-sm-inline">Editar</span>
                             </x-buttons.button-link>
 
@@ -73,5 +94,5 @@
 
 
 
-    </x-page.page-card-body>
+    </x-page.page-card>
 </div>

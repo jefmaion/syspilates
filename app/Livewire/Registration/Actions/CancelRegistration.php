@@ -39,6 +39,7 @@ class CancelRegistration extends Component
         lw_alert($this, 'Salvo com sucesso!');
 
         $this->dispatch('hide-modal', modal:'modal-cancel-registration');
+        $this->dispatch('registration-updated');
     }
 
     public function render(): View | Closure | string
