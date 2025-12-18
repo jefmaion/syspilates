@@ -1,0 +1,58 @@
+<div>
+    @section('title') Matrículas @endsection
+    <x-page.page-header>
+        <h2 class="page-title">
+            <x-icons.users />
+            Matrículas
+        </h2>
+        <x-slot name="actions">
+            <div class="btn-list">
+                <a href="#" wire:click='$dispatch("create-registration")' class="btn btn-primary btn-5 d-none d-sm-inline-block">
+                    <x-icons.plus class="icon icon-1" /> Nova Matrícula
+                </a>
+                <a wire:click='$dispatch("create-registration")' class="btn btn-primary btn-6 d-sm-none btn-icon" aria-label="Novo">
+                    <x-icons.plus class="icon icon-1" />
+                </a>
+            </div>
+            <livewire:registration.create-registration />
+        </x-slot>
+    </x-page.page-header>
+
+    <x-page.page-card-body>
+        <x-table.table>
+            <thead>
+                <tr>
+                    <th scope="col" wsidth="50%">Aluno</th>
+                    <th>Modalidade</th>
+                    <th>Status</th>
+                    <th scope="col">Data de Cadastro</th>
+                    <th scope="col" width="10%">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="table-tbody">
+                @foreach($registrations as $item)
+                <tr>
+                    <td>
+                        
+                        <div class="d-flex align-items-center">
+                            <span class="avatar avatar-sm me-2  {{ ($item->student->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->student->user->initials }}</span>
+                            <a href="{{ route('registration.show', $item) }}" wire:navigate>{{ $item->student->user->name }}</a>
+                        </div>
+                    
+                    </td>
+                    <td>{{ $item->modality->name }}</td>
+                    <td> <span class="badge bg-{{ $item->status->color() }}-lt ">{{ $item->status->label() }}</span></td>
+                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                    <td></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </x-table.table>
+        <div class="mt-3">
+            {{ $registrations->links() }}
+        </div>
+
+        <x-modal.modal-delete />
+
+    </x-page.page-card-body>
+</div>

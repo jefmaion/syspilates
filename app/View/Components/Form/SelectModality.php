@@ -22,7 +22,7 @@ class SelectModality extends Component
      */
     public function __construct()
     {
-        $this->modalities = Modality::all();
+        $this->modalities = Modality::orderBy('name')->get();
     }
 
     /**

@@ -19,7 +19,7 @@ return [
         'Aulas ' => 'nav-header',
 
         'Calendário' => [
-            'route' => '',
+            'route' => 'calendar',
             'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
         ],
         'Aulas' => [
@@ -30,7 +30,7 @@ return [
         'Cadastros' => 'nav-header',
 
         'Matrículas' => [
-            'route' => '',
+            'route' => 'registration',
             'icon'  => file_get_contents(resource_path('views/components/icons/registration.blade.php')),
         ],
 

@@ -62,6 +62,11 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         return $this->casts;
     }
 
+    public function isActive(): int
+    {
+        return $this->active;
+    }
+
     /**
      * @return Attribute<string, string>
      */
@@ -79,6 +84,15 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
                 $last  = $parts[count($parts) - 1];
 
                 return "{$first} {$last}";
+            }
+        );
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return ($attributes['active']) ? 'Ativo' : 'Bloqueado';
             }
         );
     }

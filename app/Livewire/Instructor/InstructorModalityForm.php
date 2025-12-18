@@ -19,16 +19,9 @@ class InstructorModalityForm extends Component
 
     public bool $edit = false;
 
-    public string $label = 'Valor da comissão';
-
     public function mount(Instructor $instructor): void
     {
         $this->form->instructor = $instructor;
-    }
-
-    public function setComissionLabel(): void
-    {
-        $this->label = ($this->form->commission_type == 'percent') ? '% da comissão' : 'Valor da comissão';
     }
 
     #[On('edit-modality')]
@@ -46,6 +39,8 @@ class InstructorModalityForm extends Component
         $this->edit       = false;
         $this->form->edit = $this->edit;
         $this->dispatch('hide-modal', modal: 'modal-form-instructor-modality');
+        $this->dispatch('show-alert', message:'Modalidade alterada com sucesso!');
+        $this->dispatch('modality-updated');
     }
 
     #[On('attach-modality')]
@@ -62,6 +57,7 @@ class InstructorModalityForm extends Component
     {
         $this->form->add();
         $this->dispatch('hide-modal', modal: 'modal-form-instructor-modality');
+        $this->dispatch('show-alert', message:'Modalidade adicionada com sucesso!');
         $this->dispatch('modality-attached');
     }
 
@@ -69,6 +65,7 @@ class InstructorModalityForm extends Component
     public function remove(int $modalityId): void
     {
         $this->instructor->modalities()->detach($modalityId);
+        $this->dispatch('show-alert', message:'Modalidade removida com sucesso!');
         $this->dispatch('modality-removed');
     }
 

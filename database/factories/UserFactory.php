@@ -37,6 +37,7 @@ class UserFactory extends Factory
             'cpf'               => fake()->unique()->numberBetween(0, 99999999999),
             'gender'            => $gender,
             'phone1'            => fake()->phoneNumber(),
+            'active'            => 1,
         ];
     }
 

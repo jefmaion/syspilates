@@ -15,14 +15,24 @@ class InstructorShow extends Component
 
     public string $tab = 'tabs-home-7';
 
+    public int $active;
+
     public function mount(Instructor $instructor): void
     {
         $this->instructor = $instructor;
+        $this->active     = $this->instructor->user->active;
     }
 
     public function tabs(string $tab): void
     {
         $this->tab = $tab;
+    }
+
+    public function block()
+    {
+        $this->instructor->user()->update(['active' => $this->active]);
+        $this->dispatch('show-alert', message:'Usuário ' . (($this->active) ? 'ativado' : 'bloqueado') . ' com sucesso!');
+        $this->_refresh();
     }
 
     #[On('modality-attached')]

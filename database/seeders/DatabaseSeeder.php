@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             ModalitySeeder::class,
             StudentSeeder::class,
             InstructorSeeder::class,
+            RegistrationSeeder::class,
+            RegistrationPlanSeeder::class,
         ]);
     }
 }

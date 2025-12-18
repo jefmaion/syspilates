@@ -10,7 +10,6 @@
         <livewire:layout.sidebar />
         <livewire:layout.navigation />
         <div class="page-wrapper">
-            @include('layouts.parts.alert')
             {{ $slot }}
             @include('layouts.parts.footer')
         </div>
