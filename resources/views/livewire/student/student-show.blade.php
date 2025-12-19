@@ -15,65 +15,78 @@
 
     <x-page.page-show>
         <x-slot:left>
-            <div class="card flex-fill">
+            <div class="card flex-fill mb-3">
                 <div class="card-body p-4 text-center">
                     <span class="avatar avatar-xl mb-3">
                         {{ $student->user->initials }}
                     </span>
                     <h3 class="m-0 mb-1"><a href="#">{{ $student->user->name }}</a></h3>
                     <div class="text-secondary">UI Designer</div>
-                    <div class="mt-3 text-left">
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Data de Cadastro</strong></span>
-                            <span>{{ $student->created_at->format('d/m/Y') }}</span>
+                    <div class="mt-3">
+                            <span class="badge bg-{{ $student->user->active ? 'green' : 'secondary' }}-lt">{{
+                                $student->user->status }}</span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Status</strong></span>
-                            <span><span class="badge bg-green-lt">Ativo</span></span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Aulas</strong></span>
-                            <span>{{ rand() }}</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Presenças</strong></span>
-                            <span>{{ rand() }}</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Faltas</strong></span>
-                            <span>{{ rand() }}</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center border-top py-3">
-                            <span><strong>Reposições</strong></span>
-                            <span>{{ rand() }}</span>
+                </div>
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('student') }}" class="btn btn-link me-2" wire:navigate>Voltar</a>
+                        <div class="dropdown">
+                            <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
+                            <div class="dropdown-menu">
+                                <span class="dropdown-header">Dropdown header</span>
+                                <a class="dropdown-item" wire:click='block' wire:model='active' href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                            d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                        </path>
+                                        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                    </svg>
+                                    Bloquear Acesso
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                        <path d="M13.5 6.5l4 4"></path>
+                                    </svg>
+                                    Excluir
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex">
-                    <a href="#" class="card-btn">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/mail -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon me-2 text-muted icon-3">
-                            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
-                            </path>
-                            <path d="M3 7l9 6l9 -6"></path>
-                        </svg>
-                        Email
-                    </a>
-                    <a href="#" class="card-btn">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/phone -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon me-2 text-muted icon-3">
-                            <path
-                                d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
-                            </path>
-                        </svg>
-                        Call
-                    </a>
-                </div>
             </div>
+
+            <div class="card flex-fill">
+                    <div class="card-header">
+                        <h3 class="card-title">Informações</h3>
+                    </div>
+                    <div class="cardS-body">
+
+                        <table class="table table-striped table-vcenter mb-0">
+                            <tr>
+                                <td><strong>Cadastrado em:</strong></td>
+                                <td class="text-end">{{ $student->created_at->format('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telefone:</strong></td>
+                                <td class="text-end">{{ $student->user->phone1 }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td class="text-end">{{ $student->user->email }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
         </x-slot:left>
         <x-slot:right>
             <div class="card flex-fill">
@@ -82,21 +95,21 @@
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
                                 role="tab">
-                                Home
+                                Histórrico de Aulas
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                 role="tab" tabindex="-1">
                                 <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                                Profile
+                                Dados Cadastrais
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-activity-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                                 role="tab" tabindex="-1">
                                 <!-- Download SVG icon from http://tabler.io/icons/icon/activity -->
-                                Activity
+                                Mensalidades
                             </a>
                         </li>
                     </ul>
@@ -106,11 +119,7 @@
                         <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
                         </div>
                         <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
-                            <h4>Profile tab</h4>
-                            <div>
-                                <a href="#"
-                                    wire:click="$dispatch('edit-student', { student: {{ $student->id }} })">Editar</a>
-                            </div>
+                            <livewire:student.student-form :modal="false" :student="$student" />
                         </div>
                         <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
                             <h4>Activity tab</h4>
@@ -124,6 +133,4 @@
             </div>
         </x-slot:right>
     </x-page.page-show>
-
-    <a href="{{ route('student') }}" class="me-2" wire:navigate>Voltar</a>
 </div>

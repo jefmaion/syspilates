@@ -21,6 +21,8 @@ class StudentForm extends Component
 
     public bool $edit = false;
 
+    public bool $modal = true;
+
     #[On('create-student')]
     public function create(): void
     {
@@ -62,6 +64,7 @@ class StudentForm extends Component
         $this->form->create($user);
         $this->dispatch('hide-modal', modal:'modal-form-student');
         $this->dispatch('student-created');
+        lw_alert($this, 'Aluno Criado com sucesso!');
     }
 
     public function update(): void
@@ -72,6 +75,7 @@ class StudentForm extends Component
 
         $this->dispatch('hide-modal', modal:'modal-form-student');
         $this->dispatch('student-updated');
+        lw_alert($this, 'Dados alterados com sucesso!');
     }
 
     public function render(): View

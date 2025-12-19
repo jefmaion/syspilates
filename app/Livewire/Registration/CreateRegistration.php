@@ -14,6 +14,11 @@ class CreateRegistration extends Component
 {
     public RegistrationForm $form;
 
+
+    public function mount() {
+        // $this->form->schedule = [];
+    }
+
     #[On('create-registration')]
     public function create()
     {
@@ -27,8 +32,7 @@ class CreateRegistration extends Component
     public function save()
     {
         $registration = $this->form->create();
-        $this->dispatch('hide-modal', modal:'modal-create-registration');
-        $this->dispatch('refresh-registrations');
+        // $this->dispatch('hide-modal', modal:'modal-create-registration');
         $this->redirect(route('registration.show', $registration), navigate:true);
     }
 
