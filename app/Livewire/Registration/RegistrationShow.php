@@ -48,7 +48,7 @@ class RegistrationShow extends Component
 
         $this->dispatch('hide-modal', modal:'modal-classes');
 
-        lw_alert($this, 'Salvo com sucesso!');
+        lw_alert($this, 'Dias de aulas alteradas com sucesso');
 
         return $this->dispatch('$refresh');
     }
@@ -60,7 +60,7 @@ class RegistrationShow extends Component
 
     public function render(): View | Closure | string
     {
-        // $this->pages = 5;
+        $this->pages = 5;
 
         return view('livewire.registration.registration-show', [
             'classes' => $this->paginate($this->registration->preClasses(), $this->pages),

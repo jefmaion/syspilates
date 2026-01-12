@@ -4,19 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Enums;
 
-enum RegistrationStatusEnum: string
+enum ClassStatusEnum: string
 {
     case SCHEDULED = 'scheduled';
-    case ACTIVE    = 'active';
-    case CANCELED  = 'canceled';
+    case PRESENCE  = 'active';
+    case ABSENSE   = 'canceled';
     case CLOSED    = 'closed';
 
     public function label(): string
     {
         return match ($this) {
             self::SCHEDULED => 'Agendada',
-            self::ACTIVE    => 'Em Andamento',
-            self::CANCELED  => 'Cancelado',
+            self::PRESENCE  => 'Presença',
+            self::ABSENSE   => 'Falta',
             self::CLOSED    => 'Finalizado',
         };
     }
@@ -25,8 +25,8 @@ enum RegistrationStatusEnum: string
     {
         return match ($this) {
             self::SCHEDULED => 'primary',
-            self::ACTIVE    => 'success',
-            self::CANCELED  => 'warning',
+            self::PRESENCE  => 'success',
+            self::ABSENSE   => 'warning',
             self::CLOSED    => 'secondary',
         };
     }

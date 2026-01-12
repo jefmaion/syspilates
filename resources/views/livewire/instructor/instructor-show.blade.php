@@ -9,7 +9,6 @@
             <x-icons.users />
             Detalhes do Professor
         </h2>
-
     </x-page.page-header>
 
 

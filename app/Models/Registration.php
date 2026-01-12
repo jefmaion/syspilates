@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\ClassStatusEnum;
 use App\Enums\RegistrationStatusEnum;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,6 +44,8 @@ class Registration extends BaseModel
                         'time'       => $schedule->time,
                         'datetime'   => $date . 'T' . $schedule->time,
                         'instructor' => $schedule->instructor,
+                        'status'     => ClassStatusEnum::SCHEDULED,
+                        'type'       => 'schedule',
                     ];
                 }
             }

@@ -76,8 +76,10 @@
                     },
                     eventClick: function(info) {
                         // info.jsEvent.preventDefault();
+              
                         Livewire.dispatch('calendar-show-event', { 
-                            id: info.event.id
+                            id: info.event.id,
+                            type: info.event.extendedProps.type
                         });
                     },
                     eventContent: function(arg) {

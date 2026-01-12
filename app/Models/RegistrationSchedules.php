@@ -17,4 +17,9 @@ class RegistrationSchedules extends BaseModel
     {
         return $this->belongsTo(Instructor::class);
     }
+
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class);
+    }
 }
