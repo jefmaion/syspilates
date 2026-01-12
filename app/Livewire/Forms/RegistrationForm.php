@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
@@ -14,23 +14,49 @@ class RegistrationForm extends Form
 {
     public ?Registration $registration;
 
-    public ?int $modality_id = null;
+    public ?string $modality_id = null;
+public ?string $student_id = null;
 
-    public ?int $student_id = null;
+public ?string $duration = null;
+public ?string $class_per_week = null;
+public ?string $deadline = null;
+public ?string $value = null;
+public ?string $start = null;
+
 
     public string $status = RegistrationStatusEnum::ACTIVE->value;
 
-    public ?int $duration = null;
 
-    public ?int $class_per_week = null;
 
-    public ?int $deadline = null;
+    public array $schedule = [];
 
-    public ?float $value = null;
+    public function updatedClassPerWeek($value)
+    {
 
-    public ?string $start;
 
-    public ?array $schedule;
+        if ($value === null || $value === '' || !is_numeric($value)) {
+            $this->class_per_week = null;
+            $this->schedule = [];
+            return;
+        }
+
+
+        if ($value <= 0) {
+            $this->schedule = [];
+            return;
+        }
+
+        $this->schedule = [];
+
+        for ($i = 0; $i < $value; $i++) {
+            $this->schedule[$i] = [
+                'weekday' => null,
+                'time' => null,
+                'instructor_id' => null,
+            ];
+        }
+    }
+
 
     public function rules()
     {
@@ -47,6 +73,11 @@ class RegistrationForm extends Form
             'deadline'       => ['required', 'numeric'],
             'start'          => ['required', 'date'],
 
+            'schedule' => ['required', 'array', 'min:' . 2],
+            'schedule.*.weekday' => ['required'],
+            'schedule.*.time' => ['required'],
+            'schedule.*.instructor_id' => ['required'],
+
         ];
     }
 
@@ -57,14 +88,14 @@ class RegistrationForm extends Form
         $this->resetValidation();
 
         $registration = Registration::create([
-            'modality_id'    => $this->modality_id,
-            'student_id'     => $this->student_id,
-            'duration'       => $this->duration,
-            'class_per_week' => $this->class_per_week,
-            'value'          => $this->value,
+            'modality_id'    => (int) $this->modality_id,
+            'student_id'     => (int) $this->student_id,
+            'duration'       => (int) $this->duration,
+            'class_per_week' => (int) $this->class_per_week,
+            'value'          => (float) $this->value,
             'deadline'       => $this->deadline,
             'start'          => $this->start,
-            'end'            => Carbon::parse($this->start)->addDays($this->duration)->format('Y-m-d'),
+            'end'            => Carbon::parse($this->start)->addDays((int) $this->duration)->format('Y-m-d'),
             'status'         => 'active',
         ]);
 
@@ -92,15 +123,14 @@ class RegistrationForm extends Form
     {
         $this->registration = $registration;
 
-        $this->modality_id = $this->registration->modality_id;
-        $this->student_id  = $this->registration->student_id;
-        $this->status      = $this->registration->status->value;
-
-        $this->duration       = $this->registration->duration;
-        $this->class_per_week = $this->registration->class_per_week;
-        $this->deadline       = $this->registration->deadline;
-        $this->value          = $this->registration->value;
-        $this->start          = $this->registration->start?->format('Y-m-d');
+        $this->modality_id = (string) $this->registration->modality_id;
+        $this->student_id  = (string) $this->registration->student_id;
+        $this->status      = (string) $this->registration->status->value;
+        $this->duration       = (string) $this->registration->duration;
+        $this->class_per_week = (string) $this->registration->class_per_week;
+        $this->deadline       = (string) $this->registration->deadline;
+        $this->value          = (string) $this->registration->value;
+        $this->start          =(string) $this->registration->start?->format('Y-m-d');
 
         $this->schedule = $this->registration->schedule->toArray();
     }

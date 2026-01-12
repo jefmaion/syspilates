@@ -38,6 +38,7 @@ class InstructorShow extends Component
     #[On('modality-attached')]
     #[On('modality-removed')]
     #[On('modality-updated')]
+    #[On('instructor-updated')]
     public function _refresh(): void
     {
         $this->dispatch('$refresh');
