@@ -26,7 +26,6 @@
                     <th>Modalidade</th>
                     <th>Status</th>
                     <th scope="col">Data de Cadastro</th>
-                    <th scope="col" width="10%">Ações</th>
                 </tr>
             </thead>
             <tbody class="table-tbody">
@@ -43,7 +42,6 @@
                     <td>{{ $item->modality->name }}</td>
                     <td> <span class="badge bg-{{ $item->status->color() }}-lt ">{{ $item->status->label() }}</span></td>
                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                    <td></td>
                 </tr>
                 @endforeach
             </tbody>

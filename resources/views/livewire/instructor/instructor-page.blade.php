@@ -56,7 +56,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="badge bg-{{ $item->user->active ? 'green' : 'secondary' }}-lt">{{$item->user->status }}</span>
+                            <span class="status status-lite status-{{ $item->user->active ? 'green' : 'secondary' }}"><span class="status-dot"></span>{{$item->user->status }}</span>
                         </td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                     </tr>

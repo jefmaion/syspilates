@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use App\Enums\RegistrationStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +25,7 @@ return new class () extends Migration
             $table->date('end');
             $table->decimal('value');
             $table->integer('deadline');
-            $table->enum('status', ['sheduled', 'active', 'finished', 'canceled']);
+            $table->enum('status', RegistrationStatusEnum::cases());
             $table->datetime('cancel_date')->nullable();
             $table->text('cancel_comments')->nullable();
         });

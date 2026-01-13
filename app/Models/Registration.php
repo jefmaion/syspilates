@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\ClassStatusEnum;
 use App\Enums\RegistrationStatusEnum;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,10 +29,16 @@ class Registration extends BaseModel
         return $this->status->value === RegistrationStatusEnum::CANCELED->value;
     }
 
+    public function getInstructorByWeekday($weekday)
+    {
+        return $this->schedule()->with('instructor.user')->where('weekday', $weekday)->first();
+    }
+
     public function preClasses()
     {
         $this->load('schedule.instructor.user');
         $period = CarbonPeriod::create($this->start, $this->end);
+        // $period = CarbonPeriod::create(Carbon::now()->addDay(1), $this->end);
 
         $classes = [];
 
@@ -41,8 +48,10 @@ class Registration extends BaseModel
                     $classes[] = [
                         'date'       => $date,
                         'time'       => $schedule->time,
-                        'datetime'   => $date . 'T' . $schedule->time,
+                        'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
                         'instructor' => $schedule->instructor,
+                        'status'     => ClassStatusEnum::SCHEDULED,
+                        'type'       => 'schedule',
                     ];
                 }
             }
@@ -54,6 +63,11 @@ class Registration extends BaseModel
     public function schedule()
     {
         return $this->hasMany(RegistrationSchedules::class);
+    }
+
+    public function classes()
+    {
+        return $this->hasMany(Classes::class);
     }
 
     public function plan()

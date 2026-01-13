@@ -1,5 +1,5 @@
 @props(['search' => true])
-<div class="table-responsive">
+<div class="table-responsive mb-2">
     @if($search)
     <x-table.table-search class="mb-4" />
     @endif

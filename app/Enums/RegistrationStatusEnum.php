@@ -15,7 +15,7 @@ enum RegistrationStatusEnum: string
     {
         return match ($this) {
             self::SCHEDULED => 'Agendada',
-            self::ACTIVE    => 'Ativo',
+            self::ACTIVE    => 'Em Andamento',
             self::CANCELED  => 'Cancelado',
             self::CLOSED    => 'Finalizado',
         };
