@@ -7,8 +7,8 @@ namespace App\Enums;
 enum ClassStatusEnum: string
 {
     case SCHEDULED = 'scheduled';
-    case PRESENCE  = 'active';
-    case ABSENSE   = 'canceled';
+    case PRESENCE  = 'presence';
+    case ABSENSE   = 'absense';
     case CLOSED    = 'closed';
 
     public function label(): string
@@ -29,5 +29,16 @@ enum ClassStatusEnum: string
             self::ABSENSE   => 'warning',
             self::CLOSED    => 'secondary',
         };
+    }
+
+    public static function toSelectArray(): array
+    {
+        $array = [];
+
+        foreach (self::cases() as $case) {
+            $array[$case->value] = $case->label(); // Use $case->value for the key and $case->name for the label
+        }
+
+        return $array;
     }
 }

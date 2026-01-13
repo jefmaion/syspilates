@@ -14,8 +14,8 @@ class CreateRegistration extends Component
 {
     public RegistrationForm $form;
 
-
-    public function mount() {
+    public function mount()
+    {
         // $this->form->schedule = [];
     }
 

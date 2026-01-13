@@ -21,7 +21,7 @@ class RegistrationFactory extends Factory
      */
     public function definition(): array
     {
-        $date     = fake()->date();
+        $date     = fake()->dateTimeBetween('-1 months');
         $duration = fake()->randomElements([30, 60, 90, 120, 150, 180])[0];
 
         return [

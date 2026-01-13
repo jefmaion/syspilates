@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Registration;
 
+use App\Enums\ClassStatusEnum;
 use App\Livewire\Forms\RegistrationForm;
 use App\Models\Registration;
 use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
+use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -37,8 +39,10 @@ class RegistrationShow extends Component
 
     public function mount(Registration $registration)
     {
+        $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);
+        $this->generateClasses();
     }
 
     public function changeClassDays()
@@ -53,6 +57,30 @@ class RegistrationShow extends Component
         return $this->dispatch('$refresh');
     }
 
+    public function generateClasses()
+    {
+        $this->registration->load('schedule.instructor.user');
+        $period = CarbonPeriod::create($this->registration->start, $this->registration->end);
+
+        $classes = [];
+
+        foreach ($period as $date) {
+            foreach ($this->registration->schedule as $schedule) {
+                if ($date->dayOfWeek === $schedule->weekday) {
+                    $classes[$date->format('Y-m-d')] = [
+                        'date'       => $date,
+                        'time'       => $schedule->time,
+                        'datetime'   => $date . 'T' . $schedule->time,
+                        'instructor' => $schedule->instructor,
+                        'status'     => ClassStatusEnum::SCHEDULED,
+                    ];
+                }
+            }
+        }
+
+        return $classes;
+    }
+
     #[On('registration-updated')]
     public function refr()
     {
@@ -60,10 +88,8 @@ class RegistrationShow extends Component
 
     public function render(): View | Closure | string
     {
-        $this->pages = 5;
-
         return view('livewire.registration.registration-show', [
-            'classes' => $this->paginate($this->registration->preClasses(), $this->pages),
+            'classes' => $this->paginate($this->generateClasses(), $this->pages),
         ]);
     }
 }

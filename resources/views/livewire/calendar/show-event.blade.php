@@ -5,111 +5,70 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title align-items-center" id="modalTitleId">
-                        <x-icons.users /> Evento
+                        <x-icons.users /> Evento {{ $date->format('d/m/Y H:i:s') }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
-                    <x-page.user-block size="xl" :user="$registration->student->user ?? ''">
-                       
-                            <div class="flex-fill">
-                                <div class="font-weight-medium"> <strong>{{ $registration->student->user->shortName ?? '' }}</strong></div>
-                                <div class="text-secondary">
-                                    <a href="#" class="text-reset">sad</a>
-                                </div>
+                    <x-page.user-block size="lg" :user="$registration->student->user ?? ''">
+                        <div class="flex-fill">
+                            <h2 class="font-weight-medium mb-0"> <strong>{{ $registration->student->user->shortName ??
+                                    '' }}</strong></h2>
+                            <div class="text-secondary">
+                                {{ $registration->student->user->phone1 ?? '' }} |
+                                {{ $registration->modality->name ?? '' }} |
+                                {{ $registration->getInstructorByWeekday($date->format('w'))->instructor->user->name ??
+                                '' }}
                             </div>
-                       
+                        </div>
                     </x-page.user-block>
+                </div>
 
-                    
-
-                    <div class="card border-0">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
-                                <li class="nav-item">
-                                    <a href="#tabs-home-ex2" class="nav-link active" data-bs-toggle="tab">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
-                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                                        </svg>
-                                        Home
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#tabs-profile-ex2" class="nav-link" data-bs-toggle="tab">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <circle cx="12" cy="7" r="4" />
-                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                                        </svg>
-                                        Profile
-                                    </a>
-                                </li>
-                                <li class="nav-item ms-auto">
-                                    <a href="#tabs-settings-ex2" class="nav-link" title="Settings" data-bs-toggle="tab">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                                            <circle cx="12" cy="12" r="3" />
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active show" id="tabs-home-ex2">
-                                    <h4>Home tab</h4>
-                                    <div>
-                                        Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies
-                                        fringilla
-                                        at sed facilisis lacus pellentesque purus nibh
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tabs-profile-ex2">
-                                    <h4>Profile tab</h4>
-                                    <div>
-                                        Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at
-                                        diam, sem nunc
-                                        amet, pellentesque id egestas velit sed
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tabs-settings-ex2">
-                                    <h4>Settings tab</h4>
-                                    <div>
-                                        Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet,
-                                        facilisi sit
-                                        mauris accumsan nibh habitant senectus
-                                    </div>
+                @if(!empty($registration->classes))
+                <div class="modal-body">
+                    <ul class="timeline timeline-simple">
+                        @foreach($registration->classes as $class)
+                        <li class="timeline-event">
+                            <div class="timeline-event-icon bg-x-lt">
+                                <!-- Download SVG icon from http://tabler.io/icons/icon/brand-x -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="icon icon-1">
+                                    <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                                    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                                </svg>
+                            </div>
+                            <div class="card timeline-event-card">
+                                <div class="card-body">
+                                    <div class="text-secondary float-end">10 hrs ago</div>
+                                    <h4>{{ $class->date }}</h4>
+                                    <p class="text-secondary">{{ $class->evolution }}</p>
+                                    <p>{{ $class->instructor->user->shortName }}</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
+                @endif
+
 
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                         Fechar
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <span wire:loading.remove>Salvar</span>
-                        <span wire:loading>
-                            <span class="spinner-border spinner-border-sm"></span>
-                            Salvando...
-                        </span>
+
+                    @if($type == 'schedule')
+                    <button type="button" data-bs-dismiss="modal" wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: {{ $event['id'] }}})" class="btn btn-primary">
+                        <x-page.spinner>Registrar Aula</x-page.spinner>
                     </button>
+                    @endif
+
+                    @if($type == 'class')
+                    <button type="button" data-bs-dismiss="modal" wire:click="$dispatch('show-class', {id: {{ $event['id'] }}})" class="btn btn-warning">
+                        <x-page.spinner>Editar</x-page.spinner>
+                    </button>
+                    @endif
                 </div>
             </div>
         </form>

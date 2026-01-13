@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Calendar;
 
+use App\Enums\ClassStatusEnum;
 use App\Models\Registration;
-use App\Models\RegistrationSchedules;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
@@ -22,41 +22,53 @@ class FullCalendar extends Component
         $start = Carbon::parse(request()->query('start'));
         $end   = Carbon::parse(request()->query('end'));
 
-        $weekdays = RegistrationSchedules::with(['registration.student.user'])->get();
+        $registrations = Registration::with(['schedule', 'classes', 'student.user'])->where(function ($query) use ($start, $end) {
+            $query->where('start', '<=', $end)->where('end', '>=', $start);
+        })->whereIn('status', ['sheduled', 'active'])
+            ->whereHas('student.user', function ($q) {
+                // $q->where('name', 'like', '%Melina%');
+            })
+            ->get();
 
         $dates = [];
 
-        foreach ($weekdays as $weekday) {
-            $dates[] = [
-                'id'         => $weekday->registration->id,
-                'title'      => $weekday->registration->student->user->shortName,
-                'daysOfWeek' => [$weekday->weekday],
-                'startTime'  => $weekday->time,
-                'startRecur' => $weekday->registration->start,
-                'endRecur'   => $weekday->registration->end,
-                'type'       => 'scheduled',
-            ];
+        foreach ($registrations as $registration) {
+            $hasClass = [];
+
+            foreach ($registration->classes as $class) {
+                $dates[] = [
+                    'id'              => $class->id,
+                    'start'           => $class->date . 'T' . $class->time,
+                    'title'           => $registration->student->user->shortName,
+                    'type'            => 'class',
+                    'registration_id' => $registration->id,
+                    'backgroundColor' => 'var(--tblr-' . str_replace('bg', '', $class->status->color()) . ')',
+                    'borderColor'     => 'var(--tblr-' . str_replace('bg', '', $class->status->color()) . ')',
+                    'textColor'       => 'white',
+                ];
+
+                $hasClass[] = $class->date;
+            }
+
+            foreach ($registration->preClasses() as $ev) {
+                if (! in_array($ev['date']->format('Y-m-d'), $hasClass)) {
+                    $dates[] = [
+                        'id'              => $registration->id,
+                        'start'           => $ev['datetime'],
+                        'title'           => $registration->student->user->shortName,
+                        'type'            => 'schedule',
+                        'registration_id' => $registration->id,
+                        'backgroundColor' => 'var(--tblr-' . str_replace('bg', '', ClassStatusEnum::SCHEDULED->color()) . ')',
+                        'borderColor'     => 'var(--tblr-' . str_replace('bg', '', ClassStatusEnum::SCHEDULED->color()) . ')',
+                        'textColor'       => 'white',
+                    ];
+                }
+            }
         }
 
+        // dd($dates);
+
         return $dates;
-
-        // $registrations = Registration::with(['schedule', 'student.user'])->whereBetween('start', [$start, $end])->get();
-
-        // $dates = [];
-
-        // foreach ($registrations as $registration) {
-        //     foreach ($registration->preClasses() as $ev) {
-        //         $dates[] = [
-        //             // 'id'    => 'v' . $ev['date'],
-        //             'id'    => $registration->id,
-        //             'start' => Carbon::parse($ev['date']->format('Y-m-d') . ' ' . $ev['time'])->format('Y-m-d\TH:i:s'),
-        //             'title' => $registration->student->user->shortName,
-        //             'type'  => $ev['type'],
-        //         ];
-        //     }
-        // }
-
-        // return $dates;
 
         // // if ($event->classes->registration->status !== RegistrationStatusEnum::ACTIVE && $event->classes->status == EnumClassStatus::SCHEDULED) {
         // //     return [];

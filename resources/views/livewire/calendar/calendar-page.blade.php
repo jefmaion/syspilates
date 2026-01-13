@@ -22,6 +22,7 @@
         <livewire:calendar.full-calendar wire:ignore.self  wire:key='calendar' id="calendar" />
 
         <livewire:calendar.show-event />
+        <livewire:calendar.register-class />
 
     </x-page.page-card-body>
 </div>
