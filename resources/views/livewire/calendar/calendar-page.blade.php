@@ -18,8 +18,10 @@
     </x-page.page-header>
 
     <x-page.page-card-body>
-      
+
         <livewire:calendar.full-calendar wire:ignore.self  wire:key='calendar' id="calendar" />
 
     </x-page.page-card-body>
+
+
 </div>

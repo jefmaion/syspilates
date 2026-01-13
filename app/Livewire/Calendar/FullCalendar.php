@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
@@ -21,49 +21,30 @@ class FullCalendar extends Component
         $start = Carbon::parse(request()->query('start'));
         $end   = Carbon::parse(request()->query('end'));
 
-        $registrations = Registration::with('schedule')->whereBetween('start', [$start, $end])
-            ->get()->map(function ($event) {
-                $dates = [];
+        $registrations = Registration::with('schedule', 'student.user')->whereBetween('start', [$start, $end])
+            ->get();
 
-                foreach ($event->preClasses() as $ev) {
-                    $dates[] = [
-                        'id'    => 'v' . $ev['date'],
-                        'start' => Carbon::parse($ev['date']->format('Y-m-d') . ' ' . $ev['time'])->format('Y-m-d\TH:i:s'),
-                        'title' => $event->student->user->shortName,
-                    ];
-                }
+            $events = [];
 
-                return $dates;
+        foreach ($registrations as $registration) {
+            foreach ($registration->schedule as $schedule) {
 
-                // // if ($event->classes->registration->status !== RegistrationStatusEnum::ACTIVE && $event->classes->status == EnumClassStatus::SCHEDULED) {
-                // //     return [];
-                // // }
-
-                // $title = $event->start->format('H\h') . ' ';
-
-                // if ($event->type == 'C') {
-                //     $title = $title . $event->classes->registration->student->user->name;
-                // }
-
-                // if ($event->type == 'E') {
-                //     $title = $title . $event->experimental?->name;
-                // }
-
-                // return [
-                //     'id'              => $event->id,
-                //     'type'            => $event->type,
-                //     'title'           => $title,
-                //     'start'           => $event->start->toIso8601String(),
-                //     'end'             => $event->end->toIso8601String(),
-                //     'backgroundColor' => 'var(--tblr' . str_replace('bg', '', $event->color) . ')',
-                //     'borderColor'     => 'var(--tblr' . str_replace('bg', '', $event->color) . ')',
-                //     'textColor'       => 'white',
-                //];
-            })->toArray();
+                $events[] = [
+                    'id' => $registration->id . '-' . $schedule->id,
+                    'title' => $registration->student->user->shortName,
+                    'daysOfWeek' => [(int) $schedule->weekday], // ✅ ARRAY
+                    'startTime' => $schedule->time,
+                    // opcional
+                    // 'endTime' => Carbon::createFromFormat('H:i', $schedule->time)
+                    //     ->addMinutes(60)
+                    //     ->format('H:i'),
+                ];
+            }
+        }
 
         // dd($registrations[0]);
 
-        return $registrations[0];
+        return response()->json($events);
     }
 
     public function render(): View | Closure | string

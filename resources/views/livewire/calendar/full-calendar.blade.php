@@ -67,16 +67,16 @@
                         }
                     },
                     dateClick: function(info) {
-                        Livewire.dispatch('calendar-slot-clicked', { 
+                        Livewire.dispatch('calendar-slot-clicked', {
                             x:info.jsEvent.pageX,
                             y:info.jsEvent.pageY,
                             date: info.dateStr,
-                            allDay: info.allDay 
+                            allDay: info.allDay
                         });
                     },
                     eventClick: function(info) {
                         // info.jsEvent.preventDefault();
-                        Livewire.dispatch('calendar-show-event', { 
+                        Livewire.dispatch('calendar-show-event', {
                             id: info.event.id
                         });
                     },
@@ -85,7 +85,7 @@
                     },
                     eventAllow: function(dropInfo, draggedEvent) {
                         if(draggedEvent.extendedProps.type == 'C') {
-                
+
                             const originalDay = draggedEvent.start.getDay(); // 0=domingo, 1=segunda, etc.
                             const targetDay = dropInfo.start.getDay();
                             return originalDay === targetDay;
@@ -112,8 +112,8 @@
                 window.addEventListener('eventDeleted', function (event) {
                     // Get the deleted event's ID (which was passed as 'uuid' in the PHP code above)
 
-                    var eventId = event.detail.uuid; 
-                    
+                    var eventId = event.detail.uuid;
+
                     // Find the event in the calendar and remove it
                     var calendarEvent = calendar.getEventById(eventId);
                     alert(calendarEvent);
@@ -121,7 +121,7 @@
                         calendarEvent.remove(); // This removes it from the calendar view
                     }
                 });
-            
+
                 // quando qualquer select mudar, refaz a busca
                 document.querySelectorAll('.filters').forEach(function(select) {
                     select.addEventListener('change', function() {

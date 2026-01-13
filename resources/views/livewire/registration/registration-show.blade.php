@@ -14,6 +14,7 @@
     <x-page.page-body>
 
         <livewire:registration.actions.cancel-registration :registration="$registration" />
+        <livewire:class.make-presence :student="$registration->student" />
 
         <div class="row">
             <div class="col-3 d-flex">
@@ -227,7 +228,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success">Marcar Persença</button>
+                                                <button type="button" class="btn btn-success" wire:click="$dispatch('make-presence', { date: '{{ $class['date']->format('d/m/Y')  }}'})">Marcar Persença</button>
                                                 <button type="button" class="btn btn-danger">Marcar Falta</button>
                                             </td>
                                         </tr>
