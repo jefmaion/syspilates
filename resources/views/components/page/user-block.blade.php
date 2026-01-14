@@ -1,5 +1,5 @@
 @props(['user' => null, 'size' => 'sm'])
-<div class="d-flex align-items-center">
+<div {{ $attributes->merge(['class' => 'd-flex align-items-center']) }}>
     <span class="avatar avatar-{{ $size }} me-2  {{ ($user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{$user->initials }}</span>
     @if($slot->isEmpty())
     <div class="font-weight-medium">{{ $user->name }}</div>

@@ -7,9 +7,9 @@ return [
     /** Configure the theme for Tabler.io */
     'theme-config' => [
         'theme'         => 'light',  /** light, dark */
-        'theme-base'    => 'stone',  /** slate, gray, zinc, neutral, stone */
+        'theme-base'    => 'slate',  /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',  /** sans-serif, serif, monospace, comic */
-        'theme-primary' => 'indigo',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal, cyan    */
+        'theme-primary' => 'purple',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal, cyan    */
         'theme-radius'  => '1',  /** 0, 0.5, 1, 1.5, 2 */
     ],
 

@@ -32,8 +32,11 @@
                         </tr>
                         <tr>
                             <td><strong>Status:</strong></td>
-                            <td class="text-end"><span class="status status-{{ $registration->status->color() }}">{{
-                                    $registration->status->label() }}</span></td>
+                            <td class="text-end">
+                                    
+                                <x-page.status color="{{ $registration->status->color() }}">{{ $registration->status->label() }}</x-page.status>
+                            
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Plano</strong></td>
@@ -132,8 +135,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="status status-{{ $class['status']->color() }}">{{
-                                        $class['status']->label() }}</span>
+                                    <x-page.status color="{{ $class['status']->color() }}">{{ $class['status']->label() }}</x-page.status>
+
                                 </td>
                             </tr>
                             @endforeach

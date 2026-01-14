@@ -15,13 +15,18 @@ class Classes extends BaseModel
     public $guarded = ['id'];
 
     public $casts = [
-        // 'date' => 'date',
+        'date'   => 'date',
         'status' => ClassStatusEnum::class,
     ];
 
     public function registration()
     {
         return $this->belongsTo(Registration::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
     }
 
     public function instructor()

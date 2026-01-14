@@ -45,7 +45,9 @@ class StudentPage extends Component
     {
         return view('livewire.student.student-page', [
             'students' => Student::with('user')->whereHas('user', function ($query) {
-                return $query->whereLike('name', '%' . $this->search . '%');
+                return $query->whereLike('name', '%' . $this->search . '%')
+                    ->orWhereLike('phone1', '%' . $this->search . '%')
+                    ->orWhereLike('email', '%' . $this->search . '%');
             })->orderBy('id', 'desc')->paginate($this->pages),
         ]);
     }

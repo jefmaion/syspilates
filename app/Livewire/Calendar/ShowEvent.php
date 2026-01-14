@@ -26,32 +26,22 @@ class ShowEvent extends Component
         return view('livewire.calendar.show-event');
     }
 
+    #[On('show-event-refresh')]
+    public function refresh()
+    {
+        $this->event['extendedProps']['type'] = 'class';
+        $this->show($this->event);
+    }
+
     #[On('calendar-show-event')]
     public function show($event)
     {
         $this->type  = $event['extendedProps']['type'];
         $this->event = $event;
 
-        // switch ($event['extendedProps']['type']) {
-        //     case 'schedule':
-        //         $this->registration = Registration::with('classes')->find($event['id']);
-        //         $this->date         = Carbon::parse($event['start']);
-        //         $this->dispatch('show-modal', modal: 'modal-show-event');
-
-        //         break;
-
-        //     case 'class':
-        //         $this->dispatch('show-class', id: $event['id']);
-
-        //         break;
-
-        //     default:
-        //         # code...
-        //         break;
-        // }
-
         $this->registration = Registration::with(['classes.instructor.user'])->find($event['extendedProps']['registration_id']);
         $this->date         = Carbon::parse($event['start']);
+
         $this->dispatch('show-modal', modal: 'modal-show-event');
     }
 }

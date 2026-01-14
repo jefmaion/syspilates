@@ -45,8 +45,11 @@ class InstructorPage extends Component
     {
         return view('livewire.instructor.instructor-page', [
             'instructors' => Instructor::with('user')->whereHas('user', function ($query) {
-                return $query->whereLike('name', '%' . $this->search . '%');
-            })->orderBy('id', 'desc')->paginate($this->pages),
+                return $query->whereLike('name', '%' . $this->search . '%')
+                    ->orWhereLike('phone1', '%' . $this->search . '%')
+                    ->orWhereLike('email', '%' . $this->search . '%');
+            })->orWhereLike('profession', '%' . $this->search . '%')
+                ->orderBy('id', 'desc')->paginate($this->pages),
         ]);
     }
 }

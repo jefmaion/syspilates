@@ -52,8 +52,13 @@
                                 <a href="{{ route('student.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
                             </div>
                         </td>
-                        <td>{{ $item->user->phone1 }}</td>
-                        <td><span class="badge bg-green-lt">Ativo</span></td>
+                        <td class="d-flex">
+                            <div class="flex-fill">
+                                <div><strong>{{ $item->user->phone1 }}</strong></div>
+                                <div class="text-muted"><small>{{ $item->user->email}}</small></div>
+                            </div>
+                        </td>
+                        <td><x-page.status>Ativo</x-page.status></td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                     </tr>
                     @endforeach

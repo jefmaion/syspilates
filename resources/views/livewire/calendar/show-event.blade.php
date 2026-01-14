@@ -5,12 +5,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title align-items-center" id="modalTitleId">
-                        <x-icons.users /> Evento {{ $date->format('d/m/Y H:i:s') }}
+                        <x-icons.users />{{ $date->translatedFormat('l, d \d\e F \d\e Y - H:i\h\r\s'); }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <x-page.user-block size="lg" :user="$registration->student->user ?? ''">
+                    <x-page.user-block size="lg" class="mb-4" :user="$registration->student->user ?? ''">
                         <div class="flex-fill">
                             <span class="badge border bg-default-lt">{{ $registration->modality->name ?? '' }}</span>
                             <h2 class="font-weight-medium mb-0"> <strong>{{ $registration->student->user->shortName ??
@@ -23,46 +23,41 @@
                             </div>
                         </div>
                     </x-page.user-block>
-                </div>
 
-
-
-                @if(!empty($registration->classes))
-                <div class="modal-body">
-
-                    <ul class="timeline timeline-simple">
-                        @foreach($registration->classes()->orderBy('created_at', 'desc')->get() as $class)
-                        <li class="timeline-event text-sm">
-                            <div class="timeline-event-icon bg-x-lt">
-                                <!-- Download SVG icon from http://tabler.io/icons/icon/brand-x -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="icon icon-1">
-                                    <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                                    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                                </svg>
-                            </div>
-                            <div class="card timeline-event-card">
-                                <div class="card-body text-sm">
-                                    <div class="text-secondary float-end">
-                                        <span class="status status-lite status-{{ $class->status->color() }}"><span class="status-dot"></span>{{ $class->status->label() }}</span>
-                                    </div>
-                                    <h4>{{ $class->date }} -  </h4>
-                                    <p class="text-secondary">{{ $class->evolution }}</p>
+                    @if(!$registration->classes->isEmpty())
+                    <div>
+                        <table class="table text-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Linha do Tempo</th>
+                                </tr>
+                            </thead>
+                            @foreach($registration->classes as $class)
+                            <tr>
+                                <td class="px-4 border-0 border-top">
+                                    <h4><strong>{{ $class->date->format('d/m/Y') }}</strong> - <x-page.status
+                                            color="{{ $class->status->color() }}">{{ $class->status->label() }}
+                                        </x-page.status>
+                                    </h4>
                                     <div>
-                                        <div class="d-flex align-items-center">
-                                            <span class="avatar avatar-xs me-2"
-                                                style="background-image: url(./static/avatars/000m.jpg)"> </span>
-                                            Paweł Kuna
+                                        <p class="text-secondary">{{ $class->evolution }}</p>
+                                        <div>
+                                            <div class="d-flex align-items-center">
+                                                <span
+                                                    class="avatar avatar-sm me-2  {{ ($class->instructor->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
+                                                    $class->instructor->user->initials }}</span>
+                                                <div>{{ $class->instructor->user->name }}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                    @endif
                 </div>
-                @endif
+
 
 
                 <div class="modal-footer">
@@ -71,7 +66,7 @@
                     </button>
 
                     @if($type == 'schedule')
-                    <button type="button" data-bs-dismiss="modal"
+                    <button type="button" data-bs-dissmiss="modal"
                         wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: {{ $event['id'] }}})"
                         class="btn btn-primary">
                         <x-page.spinner>Registrar Aula</x-page.spinner>
@@ -79,9 +74,9 @@
                     @endif
 
                     @if($type == 'class')
-                    <button type="button" data-bs-dismiss="modal"
+                    <button type="button" data-bs-dissmiss="modal"
                         wire:click="$dispatch('show-class', {id: {{ $event['id'] }}})" class="btn btn-warning">
-                        <x-page.spinner>Editar</x-page.spinner>
+                        <x-page.spinner>Editar Dados da Aula</x-page.spinner>
                     </button>
                     @endif
                 </div>

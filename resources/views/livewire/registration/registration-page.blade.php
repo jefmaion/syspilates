@@ -18,39 +18,50 @@
         </x-slot>
     </x-page.page-header>
 
-    <x-page.page-card-body>
-        <x-table.table>
-            <thead>
-                <tr>
-                    <th scope="col" wsidth="50%">Aluno</th>
-                    <th>Modalidade</th>
-                    <th>Status</th>
-                    <th scope="col">Data de Cadastro</th>
-                </tr>
-            </thead>
-            <tbody class="table-tbody">
-                @foreach($registrations as $item)
-                <tr>
-                    <td>
-                        
-                        <div class="d-flex align-items-center">
-                            <span class="avatar avatar-sm me-2  {{ ($item->student->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->student->user->initials }}</span>
-                            <a href="{{ route('registration.show', $item) }}" wire:navigate>{{ $item->student->user->name }}</a>
-                        </div>
-                    
-                    </td>
-                    <td>{{ $item->modality->name }}</td>
-                    <td> <span class="badge bg-{{ $item->status->color() }}-lt ">{{ $item->status->label() }}</span></td>
-                    <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </x-table.table>
-        <div class="mt-3">
-            {{ $registrations->links() }}
+    <x-page.page-body>
+
+        <div class="card">
+            <div class="card-header">
+                <x-table.table-search />
+            </div>
+            <div class="card-body">
+
+                <x-table.table :search="false" class="fs-4">
+                    <thead>
+                        <tr>
+                            <th scope="col" wsidth="50%">Aluno</th>
+                            <th>Modalidade</th>
+                            <th>Status</th>
+                            <th scope="col">Data de Cadastro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-tbody">
+                        @foreach($registrations as $item)
+                        <tr>
+                            <td>
+                                
+                                <div class="d-flex align-items-center">
+                                    <span class="avatar avatar-sm me-2  {{ ($item->student->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->student->user->initials }}</span>
+                                    <a href="{{ route('registration.show', $item) }}" wire:navigate>{{ $item->student->user->name }}</a>
+                                </div>
+                            
+                            </td>
+                            <td>{{ $item->modality->name }}</td>
+                            <td> 
+                                
+                                <x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status></td>
+                            <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </x-table.table>
+                <div class="mt-3">
+                    {{ $registrations->links() }}
+                </div>
+            </div>
         </div>
 
         <x-modal.modal-delete />
 
-    </x-page.page-card-body>
+    </x-page.page-body>
 </div>

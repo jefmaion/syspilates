@@ -56,8 +56,29 @@
                         minute: "2-digit",
                         hour12: false
                     },
+                    // events: function(fetchInfo, successCallback, failureCallback) {
+                    //     // pede ao Livewire os eventos do intervalo atual
+                    //     Livewire.dispatch('calendar-get-events', {
+                    //         start: fetchInfo.startStr,
+                    //         end: fetchInfo.endStr
+                    //     });
+
+                    //     // assina uma única vez a resposta
+                    //     const unsubscribe = Livewire.on('calendar-set-events', ({ events }) => {
+
+                    //         console.log(events)
+                    //         // garante que é array
+                    //         if (Array.isArray(events)) {
+                    //             successCallback(events);
+                    //         } else {
+                    //             failureCallback(new Error('Eventos não são um array'));
+                    //         }
+                    //         // remove o listener para não acumular
+                    //         unsubscribe();
+                    //     });
+                    // },
                     events: {
-                        url: '{{ $eventsEndpoint }}',
+                        url: '{{ $endpoint }}',
                         extraParams: function(){
                             let params = {};
                             document.querySelectorAll('.filters').forEach(function(select) {

@@ -43,7 +43,7 @@
                                     <div class="flex-fill">
                                         <div class="font-weight-medium"> <strong>{{ $item->user->name }}</strong></div>
                                         <div class="text-secondary">
-                                            <a href="#" class="text-reset">{{$item->profession}}</a>
+                                            <a href="#" class="text-reset">{{$item->profession}} </a>
                                         </div>
                                     </div>
                                 </a>
@@ -56,7 +56,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="status status-lite status-{{ $item->user->active ? 'green' : 'secondary' }}"><span class="status-dot"></span>{{$item->user->status }}</span>
+                            <x-page.status color="{{ $item->user->active ? 'green' : 'secondary' }}">{{$item->user->status }}</x-page.status>
                         </td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                     </tr>

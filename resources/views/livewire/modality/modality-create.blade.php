@@ -1,7 +1,8 @@
+@props(['modal' => true])
 
 <div>
-
-    <x-modal.modal class="blur" id="modal-form-modality" >
+    @if($modal == true)
+    <x-modal.modal class="blur" id="modal-form-modality" size="modal-lg">
         <form wire:submit="{{ ($edit) ? 'update' : 'store' }}">
             <div class="modal-content">
                 <div class="modal-header">
@@ -11,15 +12,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        <div class="mb-3">
-                <label class="form-label">Nome</label>
-                <x-form.input-text type="text" wire:model='form.name' name="form.name" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Sigla</label>
-                <x-form.input-text type="text" wire:model='form.acronym' name="form.acronym" />
-            </div>
+                    @include('livewire.modality.modality-form')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
@@ -37,12 +30,16 @@
         </form>
 
     </x-modal.modal>
-   
-
-        
-            
-            {{-- <div class="text-start">
-                <a href="{{ route('modality') }}" wire:navigate>Voltar</a>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-  --}}
+    @else
+    <form wire:submit="{{ ($edit) ? 'update' : 'store' }}">
+        @include('livewire.modality.modality-form')
+        <button type="submit" class="btn btn-primary">
+            <span wire:loading.remove>Salvar</span>
+            <span wire:loading>
+                <span class="spinner-border spinner-border-sm"></span>
+                Salvando...
+            </span>
+        </button>
+    </form>
+    @endif
+</div>

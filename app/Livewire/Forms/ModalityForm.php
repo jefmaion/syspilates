@@ -31,8 +31,6 @@ class ModalityForm extends Form
     {
         $this->validate();
 
-        session()->flash('success', 'Modalidade criada com sucesso!');
-
         Modality::create([
             'name'    => $this->name,
             'acronym' => $this->acronym,
@@ -42,8 +40,6 @@ class ModalityForm extends Form
     public function update(): void
     {
         $this->validate();
-
-        session()->flash('info', 'Modalidade alterada com sucesso!');
 
         $this->modality->update([
             'name'    => $this->name,
@@ -55,7 +51,7 @@ class ModalityForm extends Form
     {
         $this->modality = $modality;
 
-        $this->name    = $this->modality?->name;
-        $this->acronym = $this->modality?->acronym;
+        $this->name    = $this->modality->name ?? '';
+        $this->acronym = $this->modality->acronym ?? '';
     }
 }

@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="mb-3">
-                         <label class="form-label">Objetivo</label>
+                         <label class="form-label">Evolução/Comentários</label>
                                     <textarea class="form-control" rows="3" name="evolution" wire:model="evolution"></textarea>
                     </div>
 

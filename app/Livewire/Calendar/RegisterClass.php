@@ -28,16 +28,19 @@ class RegisterClass extends Component
 
     public $instructor_id;
 
+    public $student_id;
+
     #[On('create-class')]
     public function create($datetime, $id)
     {
-        // $this->reset();
+        $this->reset();
 
         $this->date         = Carbon::parse($datetime);
         $this->registration = Registration::find($id);
         $this->create       = true;
 
         $this->instructor_id = $this->registration->getInstructorByWeekday($this->date->format('w'))->instructor->id;
+        $this->student_id    = $this->registration->student_id;
 
         $this->dispatch('show-modal', modal: 'modal-register-class');
     }
@@ -49,6 +52,7 @@ class RegisterClass extends Component
         $this->class        = Classes::with('registration')->find($id);
         $this->registration = $this->class->registration;
 
+        $this->student_id    = $this->class->student_id;
         $this->instructor_id = $this->class->instructor_id ?? $this->registration->getInstructorByWeekday(date('w', strtotime($this->class->date)));
         $this->status        = $this->class->status->value;
         $this->evolution     = $this->class->evolution;
@@ -62,14 +66,17 @@ class RegisterClass extends Component
             $date       = Carbon::parse($this->date);
             $instructor = $this->registration->schedule()->where('weekday', $date->format('w'))->first();
 
+            // dd(Classes::where('registration_id', $this->registration->id)->where('datetime', $this->date));
+
             Classes::create([
                 'registration_id' => $this->registration->id,
-                // 'instructor_id'   => $instructor->instructor_id,
-                'instructor_id' => $this->instructor_id,
-                'date'          => $date->format('Y-m-d'),
-                'time'          => $date->format('H:i:s'),
-                'status'        => $this->status,
-                'evolution'     => $this->evolution,
+                'student_id'      => $this->registration->student_id,
+                'instructor_id'   => $this->instructor_id,
+                'date'            => $date->format('Y-m-d'),
+                'time'            => $date->format('H:i:s'),
+                'datetime'        => $date,
+                'status'          => $this->status,
+                'evolution'       => $this->evolution,
             ]);
         } else {
             $this->class->update([
@@ -81,6 +88,7 @@ class RegisterClass extends Component
 
         $this->dispatch('hide-modal', modal: 'modal-register-class');
         $this->dispatch('refresh-calendar');
+        $this->dispatch('show-event-refresh');
     }
 
     public function render(): View | Closure | string

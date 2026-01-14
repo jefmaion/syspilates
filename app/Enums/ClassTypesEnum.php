@@ -4,30 +4,27 @@ declare(strict_types = 1);
 
 namespace App\Enums;
 
-enum ClassStatusEnum: string
+enum ClassTypesEnum: string
 {
-    case SCHEDULED = 'scheduled';
-    case PRESENCE  = 'presence';
-    case ABSENSE   = 'absense';
-    case CLOSED    = 'closed';
+    case NORMAL       = 'aula normal';
+    case REPOSITION   = 'reposicao';
+    case EXPERIMENTAL = 'experimental';
 
     public function label(): string
     {
         return match ($this) {
-            self::SCHEDULED => 'Agendada',
-            self::PRESENCE  => 'Presença',
-            self::ABSENSE   => 'Falta',
-            self::CLOSED    => 'Finalizado',
+            self::NORMAL       => 'Aula Normal',
+            self::REPOSITION   => 'Reposição',
+            self::EXPERIMENTAL => 'Experimental',
         };
     }
 
     public function color(): string
     {
         return match ($this) {
-            self::SCHEDULED => 'blue',
-            self::PRESENCE  => 'success',
-            self::ABSENSE   => 'warning',
-            self::CLOSED    => 'secondary',
+            self::NORMAL       => 'primary',
+            self::REPOSITION   => 'success',
+            self::EXPERIMENTAL => 'warning',
         };
     }
 

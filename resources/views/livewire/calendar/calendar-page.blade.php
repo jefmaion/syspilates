@@ -17,14 +17,14 @@
         </x-slot>
     </x-page.page-header>
 
-    <x-page.page-card-body>
-
-        <livewire:calendar.full-calendar wire:ignore.self  wire:key='calendar' id="calendar" />
+    <x-page.page-body>
+      
+        <livewire:calendar.full-calendar :endpoint="route('events')" wire:ignore.self  wire:key='calendar' id="calendar" />
 
         <livewire:calendar.show-event />
         <livewire:calendar.register-class />
 
-    </x-page.page-card-body>
+    </x-page.page-body>
 
 
 </div>
