@@ -74,6 +74,7 @@
                                                         <div>
                                                             <div class="text-secondary">{{ $class->evolution }}</div>
 
+                                                            <a href="#" wire:click="$dispatch('show-class', {id: {{ $class->id }}})">Editar</a>
                                                         </div>
                                                     </td>
                                                 </tr>
