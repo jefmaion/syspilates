@@ -19,9 +19,35 @@ class CalendarPage extends Component
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-        $data = $this->getScheduledClasses($start, $end);
+        // $data          = $this->getScheduledClasses($start, $end);
+        $registrations = Registration::with(['schedule', 'student.user'])->withinRange($start, $end)->justActives()->get();
+
+        $data = [];
+
+        foreach ($registrations as $registration) {
+            foreach ($registration->getClasses($start, $end) as $i => $event) {
+                if ($event->type == 'scheduled') {
+                    $data[] = $this->prepareEvent($registration->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
+
+                    continue;
+                }
+                $data[] = $this->prepareEvent($event->data->id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
+            }
+        }
 
         return response()->json($data);
+    }
+
+    private function prepareEvent($id = null, $type = null, $start = null, $title = null, $color = null)
+    {
+        return [
+            'id'              => $id,
+            'type'            => $type,
+            'start'           => $start,
+            'title'           => $title,
+            'backgroundColor' => 'var(--tblr-' . $color . ')',
+            'textColor'       => 'white',
+        ];
     }
 
     private function getScheduledClasses($start, $end)
@@ -60,7 +86,6 @@ class CalendarPage extends Component
                     continue;
                 }
 
-
                 $event = [
                     'id'              => $registration->id,
                     'start'           => $schedClass['datetime'],
@@ -70,8 +95,6 @@ class CalendarPage extends Component
                     'backgroundColor' => 'var(--tblr-' . ClassStatusEnum::SCHEDULED->color() . ')',
                     'textColor'       => 'white',
                 ];
-
-
 
                 // $calendar[$key] = $event;
                 $events[$key] = $event;

@@ -23,88 +23,105 @@
                         </div>
                     </x-page.user-block>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <a href="#tabs-home-3" class="nav-link active" data-bs-toggle="tab"
-                                        aria-selected="true" role="tab">
-                Evoluções/Comentários
-                                    </a>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <a href="#tabs-profile-3" class="nav-link" data-bs-toggle="tab"
-                                        aria-selected="false" role="tab" tabindex="-1">
-                                        <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon me-2 icon-2">
-                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                        </svg>Profile
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-bodys">
-                            <div class="tab-content">
-                                <div class="tab-pane active show" id="tabs-home-3" role="tabpanel">
-                                    <table class="table text-sm table-striped">
-                                                {{-- <thead>
-                                                    <tr>
-                                                        <th>Linha do Tempo</th>
-                                                    </tr>
-                                                </thead> --}}
-                                                @foreach($registration->classes as $class)
-                                                <tr>
-                                                    <td class="px-4 border-0 border-top">
-                                                        <h4><strong>{{ $class->date->format('d/m/Y') }}</strong> -
-                                                            <x-page.status color="{{ $class->status->color() }}">{{
-                                                                $class->status->label() }}
-                                                            </x-page.status>
-                                                        </h4>
-                                                        <div>
-                                                                <div class="d-flex align-items-center">
-                                                                    <span
-                                                                        class="avatar avatar-sm me-2  {{ ($class->instructor->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
-                                                                        $class->instructor->user->initials }}</span>
-                                                                    <div>{{ $class->instructor->user->name }}</div>
-                                                                </div>
-                                                            </div>
-                                                        <div>
-                                                            <div class="text-secondary">{{ $class->evolution }}</div>
+                    <div class="card-tabs" style="min-height: 300px;">
+                        <!-- Cards navigation -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" role="presentation"><a href="#tab-top-1" class="nav-link active"
+                                    data-bs-toggle="tab" aria-selected="true" role="tab">Evoluções/Comentários</a></li>
+                            <li class="nav-item" role="presentation"><a href="#tab-top-2" class="nav-link"
+                                    data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Tab 2</a></li>
+                            <li class="nav-item" role="presentation"><a href="#tab-top-3" class="nav-link"
+                                    data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Tab 3</a></li>
+                            <li class="nav-item" role="presentation"><a href="#tab-top-4" class="nav-link"
+                                    data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Tab 4</a></li>
+                        </ul>
+                        <div class="tab-content ">
+                            <!-- Content of card #1 -->
+                            <div id="tab-top-1" class="card tab-pane active show" role="tabpanel">
+                                <div class="card-body">
+                                    @if(!empty($classes))
+                                <table class="table text-sm table-striped">
+                                    @foreach($classes as $class)
+                                    <tr>
+                                        <td class="">
+                                            <h4><strong>{{ $class->date->format('d/m/Y') }}</strong> -
+                                                <x-page.status color="{{ $class->status->color() }}">{{
+                                                    $class->status->label() }}
+                                                </x-page.status>
+                                            </h4>
+                                            <div>
+                                                <div class="d-flex align-items-center">
+                                                    <span
+                                                        class="avatar avatar-sm me-2  {{ ($class->instructor->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
+                                                        $class->instructor->user->initials }}</span>
+                                                    <div>{{ $class->instructor->user->name }}</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="text-secondary">{{ $class->evolution }}</p>
 
-                                                            <a href="#" wire:click="$dispatch('show-class', {id: {{ $class->id }}})">Editar</a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </table>
+                                                <a href="#"
+                                                    wire:click="$dispatch('show-class', {id: {{ $class->id }}})">Editar</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </table>
+                                @endif
                                 </div>
-                                <div class="tab-pane" id="tabs-profile-3" role="tabpanel">
-                                    <h4>Profile tab</h4>
-                                    <div>
-                                        Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at
-                                        diam, sem nunc amet, pellentesque id egestas velit sed
-                                    </div>
+                            </div>
+                            <!-- Content of card #2 -->
+                            <div id="tab-top-2" class="card tab-pane" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="card-title">Content of tab #2</div>
+                                    <p class="text-secondary">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias
+                                        aliquid distinctio dolorem expedita, fugiat hic magni
+                                        molestiae molestias odit.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Content of card #3 -->
+                            <div id="tab-top-3" class="card tab-pane" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="card-title">Content of tab #3</div>
+                                    <p class="text-secondary">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias
+                                        aliquid distinctio dolorem expedita, fugiat hic magni
+                                        molestiae molestias odit.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Content of card #4 -->
+                            <div id="tab-top-4" class="card tab-pane" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="card-title">Content of tab #4</div>
+                                    <p class="text-secondary">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias
+                                        aliquid distinctio dolorem expedita, fugiat hic magni
+                                        molestiae molestias odit.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
+
                 </div>
 
 
 
-                <div class="modal-footer border-0 bg-transparent">
-                    <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
+                <div class="modal-footer bordser-0 bg-transparent">
+                    
+
+                    <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
                         Fechar
                     </button>
 
-                    @if($type == 'schedule')
+                    @if($type == 'scheduled')
                     <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: {{ $event['id'] }}})"
+                        wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: '{{ $id }}'})"
                         class="btn btn-primary">
                         <x-page.spinner>Registrar Aula</x-page.spinner>
                     </button>
@@ -112,7 +129,7 @@
 
                     @if($type == 'class')
                     <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('show-class', {id: {{ $event['id'] }}})" class="btn btn-warning">
+                        wire:click="$dispatch('show-class', {id: '{{ $id }}'})" class="btn btn-warning">
                         <x-page.spinner>Editar Dados da Aula</x-page.spinner>
                     </button>
                     @endif

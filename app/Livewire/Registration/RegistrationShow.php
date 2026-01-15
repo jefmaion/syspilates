@@ -66,7 +66,7 @@ class RegistrationShow extends Component
 
         foreach ($period as $date) {
             foreach ($this->registration->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday) {
+                if ($date->dayOfWeek === $schedule->weekday->value) {
                     $classes[$date->format('Y-m-d')] = [
                         'date'       => $date,
                         'time'       => $schedule->time,

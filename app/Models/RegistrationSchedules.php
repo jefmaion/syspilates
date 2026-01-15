@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\WeekdaysEnum;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,10 @@ class RegistrationSchedules extends BaseModel
     use HasFactory;
 
     public $guarded = ['id'];
+
+    public $casts = [
+        'weekday' => WeekdaysEnum::class,
+    ];
 
     public function instructor()
     {

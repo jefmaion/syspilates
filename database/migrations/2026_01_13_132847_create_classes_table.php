@@ -21,6 +21,7 @@ return new class () extends Migration
             $table->foreignId('registration_id')->nullable()->index();
             $table->foreignId('instructor_id')->nullable()->index();
             $table->foreignId('student_id')->nullable()->index();
+            $table->foreignId('modality_id')->nullable()->index();
             $table->date('date');
             $table->time('time');
             $table->dateTime('datetime')->nullable();

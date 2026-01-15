@@ -42,6 +42,61 @@ class Registration extends BaseModel
         });
     }
 
+    public function getClasses($start = null, $end = null)
+    {
+        $start = $start ?? $this->start;
+        $end   = $end ?? $this->end;
+
+        $scheduled = $this->classScheduled($start, $end);
+
+        foreach ($this->classes()->whereBetween('date', [$start, $end])->get() as $class) {
+            $date = $class->date->format('Y-m-d');
+
+            if (isset($scheduled[$date])) {
+                $scheduled[$date]->type = 'class';
+                $scheduled[$date]->data = $class;
+
+                continue;
+            }
+        }
+
+        return $scheduled;
+    }
+
+    public function classScheduled($start = null, $end = null)
+    {
+        $start = $start ?? $this->start;
+        $end   = $end ?? $this->end;
+
+        $this->load('schedule.instructor.user');
+
+        $scheduleds = [];
+
+        $period = CarbonPeriod::create($start, $end);
+
+        foreach ($period as $date) {
+            foreach ($this->schedule as $schedule) {
+                if ($date->dayOfWeek === $schedule->weekday->value) {
+                    if (isset($classes[$date->format('Y-m-d')])) {
+                        continue;
+                    }
+
+                    $scheduleds[$date->format('Y-m-d')] = (object) [
+                        'type' => 'scheduled',
+                        'data' => (object) [
+                            'date'       => $date,
+                            'time'       => $schedule->time,
+                            'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
+                            'instructor' => $schedule->instructor,
+                        ],
+                    ];
+                }
+            }
+        }
+
+        return $scheduleds;
+    }
+
     public function isCanceled()
     {
         return $this->status->value === RegistrationStatusEnum::CANCELED->value;
@@ -65,7 +120,7 @@ class Registration extends BaseModel
 
         foreach ($period as $date) {
             foreach ($this->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday && $date->between($start, $end) && $date->dayOfWeek <> 0) {
+                if ($date->dayOfWeek === $schedule->weekday->value && $date->between($start, $end) && $date->dayOfWeek <> 0) {
                     $classes[] = [
                         'date'       => $date->format('Y-m-d'),
                         'time'       => $schedule->time,

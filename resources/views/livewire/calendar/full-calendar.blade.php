@@ -97,8 +97,11 @@
                     },
                     eventClick: function(info) {
                         // info.jsEvent.preventDefault();
+                        console.log(info.event.startStr)
                         Livewire.dispatch('calendar-show-event', {
-
+                            id: info.event.id,
+                            start: info.event.startStr,
+                            type: info.event.extendedProps.type,
                             event:info.event
                         });
                     },

@@ -6,6 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -87,6 +88,20 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
             }
         );
     }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function age(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return Carbon::parse($this->birthdate)->age;
+            }
+        );
+    }
+
+    // Carbon::parse('1990-05-15')
 
     protected function status(): Attribute
     {

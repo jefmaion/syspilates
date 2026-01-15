@@ -63,15 +63,12 @@ class RegisterClass extends Component
     public function save()
     {
         if ($this->create) {
-            $date       = Carbon::parse($this->date);
-            $instructor = $this->registration->schedule()->where('weekday', $date->format('w'))->first();
-
-            // dd(Classes::where('registration_id', $this->registration->id)->where('datetime', $this->date));
-
-            Classes::create([
+            $date        = Carbon::parse($this->date);
+            $this->class = Classes::create([
                 'registration_id' => $this->registration->id,
                 'student_id'      => $this->registration->student_id,
                 'instructor_id'   => $this->instructor_id,
+                'modality_id'     => $this->registration->modality_id,
                 'date'            => $date->format('Y-m-d'),
                 'time'            => $date->format('H:i:s'),
                 'datetime'        => $date,
@@ -88,7 +85,7 @@ class RegisterClass extends Component
 
         $this->dispatch('hide-modal', modal: 'modal-register-class');
         $this->dispatch('refresh-calendar');
-        $this->dispatch('show-event-refresh');
+        $this->dispatch('show-event-refresh', id: $this->class->id);
     }
 
     public function render(): View | Closure | string
