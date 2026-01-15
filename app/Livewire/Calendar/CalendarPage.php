@@ -54,6 +54,13 @@ class CalendarPage extends Component
             foreach ($registration->scheduledClasses($start, $end) as $schedClass) {
                 $event = null;
                 $key   = $schedClass['date'] . '.' . $registration->id;
+
+                if (isset($events[$key])) {
+                    // $event = $events[$key];
+                    continue;
+                }
+
+
                 $event = [
                     'id'              => $registration->id,
                     'start'           => $schedClass['datetime'],
@@ -64,15 +71,14 @@ class CalendarPage extends Component
                     'textColor'       => 'white',
                 ];
 
-                if (isset($events[$key])) {
-                    $event = $events[$key];
-                }
 
-                $calendar[$key] = $event;
+
+                // $calendar[$key] = $event;
+                $events[$key] = $event;
             }
         }
 
-        $calendar = array_values($calendar);
+        $calendar = array_values($events);
 
         // $calendar = array_values($events);
 
