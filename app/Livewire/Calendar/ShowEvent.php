@@ -49,7 +49,7 @@ class ShowEvent extends Component
         switch ($this->type) {
             case 'scheduled':
                 $this->registration = Registration::with(['classes.instructor.user'])->find($this->id);
-
+                $this->classes      = $this->registration->classes;
                 break;
 
             case 'class':
