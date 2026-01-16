@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Calendar;
 
+use App\Models\Classes;
 use App\Models\Registration;
 use Carbon\Carbon;
 use Closure;
@@ -41,7 +42,6 @@ class ShowEvent extends Component
     {
         $this->id    = $id;
         $this->type  = $type;
-        $this->event = $event;
         $this->date  = Carbon::parse($start);
 
         $this->classes = [];
@@ -55,7 +55,7 @@ class ShowEvent extends Component
             case 'class':
                 $this->registration = Registration::with(['classes.instructor.user'])->whereHas('classes', function ($query) {return $query->where('id', $this->id);})->first();
                 $this->classes      = $this->registration->classes;
-
+                $this->event = Classes::find($this->id);
                 break;
 
             default:
