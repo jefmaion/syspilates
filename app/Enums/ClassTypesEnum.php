@@ -9,7 +9,7 @@ enum ClassTypesEnum: string
     case NORMAL       = 'aula normal';
     case REPOSITION   = 'reposicao';
     case EXPERIMENTAL = 'experimental';
-    case SINGLE = 'avulsa';
+    case SINGLE       = 'avulsa';
 
     public function label(): string
     {
@@ -17,7 +17,7 @@ enum ClassTypesEnum: string
             self::NORMAL       => 'Aula Normal',
             self::REPOSITION   => 'Reposição',
             self::EXPERIMENTAL => 'Experimental',
-            self::SINGLE => 'Aula Avulsa',
+            self::SINGLE       => 'Aula Avulsa',
         };
     }
 
@@ -27,7 +27,7 @@ enum ClassTypesEnum: string
             self::NORMAL       => 'primary',
             self::REPOSITION   => 'success',
             self::EXPERIMENTAL => 'warning',
-            self::SINGLE => 'purple',
+            self::SINGLE       => 'purple',
         };
     }
 

@@ -49,7 +49,7 @@ class Registration extends BaseModel
 
         $scheduled = $this->classScheduled($start, $end);
 
-        foreach ($this->classes()->whereBetween('date', [$start, $end])->get() as $class) {
+        foreach ($this->classes()->with('student.user')->whereBetween('date', [$start, $end])->get() as $class) {
             $date = $class->date->format('Y-m-d');
 
             if (isset($scheduled[$date])) {
@@ -159,7 +159,7 @@ class Registration extends BaseModel
         return $this->belongsTo(Student::class);
     }
 
-    public function Modality(): BelongsTo
+    public function modality(): BelongsTo
     {
         return $this->belongsTo(Modality::class);
     }

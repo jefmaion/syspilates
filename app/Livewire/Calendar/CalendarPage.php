@@ -10,6 +10,7 @@ use App\Models\Registration;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CalendarPage extends Component
@@ -27,26 +28,36 @@ class CalendarPage extends Component
         foreach ($registrations as $registration) {
             foreach ($registration->getClasses($start, $end) as $i => $event) {
                 if ($event->type == 'scheduled') {
-                    $data[] = $this->prepareEvent($registration->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
+                    $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
 
                     continue;
                 }
-                $data[] = $this->prepareEvent($event->data->id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
+                $data[] = $this->prepareEvent($event->data->id, $event->data->registration_id, $event->data->instructor_id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
             }
         }
 
         return response()->json($data);
     }
 
-    private function prepareEvent($id = null, $type = null, $start = null, $title = null, $color = null)
+    // #[On('calendar-show-event')]
+    // public function showEvent($id, $start, $props)
+    // {
+    //     dd($start, $id, $props);
+    // }
+
+    private function prepareEvent($id = null, $registrationId = null, $instructorId = null, $type = null, $start = null, $title = null, $color = null)
     {
         return [
             'id'              => $id,
+            'registration_id' => $registrationId,
+            'instructor_id'   => $instructorId,
             'type'            => $type,
             'start'           => $start,
             'title'           => $title,
-            'backgroundColor' => 'var(--tblr-' . $color . ')',
-            'textColor'       => 'white',
+            // 'backgroundColor' => 'var(--tblr-' . $color . ')-lt',
+            'className'        => 'bg-' . $color . '',
+            'eventBorderColor' => '#f00',
+            'textColor'        => 'white',
         ];
     }
 

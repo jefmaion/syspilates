@@ -22,9 +22,9 @@ class ShowEvent extends Component
 
     public $type;
 
-    public $event;
+    public $props;
 
-    public $classes = [];
+    public $event;
 
     public function render(): View | Closure | string
     {
@@ -32,35 +32,26 @@ class ShowEvent extends Component
     }
 
     #[On('show-event-refresh')]
-    public function refresh($id)
+    public function refresh()
     {
-        $this->show($id, now(), 'class', null);
+        $this->dispatch('$refresh');
     }
 
     #[On('calendar-show-event')]
-    public function show($id, $start, $type, $event)
+    public function show($id, $start, $props)
     {
         $this->id    = $id;
-        $this->type  = $type;
+        $this->props = $props;
+        $this->type  = $this->props['type'];
         $this->date  = Carbon::parse($start);
 
-        $this->classes = [];
+        // dd($this->date->dayOfWeek());
 
-        switch ($this->type) {
-            case 'scheduled':
-                $this->registration = Registration::with(['classes.instructor.user'])->find($this->id);
-                $this->classes      = $this->registration->classes;
-                break;
+        $this->event        = null;
+        $this->registration = Registration::with(['classes.instructor.user', 'modality'])->find($props['registration_id']);
 
-            case 'class':
-                $this->registration = Registration::with(['classes.instructor.user'])->whereHas('classes', function ($query) {return $query->where('id', $this->id);})->first();
-                $this->classes      = $this->registration->classes;
-                $this->event = Classes::find($this->id);
-                break;
-
-            default:
-                # code...
-                break;
+        if ($this->type == 'class') {
+            $this->event = Classes::with(['registration'])->find($this->id);
         }
 
         $this->dispatch('show-modal', modal: 'modal-show-event');

@@ -6,6 +6,8 @@
   --fc-event-text-color: var(--tblr-body-color)
 }
 
+.fc-event { border: none !important; }
+
 .fc-toolbar-title {
   font-size: var(--tblr-font-size-h3) !important;
   font-weight: var(--tblr-font-weight-medium)

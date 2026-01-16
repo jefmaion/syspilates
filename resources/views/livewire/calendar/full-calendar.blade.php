@@ -51,6 +51,7 @@
                     expandRows: true,
                     editable: true,
                     droppable: true,
+                    // eventBorderColor: '#f00',
                     slotLabelFormat: {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -96,13 +97,13 @@
                         });
                     },
                     eventClick: function(info) {
-                        // info.jsEvent.preventDefault();
-                        console.log(info.event.startStr)
+
                         Livewire.dispatch('calendar-show-event', {
                             id: info.event.id,
                             start: info.event.startStr,
-                            type: info.event.extendedProps.type,
-                            event:info.event
+                            props: info.event.extendedProps
+                            // type: info.event.extendedProps.type,
+                            // event:info.event
                         });
                     },
                     eventContent: function(arg) {
