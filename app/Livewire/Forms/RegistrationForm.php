@@ -18,7 +18,7 @@ class RegistrationForm extends Form
 
     public ?string $student_id = null;
 
-    public ?string $duration = null;
+    public ?int $duration = null;
 
     public ?string $class_per_week = null;
 
@@ -126,7 +126,7 @@ class RegistrationForm extends Form
         $this->modality_id    = (string) $this->registration->modality_id;
         $this->student_id     = (string) $this->registration->student_id;
         $this->status         = (string) $this->registration->status->value;
-        $this->duration       = (string) $this->registration->duration;
+        $this->duration       = (int) $this->registration->duration->value;
         $this->class_per_week = (string) $this->registration->class_per_week;
         $this->deadline       = (string) $this->registration->deadline;
         $this->value          = (string) $this->registration->value;

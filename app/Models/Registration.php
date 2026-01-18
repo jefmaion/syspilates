@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\PlanEnum;
 use App\Enums\RegistrationStatusEnum;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,12 +24,35 @@ class Registration extends BaseModel
         'start'  => 'date',
         'end'    => 'date',
         'status' => RegistrationStatusEnum::class,
+        'duration' => PlanEnum::class,
         'value'  => 'float',
     ];
 
     public function scopeJustActives(Builder $query)
     {
         return $query->whereIn('status', ['scheduled', 'active']);
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function planDescription(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->duration->label() .' ('.$this->schedule()->count().'x)';
+            }
+        );
+    }
+
+        protected function nextClass(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $dates = $this->classScheduled(now(), $this->end);
+                return array_shift($dates)->data;
+            }
+        );
     }
 
     public function scopeWithinRange(Builder $query, $start, $end): Builder

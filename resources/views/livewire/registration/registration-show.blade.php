@@ -100,7 +100,7 @@
                             <tbody>
                                 <tr>
                                     <td scope="row"><strong>Plano:</strong> </td>
-                                    <td class="text-end">Trimestral</td>
+                                    <td class="text-end">{{$registration->planDescription }}</td>
                                 </tr>
 
                                 <tr>
@@ -212,7 +212,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach($classes as $date => $class)
-                                            
+
                                             <tr class="">
                                                 <td scope="row">{{ $class['date']->format('d/m/Y') }}</td>
                                                 <td>{{ $class['time'] }}</td>
@@ -321,7 +321,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for($i=0; $i<$form->class_per_week;$i++)
+                                @for($i=0; $i<=$form->class_per_week;$i++)
                                     <tr class="">
                                         <td scope="row">
                                             <x-form.select-weekday name="form.schedule.{{ $i }}.weekday"

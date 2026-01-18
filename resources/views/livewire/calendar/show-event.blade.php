@@ -3,14 +3,14 @@
         @if($registration)
         <form wire:submit="save">
             <div class="modal-content">
-                <div class="modal-header bordser-0">
+                <div class="modal-header border-0">
                     <h5 class="modal-title align-items-center" id="modalTitleId">
                         <x-icons.calendar />{{ ucfirst($date->translatedFormat('l, d \d\e F \d\e Y - H:i\h\r\s')); }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pst-2">
-                    <div class="row d-flex flex-fill mb-4">
+                    <div class="row d-flex flex-fill mbs-4">
                         <div class="col">
                             @include('livewire.calendar.event-header')
                         </div>
@@ -22,6 +22,7 @@
                         </div>
                         @endif
                     </div>
+                </div>
 
                     {{-- <div class="alert alert-info mb-0" role="alert">
                       <div class="alert-icon">
@@ -39,21 +40,21 @@
                     </div>
                 </div> --}}
 
-                {{-- <div class="modal-body">
+                <div class="modal-body">
                     <strong>Objetivo:</strong> {{ $registration->student->objective }}
-                </div> --}}
+                </div>
 
-                
+
 
                 @if(!$registration->classes->isEmpty())
-                <div class="modal-body pb-0">
+                <div class="modal-body spb-0">
                     <p><strong>Histórico Recente</strong></p>
                     <table class="table table-striped w-100">
                         <tbody>
                             @foreach($registration->classes as $class)
                             <tr>
                                 <td classs="text-center">
-                                    {{ $class->date->format('d/m') }}
+                                    {{ $class->date->format('d/m') }} - {{ $class->time}}
                                 </td>
                                 <td classs="text-center">
                                     <span class="badge badge-outline text-{{ $class->status->color() }}">
@@ -72,43 +73,43 @@
                 </div>
                 @endif
 
-                <div class="modal-footer bordser-0 bg-transparent">
+                <div class="modal-footer border-0 bg-transparent">
                     <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
                         Fechar
                     </button>
 
                     @if($type == 'scheduled')
-                    <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('make-presence', {datetime: '{{ $date }}', id: '{{ $registration->id }}', instructor_id: {{ $props['instructor_id'] }} })"
-                        class="btn btn-success">
-                        <span class="d-flex align-items-center">
-                            <x-icons.calendar class="me-2" /> <span>Marcar Presença</span>
-                        </span>
-                    </button>
+                        <button type="button" data-bs-dissmiss="modal"
+                            wire:click="$dispatch('make-presence', {datetime: '{{ $date }}', id: '{{ $registration->id }}', instructor_id: {{ $props['instructor_id'] }} })"
+                            class="btn btn-success">
+                            <span class="d-flex align-items-center">
+                                <x-icons.calendar class="me-2" /> <span>Marcar Presença</span>
+                            </span>
+                        </button>
 
-                    <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('make-absense', {datetime: '{{ $date }}', id: '{{ $registration->id }}', instructor_id: {{ $props['instructor_id'] }} })"
-                        class="btn btn-danger">
-                        <span class="d-flex align-items-center">
-                            <x-icons.calendar class="me-2" /> <span>Marcar Falta</span>
-                        </span>
-                    </button>
+                        <button type="button" data-bs-dissmiss="modal"
+                            wire:click="$dispatch('make-absense', {datetime: '{{ $date }}', id: '{{ $registration->id }}', instructor_id: {{ $props['instructor_id'] }} })"
+                            class="btn btn-danger">
+                            <span class="d-flex align-items-center">
+                                <x-icons.calendar class="me-2" /> <span>Marcar Falta</span>
+                            </span>
+                        </button>
                     @endif
 
                     @if($type == 'class')
-                    @if($event->status->value == 'justified')
-                    <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: '{{ $id }}'})"
-                        class="btn btn-purple">
-                        <x-page.spinner>Agendar reposição</x-page.spinner>
-                    </button>
-                    @endif
-                    <button type="button" data-bs-dissmiss="modal"
-                        wire:click="$dispatch('show-class', {id: '{{ $id }}'})" class="btn btn-warning">
-                        <x-page.spinner>
-                            <x-icons.edit /> Editar Dados
-                        </x-page.spinner>
-                    </button>
+                        @if($event->status->value == 'justified')
+                        <button type="button" data-bs-dissmiss="modal"
+                            wire:click="$dispatch('create-class', {datetime: '{{ $date }}', id: '{{ $id }}'})"
+                            class="btn btn-purple">
+                            <x-page.spinner>Agendar reposição</x-page.spinner>
+                        </button>
+                        @endif
+                        <button type="button" data-bs-dissmiss="modal"
+                            wire:click="$dispatch('show-class', {id: '{{ $id }}'})" class="btn btn-warning">
+                            <x-page.spinner>
+                                <x-icons.edit /> Editar Dados
+                            </x-page.spinner>
+                        </button>
                     @endif
                 </div>
             </div>

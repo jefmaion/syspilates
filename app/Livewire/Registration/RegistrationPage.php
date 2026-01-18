@@ -15,6 +15,9 @@ class RegistrationPage extends Component
 {
     use PaginationTrait;
 
+    public $modality_id = null;
+    public $duration = null;
+
     #[On('refresh-registrations')]
     public function _refresh()
     {
@@ -22,10 +25,21 @@ class RegistrationPage extends Component
 
     public function render(): View | Closure | string
     {
+
+        $registrations = Registration::with(['student.user', 'modality'])->whereHas('student.user', function ($query) {
+            return $query->whereLike('name', '%' . $this->search . '%');
+        });
+
+        if(!empty($this->modality_id)) {
+            $registrations->where('modality_id', $this->modality_id);
+        }
+
+        if(!empty($this->duration)) {
+            $registrations->where('duration', $this->duration);
+        }
+
         return view('livewire.registration.registration-page', [
-            'registrations' => Registration::with(['student.user', 'modality'])->whereHas('student.user', function ($query) {
-                return $query->whereLike('name', '%' . $this->search . '%');
-            })->orderBy('id', 'desc')->paginate($this->pages),
+            'registrations' => $registrations->orderBy('id', 'desc')->paginate($this->pages)
         ]);
     }
 }

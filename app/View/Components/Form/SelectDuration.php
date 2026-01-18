@@ -4,27 +4,21 @@ declare(strict_types = 1);
 
 namespace App\View\Components\Form;
 
+use App\Enums\PlanEnum;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class SelectDuration extends Component
 {
-    public $durations = [
-        30  => 'Mensal',
-        60  => 'Bimestral',
-        90  => 'Trimestral',
-        120 => 'Quadrimestral',
-        160 => 'Semestral',
-        365 => 'Anual',
-    ];
+    public $durations ;
 
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        //
+        $this->durations = PlanEnum::toSelectArray();
     }
 
     /**

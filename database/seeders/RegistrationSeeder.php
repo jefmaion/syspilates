@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Database\Seeders;
 
+use App\Enums\PlanEnum;
 use App\Models\Instructor;
 use App\Models\Modality;
 use App\Models\Registration;
@@ -23,9 +24,16 @@ class RegistrationSeeder extends Seeder
 
         $times = new SelectTime();
 
+        $plans = [];
+
+        foreach(PlanEnum::cases() as $item) {
+            $plans[] = $item->value;
+        }
+
+
         for ($x = 1; $x <= 50; $x++) {
             $date         = fake()->dateTimeBetween('-1 months');
-            $duration     = fake()->randomElements([30, 60, 90, 120, 150, 180])[0];
+            $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);
 
             $registration = Registration::create([

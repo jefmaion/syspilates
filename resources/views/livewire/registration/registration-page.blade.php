@@ -22,35 +22,51 @@
 
         <div class="card">
             <div class="card-header">
-                <x-table.table-search />
+                {{-- <x-table.table-search /> --}}
+                <div class="row flex-fill">
+                    <div class="col-auto"><x-form.select-duration wire:model.live='duration' placeholder="opa" /></div>
+                    <div class="col-auto"><x-form.select-modality wire:model.live='modality_id' /></div>
+                    <div class="col">
+                        <input type="text" wire:model.live='search' class="form-control w-100" placeholder="Pesquisar aluno...">
+                    </div>
+                </div>
             </div>
             <div class="card-body">
 
-                <x-table.table :search="false" class="fs-4">
+                <x-table.table :search="false" class="fs-4 table-sm">
                     <thead>
                         <tr>
                             <th scope="col" wsidth="50%">Aluno</th>
                             <th>Modalidade</th>
+                            <th>Plano</th>
                             <th>Status</th>
-                            <th scope="col">Data de Cadastro</th>
+                            <th>Próx.Aula</th>
+                            <th>Vigência</th>
                         </tr>
                     </thead>
                     <tbody class="table-tbody">
                         @foreach($registrations as $item)
                         <tr>
                             <td>
-                                
+
                                 <div class="d-flex align-items-center">
                                     <span class="avatar avatar-sm me-2  {{ ($item->student->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->student->user->initials }}</span>
                                     <a href="{{ route('registration.show', $item) }}" wire:navigate>{{ $item->student->user->name }}</a>
                                 </div>
-                            
+
                             </td>
                             <td>{{ $item->modality->name }}</td>
-                            <td> 
-                                
-                                <x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status></td>
-                            <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+
+                            <td>
+                                {{ $item->planDescription }}
+                            </td>
+
+
+                            <td><x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status></td>
+                            <td>
+                                    {{ $item->nextClass->date->format('d/m/Y') }}
+                                </td>
+                            <td><div>{{ $item->start->format('d/m/y') }}</div> <div>{{ $item->end->format('d/m/y') }}</div></td>
                         </tr>
                         @endforeach
                     </tbody>

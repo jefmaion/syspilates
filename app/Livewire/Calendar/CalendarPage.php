@@ -15,13 +15,34 @@ use Livewire\Component;
 
 class CalendarPage extends Component
 {
+
+    public $modality_id;
+
     public function events()
     {
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-        // $data          = $this->getScheduledClasses($start, $end);
-        $registrations = Registration::with(['schedule', 'student.user'])->withinRange($start, $end)->justActives()->get();
+
+        $registration = Registration::with(['schedule', 'student.user'])->withinRange($start, $end)->justActives();
+
+        if (request()->filled('modality_id')) {
+            $registration->where('modality_id', request()->get('modality_id'));
+        }
+
+        if (request()->filled('status')) {
+           $registration->whereHas('classes', function($q) {
+                return $q->where('status', request()->get('status'));
+            });
+        }
+
+        if (request()->filled('student')) {
+           $registration->where('student_id', request()->get('student'));
+        }
+
+
+
+        $registrations = $registration->get();
 
         $data = [];
 
