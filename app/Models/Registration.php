@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -40,12 +40,12 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return $this->duration->label() .' ('.$this->schedule()->count().'x)';
+                return $this->duration->label() . ' (' . $this->schedule()->count() . 'x)';
             }
         );
     }
 
-        protected function nextClass(): Attribute
+    protected function nextClass(): Attribute
     {
         return Attribute::make(
             get: function ($value, $attributes) {
@@ -86,6 +86,42 @@ class Registration extends BaseModel
         }
 
         return $scheduled;
+    }
+
+    protected function plannedClasses(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+
+                $schedules = $this->schedule()->with('instructor.user')->get();
+                $period = CarbonPeriod::create($this->start, $this->end);
+                $data = [];
+                foreach ($period as $date) {
+                    foreach ($schedules as $schedule) {
+                        if ($date->dayOfWeek === $schedule->weekday->value) {
+                            if (isset($classes[$date->format('Y-m-d')])) {
+                                continue;
+                            }
+
+                            $data[$date->format('Y-m-d')] = (object) [
+                                'type' => 'scheduled',
+                                'data' => (object) [
+                                    'registration_id' => $this->id,
+                                    'instructor_id' => $schedule->instructor_id,
+                                    'student_id' => $this->student_id,
+                                    'date'       => $date,
+                                    'time'       => $schedule->time,
+                                    'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
+
+                                ],
+                            ];
+                        }
+                    }
+                }
+
+                return $data;
+            }
+        );
     }
 
     public function classScheduled($start = null, $end = null)

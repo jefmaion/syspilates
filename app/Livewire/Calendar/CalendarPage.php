@@ -47,14 +47,19 @@ class CalendarPage extends Component
         $data = [];
 
         foreach ($registrations as $registration) {
-            foreach ($registration->getClasses($start, $end) as $i => $event) {
-                if ($event->type == 'scheduled') {
-                    $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
 
-                    continue;
-                }
-                $data[] = $this->prepareEvent($event->data->id, $event->data->registration_id, $event->data->instructor_id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
+            foreach ($registration->plannedClasses as $i => $event) {
+                    $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor_id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
             }
+
+            // foreach ($registration->getClasses($start, $end) as $i => $event) {
+            //     if ($event->type == 'scheduled') {
+            //         $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
+
+            //         continue;
+            //     }
+            //     $data[] = $this->prepareEvent($event->data->id, $event->data->registration_id, $event->data->instructor_id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
+            // }
         }
 
         return response()->json($data);
