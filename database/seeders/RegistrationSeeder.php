@@ -26,10 +26,9 @@ class RegistrationSeeder extends Seeder
 
         $plans = [];
 
-        foreach(PlanEnum::cases() as $item) {
+        foreach (PlanEnum::cases() as $item) {
             $plans[] = $item->value;
         }
-
 
         for ($x = 1; $x <= 50; $x++) {
             $date         = fake()->dateTimeBetween('-1 months');

@@ -13,23 +13,22 @@ namespace App\Enums;
 
 enum PlanEnum: int
 {
-
-    case MONTHLY = 30;
-    case BIMONTHLY  = 60;
-    case QUARTELY   = 90;
+    case MONTHLY     = 30;
+    case BIMONTHLY   = 60;
+    case QUARTELY    = 90;
     case FOURMONTHLY = 120;
     case SEMIANNUAL  = 180;
-    case ANNUAL  = 365;
+    case ANNUAL      = 365;
 
     public function label(): string
     {
         return match ($this) {
-            self::MONTHLY => 'Mensal',
-            self::BIMONTHLY => 'Bimestral',
-            self::QUARTELY => 'Trimestral',
+            self::MONTHLY     => 'Mensal',
+            self::BIMONTHLY   => 'Bimestral',
+            self::QUARTELY    => 'Trimestral',
             self::FOURMONTHLY => 'Quadrimestral',
-            self::SEMIANNUAL => 'Semestral',
-            self::ANNUAL => 'Anual',
+            self::SEMIANNUAL  => 'Semestral',
+            self::ANNUAL      => 'Anual',
         };
     }
 

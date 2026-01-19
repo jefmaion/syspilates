@@ -6,7 +6,7 @@
             - <span class="text-muted">{{ $registration->modality->name }}</span>
         </h4>
         <div class="text-secondary">
-            Professor: {{ $registration->getInstructorByWeekday($date->format('w'))->instructor->user->name ?? '' }}
+            Professor: {{ $instructor->user->shortName }}
         </div>
 
 

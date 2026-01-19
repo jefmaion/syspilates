@@ -64,7 +64,7 @@
 
                             <td><x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status></td>
                             <td>
-                                    {{ $item->nextClass->date->format('d/m/Y') }}
+                                    {{-- {{ $item->nextClass->date->format('d/m/Y') }} --}}
                                 </td>
                             <td><div>{{ $item->start->format('d/m/y') }}</div> <div>{{ $item->end->format('d/m/y') }}</div></td>
                         </tr>

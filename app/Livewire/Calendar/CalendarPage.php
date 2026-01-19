@@ -8,14 +8,13 @@ use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\Registration;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\View\View;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CalendarPage extends Component
 {
-
     public $modality_id;
 
     public function events()
@@ -23,130 +22,103 @@ class CalendarPage extends Component
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-
-        $registration = Registration::with(['schedule', 'student.user'])->withinRange($start, $end)->justActives();
+        $registration = Registration::with(['schedule', 'student.user', 'classes.student.user'])->withinRange($start, $end)->justActives();
+        $class        = Classes::with('student.user')->whereBetween('scheduled_datetime', [$start, $end]);
 
         if (request()->filled('modality_id')) {
             $registration->where('modality_id', request()->get('modality_id'));
+            $class->where('modality_id', request()->get('modality_id'));
         }
 
         if (request()->filled('status')) {
-           $registration->whereHas('classes', function($q) {
-                return $q->where('status', request()->get('status'));
-            });
+            $class->where('status', request()->get('status'));
         }
 
         if (request()->filled('student')) {
-           $registration->where('student_id', request()->get('student'));
+            $registration->where('student_id', request()->get('student'));
+            $class->where('student_id', request()->get('student'));
         }
 
-
+        if (request()->filled('instructor')) {
+            // $registration->where('instructor_id', request()->get('instructor'));
+            $class->where('instructor_id', request()->get('instructor'));
+        }
 
         $registrations = $registration->get();
+        $classes       = $class->get();
 
-        $data = [];
+        $events = [];
 
-        foreach ($registrations as $registration) {
+        foreach ($registrations as $reg) {
+            $schedules = $reg->schedule;
 
-            foreach ($registration->plannedClasses as $i => $event) {
-                    $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor_id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
-            }
+            $period = CarbonPeriod::create($reg->start, $reg->end);
 
-            // foreach ($registration->getClasses($start, $end) as $i => $event) {
-            //     if ($event->type == 'scheduled') {
-            //         $data[] = $this->prepareEvent('schedule-' . $registration->id, $registration->id, $event->data->instructor->id, $event->type, $event->data->datetime, $registration->student->user->shortName, ClassStatusEnum::SCHEDULED->color());
-
-            //         continue;
-            //     }
-            //     $data[] = $this->prepareEvent($event->data->id, $event->data->registration_id, $event->data->instructor_id, $event->type, $event->data->datetime, $event->data->student->user->shortName, $event->data->status->color());
-            // }
-        }
-
-        return response()->json($data);
-    }
-
-    // #[On('calendar-show-event')]
-    // public function showEvent($id, $start, $props)
-    // {
-    //     dd($start, $id, $props);
-    // }
-
-    private function prepareEvent($id = null, $registrationId = null, $instructorId = null, $type = null, $start = null, $title = null, $color = null)
-    {
-        return [
-            'id'              => $id,
-            'registration_id' => $registrationId,
-            'instructor_id'   => $instructorId,
-            'type'            => $type,
-            'start'           => $start,
-            'title'           => $title,
-            // 'backgroundColor' => 'var(--tblr-' . $color . ')-lt',
-            'className'        => 'bg-' . $color . '',
-            'eventBorderColor' => '#f00',
-            'textColor'        => 'white',
-        ];
-    }
-
-    private function getScheduledClasses($start, $end)
-    {
-        $calendar = [];
-        $events   = [];
-
-        $classes = Classes::with('student.user')->whereBetween('date', [$start, $end])->get();
-
-        foreach ($classes as $class) {
-            $key = $class->date->format('Y-m-d') . '.' . $class->registration_id;
-
-            $events[$key] = [
-                'id'              => $class->id,
-                'type'            => 'class',
-                'start'           => $class->datetime,
-                'registration_id' => $class->registration_id,
-                'title'           => $class->student->user->shortName,
-                'backgroundColor' => 'var(--tblr-' . $class->status->color() . ')',
-                'textColor'       => 'white',
-            ];
-        }
-
-        $registrations = Registration::with(['schedule', 'student.user'])
-            ->whereHas('schedule.instructor.user', function ($q) {
-                // return $q->where('name', 'Marina Barros Delgado');
-            })->withinRange($start, $end)->justActives()->get();
-
-        foreach ($registrations as $registration) {
-            foreach ($registration->scheduledClasses($start, $end) as $schedClass) {
-                $event = null;
-                $key   = $schedClass['date'] . '.' . $registration->id;
-
-                if (isset($events[$key])) {
-                    // $event = $events[$key];
+            foreach ($period as $date) {
+                if (! $date->between($start, $end)) {
                     continue;
                 }
 
-                $event = [
-                    'id'              => $registration->id,
-                    'start'           => $schedClass['datetime'],
-                    'type'            => 'schedule',
-                    'registration_id' => $registration->id,
-                    'title'           => $registration->student->user->shortName,
-                    'backgroundColor' => 'var(--tblr-' . ClassStatusEnum::SCHEDULED->color() . ')',
-                    'textColor'       => 'white',
-                ];
+                // if (request()->filled('status') && request()->filled('status') == 'scheduled') {
+                //     break;
+                // }
 
-                // $calendar[$key] = $event;
-                $events[$key] = $event;
+                foreach ($schedules as $schedule) {
+                    if ($date->dayOfWeek === $schedule->weekday->value) {
+                        $key          = $date->format('Y-m-d') . '.' . $schedule->id;
+                        $events[$key] = [
+                            'id'        => 'scheduled-' . $reg->id,
+                            'start'     => $date->format('Y-m-d') . ' ' . $schedule->time,
+                            'title'     => $reg->student->user->shortName,
+                            'className' => 'bg-' . ClassStatusEnum::SCHEDULED->color(),
+                            'textColor' => 'white',
+
+                            'type'                     => 'scheduled',
+                            'registration_id'          => $reg->id,
+                            'instructor_id'            => $schedule->instructor_id,
+                            'registration_schedule_id' => $schedule->id,
+                            'student_id'               => $reg->student_id,
+                            'datetime'                 => $date->format('Y-m-d') . ' ' . $schedule->time,
+                            'scheduled_datetime'       => $date->format('Y-m-d') . ' ' . $schedule->time,
+                            'executed_datetime'        => null,
+                        ];
+                    }
+                }
             }
         }
 
-        $calendar = array_values($events);
+        foreach ($classes as $class) {
+            $key  = $class->scheduled_datetime->format('Y-m-d') . '.' . $class->registration_schedule_id;
+            $item = [
+                'id'        => 'class-' . $class->id,
+                'start'     => $class->datetime->format('Y-m-d H:i:s'),
+                'title'     => $class->student->user->shortName,
+                'className' => 'bg-' . $class['status']->color(),
 
-        // $calendar = array_values($events);
+                'type'                     => 'class',
+                'class_id'                 => $class->id,
+                'registration_id'          => $class->registration_id,
+                'instructor_id'            => $class->instructor_id,
+                'registration_schedule_id' => $class->registration_schedule_id,
+                'student_id'               => $class->student_id,
+                'datetime'                 => $class->datetime->format('Y-m-d H:i:s'),
+                'scheduled_datetime'       => $class->scheduled_datetime->format('Y-m-d H:i:s'),
+                'executed_datetime'        => $class->datetime->format('Y-m-d H:i:s'),
+                'status'                   => $class->status,
+            ];
 
-        return $calendar;
+            $events[$key] = $item;
+        }
+
+        $events = array_values($events);
+
+        return response()->json($events);
     }
 
     public function render(): View | Closure | string
     {
+        $reg = Registration::find(3);
+
         return view('livewire.calendar.calendar-page');
     }
 }

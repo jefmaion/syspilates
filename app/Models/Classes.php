@@ -15,8 +15,9 @@ class Classes extends BaseModel
     public $guarded = ['id'];
 
     public $casts = [
-        'date'   => 'date',
-        'status' => ClassStatusEnum::class,
+        'datetime'           => 'datetime',
+        'scheduled_datetime' => 'datetime',
+        'status'             => ClassStatusEnum::class,
     ];
 
     public function registration()

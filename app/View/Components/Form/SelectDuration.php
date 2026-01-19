@@ -11,7 +11,7 @@ use Illuminate\View\Component;
 
 class SelectDuration extends Component
 {
-    public $durations ;
+    public $durations;
 
     /**
      * Create a new component instance.

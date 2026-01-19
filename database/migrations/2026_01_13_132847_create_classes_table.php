@@ -22,9 +22,11 @@ return new class () extends Migration
             $table->foreignId('instructor_id')->nullable()->index();
             $table->foreignId('student_id')->nullable()->index();
             $table->foreignId('modality_id')->nullable()->index();
-            $table->date('date');
-            $table->time('time');
+            $table->foreignId('registration_schedule_id')->nullable()->index();
+            $table->dateTime('scheduled_datetime')->nullable();
             $table->dateTime('datetime')->nullable();
+            // $table->date('date');
+            // $table->time('time');
             $table->enum('type', ClassTypesEnum::cases());
             $table->enum('status', ClassStatusEnum::cases());
             $table->text('evolution')->nullable();

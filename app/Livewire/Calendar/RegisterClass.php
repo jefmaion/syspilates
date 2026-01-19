@@ -49,8 +49,9 @@ class RegisterClass extends Component
     }
 
     #[On('make-presence')]
-    public function makePresence($datetime, $id, $instructor_id)
+    public function makePresence($datetime, $id, $instructor_id, $props)
     {
+        dd($props);
         $this->reset();
 
         $this->action = 'presence';

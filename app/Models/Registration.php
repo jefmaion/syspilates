@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\ClassStatusEnum;
 use App\Enums\PlanEnum;
 use App\Enums\RegistrationStatusEnum;
 use Carbon\Carbon;
@@ -21,11 +22,11 @@ class Registration extends BaseModel
     public $guarded = ['id'];
 
     public $casts = [
-        'start'  => 'date',
-        'end'    => 'date',
-        'status' => RegistrationStatusEnum::class,
+        'start'    => 'date',
+        'end'      => 'date',
+        'status'   => RegistrationStatusEnum::class,
         'duration' => PlanEnum::class,
-        'value'  => 'float',
+        'value'    => 'float',
     ];
 
     public function scopeJustActives(Builder $query)
@@ -49,8 +50,9 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                $dates = $this->classScheduled(now(), $this->end);
-                return array_shift($dates)->data;
+                // $dates = $this->classScheduled(now(), $this->end);
+
+                return now();
             }
         );
     }
@@ -67,53 +69,49 @@ class Registration extends BaseModel
         });
     }
 
-    public function getClasses($start = null, $end = null)
-    {
-        $start = $start ?? $this->start;
-        $end   = $end ?? $this->end;
+    // public function getClasses($start = null, $end = null)
+    // {
+    //     $start = $start ?? $this->start;
+    //     $end   = $end ?? $this->end;
 
-        $scheduled = $this->classScheduled($start, $end);
+    //     $scheduled = $this->classScheduled($start, $end);
 
-        foreach ($this->classes()->with('student.user')->whereBetween('date', [$start, $end])->get() as $class) {
-            $date = $class->date->format('Y-m-d');
+    //     foreach ($this->classes()->with('student.user')->whereBetween('date', [$start, $end])->get() as $class) {
+    //         $date = $class->date->format('Y-m-d');
 
-            if (isset($scheduled[$date])) {
-                $scheduled[$date]->type = 'class';
-                $scheduled[$date]->data = $class;
+    //         if (isset($scheduled[$date])) {
+    //             $scheduled[$date]->type = 'class';
+    //             $scheduled[$date]->data = $class;
 
-                continue;
-            }
-        }
+    //             continue;
+    //         }
+    //     }
 
-        return $scheduled;
-    }
+    //     return $scheduled;
+    // }
 
     protected function plannedClasses(): Attribute
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-
                 $schedules = $this->schedule()->with('instructor.user')->get();
-                $period = CarbonPeriod::create($this->start, $this->end);
-                $data = [];
+                $period    = CarbonPeriod::create($this->start, $this->end);
+                $data      = [];
+
                 foreach ($period as $date) {
                     foreach ($schedules as $schedule) {
                         if ($date->dayOfWeek === $schedule->weekday->value) {
-                            if (isset($classes[$date->format('Y-m-d')])) {
-                                continue;
-                            }
+                            $key = $date->format('Y-m-d') . '.' . $schedule->id;
 
-                            $data[$date->format('Y-m-d')] = (object) [
-                                'type' => 'scheduled',
-                                'data' => (object) [
-                                    'registration_id' => $this->id,
-                                    'instructor_id' => $schedule->instructor_id,
-                                    'student_id' => $this->student_id,
-                                    'date'       => $date,
-                                    'time'       => $schedule->time,
-                                    'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
-
-                                ],
+                            $data[$key] = [
+                                'registration_id'          => $this->id,
+                                'instructor_id'            => $schedule->instructor_id,
+                                'registration_schedule_id' => $schedule->id,
+                                'student_id'               => $this->student_id,
+                                'datetime'                 => $date->format('Y-m-d') . ' ' . $schedule->time,
+                                'scheduled_datetime'       => $date->format('Y-m-d') . ' ' . $schedule->time,
+                                'executed_datetime'        => null,
+                                'status'                   => ClassStatusEnum::SCHEDULED->color(),
                             ];
                         }
                     }
@@ -124,76 +122,103 @@ class Registration extends BaseModel
         );
     }
 
-    public function classScheduled($start = null, $end = null)
+    protected function agenda(): Attribute
     {
-        $start = $start ?? $this->start;
-        $end   = $end ?? $this->end;
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $planned = $this->plannedClasses;
 
-        $this->load('schedule.instructor.user');
+                foreach ($this->classes as $class) {
+                    $key = $class->scheduled_datetime->format('Y-m-d') . '.' . $class->registration_schedule_id;
 
-        $scheduleds = [];
-
-        $period = CarbonPeriod::create($start, $end);
-
-        foreach ($period as $date) {
-            foreach ($this->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday->value) {
-                    if (isset($classes[$date->format('Y-m-d')])) {
-                        continue;
-                    }
-
-                    $scheduleds[$date->format('Y-m-d')] = (object) [
-                        'type' => 'scheduled',
-                        'data' => (object) [
-                            'date'       => $date,
-                            'time'       => $schedule->time,
-                            'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
-                            'instructor' => $schedule->instructor,
-                        ],
+                    $planned[$key] = [
+                        'class_id'                 => $class->id,
+                        'registration_id'          => $class->registration_id,
+                        'instructor_id'            => $class->instructor_id,
+                        'registration_schedule_id' => $class->registration_schedule_id,
+                        'student_id'               => $class->student_id,
+                        'datetime'                 => $class->datetime->format('Y-m-d H:i:s'),
+                        'scheduled_datetime'       => $class->scheduled_datetime->format('Y-m-d H:i:s'),
+                        'executed_datetime'        => $class->datetime->format('Y-m-d H:i:s'),
+                        'status'                   => $class->status->color(),
                     ];
                 }
-            }
-        }
 
-        return $scheduleds;
+                return array_values($planned);
+            }
+        );
     }
+
+    // public function classScheduled($start = null, $end = null)
+    // {
+    //     $start = $start ?? $this->start;
+    //     $end   = $end ?? $this->end;
+
+    //     $this->load('schedule.instructor.user');
+
+    //     $scheduleds = [];
+
+    //     $period = CarbonPeriod::create($start, $end);
+
+    //     foreach ($period as $date) {
+    //         foreach ($this->schedule as $schedule) {
+    //             if ($date->dayOfWeek === $schedule->weekday->value) {
+    //                 if (isset($classes[$date->format('Y-m-d')])) {
+    //                     continue;
+    //                 }
+
+    //                 $scheduleds[$date->format('Y-m-d')] = (object) [
+    //                     'type' => 'scheduled',
+    //                     'data' => (object) [
+    //                         'date'       => $date,
+    //                         'time'       => $schedule->time,
+    //                         'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
+    //                         'instructor' => $schedule->instructor,
+    //                     ],
+    //                 ];
+    //             }
+    //         }
+    //     }
+
+    //     return $scheduleds;
+    // }
 
     public function isCanceled()
     {
         return $this->status->value === RegistrationStatusEnum::CANCELED->value;
     }
 
-    public function getInstructorByWeekday($weekday)
-    {
-        return $this->schedule()->with('instructor.user')->where('weekday', $weekday)->first();
-    }
+    // public function getInstructorByWeekday($weekday)
+    // {
+    //     return $this->schedule()->with('instructor.user')->where('weekday', $weekday)->first();
+    // }
 
-    public function scheduledClasses($start = null, $end = null)
-    {
-        $this->load('schedule.instructor.user');
+    // public function scheduledClasses($start = null, $end = null)
+    // {
+    //     $this->load('schedule.instructor.user');
 
-        $start = $start ?? $this->start;
-        $end   = $end ?? $this->end;
+    //     $start = $start ?? $this->start;
+    //     $end   = $end ?? $this->end;
 
-        $period = CarbonPeriod::create($start, $end);
+    //     $period = CarbonPeriod::create($start, $end);
 
-        $classes = [];
+    //     $classes = [];
 
-        foreach ($period as $date) {
-            foreach ($this->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday->value && $date->between($start, $end) && $date->dayOfWeek <> 0) {
-                    $classes[] = [
-                        'date'       => $date->format('Y-m-d'),
-                        'time'       => $schedule->time,
-                        'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
-                        'instructor' => $schedule->instructor,
-                    ];
-                }
-            }
-        }
+    //     foreach ($period as $date) {
+    //         foreach ($this->schedule as $schedule) {
+    //             if ($date->dayOfWeek === $schedule->weekday->value && $date->between($start, $end) && $date->dayOfWeek <> 0) {
+    //                 $classes[] = [
+    //                     'date'       => $date->format('Y-m-d'),
+    //                     'time'       => $schedule->time,
+    //                     'datetime'   => $date->format('Y-m-d') . 'T' . $schedule->time,
+    //                     'instructor' => $schedule->instructor,
+    //                 ];
+    //             }
+    //         }
+    //     }
 
-        return $classes;
-    }
+    //     return $classes;
+    // }
 
     public function schedule()
     {

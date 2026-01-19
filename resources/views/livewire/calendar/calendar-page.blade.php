@@ -31,6 +31,9 @@
                 <x-form.select-class-status class="filters" name="status" />
             </div>
             <div class="col">
+                <x-form.select-instructor name="instructor" class="filters" />
+            </div>
+            <div class="col">
                 <x-form.select-student name="student" class="filters" />
             </div>
         </div>
@@ -38,9 +41,10 @@
         <livewire:calendar.full-calendar :endpoint="route('events')" wire:ignore.self wire:key='calendar'
             id="calendar" />
 
-        <livewire:calendar.show-event />
+        {{-- <livewire:calendar.show-event /> --}}
+        <livewire:calendar.show-class />
 
-        <livewire:calendar.register-class />
+        {{-- <livewire:calendar.register-class /> --}}
 
     </x-page.page-body>
 
