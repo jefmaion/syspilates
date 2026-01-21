@@ -89,7 +89,8 @@ class RegistrationShow extends Component
     public function render(): View | Closure | string
     {
         return view('livewire.registration.registration-show', [
-            'classes' => $this->paginate($this->generateClasses(), $this->pages),
+            'scheduled' => $this->paginate($this->generateClasses(), $this->pages),
+            'classes' => $this->registration->classes
         ]);
     }
 }

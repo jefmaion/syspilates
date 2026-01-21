@@ -24,8 +24,8 @@ enum ClassTypesEnum: string
     public function color(): string
     {
         return match ($this) {
-            self::NORMAL       => 'primary',
-            self::REPOSITION   => 'success',
+            self::NORMAL       => 'white',
+            self::REPOSITION   => 'red',
             self::EXPERIMENTAL => 'warning',
             self::SINGLE       => 'purple',
         };

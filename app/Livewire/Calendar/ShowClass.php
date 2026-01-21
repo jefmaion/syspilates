@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Calendar;
 
+use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
+use App\Models\ClassMakeup;
 use App\Models\Instructor;
 use App\Models\Registration;
 use Closure;
@@ -61,6 +63,7 @@ class ShowClass extends Component
     public function save()
     {
         if ($this->props['type'] == 'scheduled') {
+
             $class = Classes::create([
                 'registration_id'          => $this->registration->id,
                 'student_id'               => $this->registration->student_id,
@@ -72,11 +75,31 @@ class ShowClass extends Component
                 'status'                   => $this->status,
                 'evolution'                => $this->evolution,
             ]);
+
         } else {
             $class = Classes::find($this->props['class_id']);
             $class->update([
                 'status'    => $this->status,
                 'evolution' => $this->evolution,
+            ]);
+        }
+
+
+        if($this->status == ClassStatusEnum::JUSTIFIED->value || $this->status == ClassStatusEnum::CANCELED->value) {
+
+            if(ClassMakeup::where('origin_class_id', $class->id)->count() > 0)  {
+                return;
+            }
+
+
+
+            ClassMakeup::create([
+                'student_id'        => $class->student_id,
+                'registration_id'   => $class->registration_id,
+                'origin_class_id'   => $class->id,
+                'reason'            => $this->status,
+                'expires_at'        => now()->addDays(20),
+                'status'            => 'active',
             ]);
         }
 

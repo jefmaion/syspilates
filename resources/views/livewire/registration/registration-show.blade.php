@@ -211,7 +211,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($classes as $date => $class)
+                                            @foreach($scheduled as $date => $class)
 
                                             <tr class="">
                                                 <td scope="row">{{ $class['date']->format('d/m/Y') }}</td>
@@ -234,14 +234,46 @@
                                             @endforeach
                                         </tbody>
                                     </x-table.table>
-                                    {{ $classes->links() }}
+                                    {{ $scheduled->links() }}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tabs-profile-8" role="tabpanel">
                                 <h4>Profile tab</h4>
                                 <div>
-                                    Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam,
-                                    sem nunc amet, pellentesque id egestas velit sed
+                                    <x-table.table>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Dia</th>
+                                                <th scope="col">Horário</th>
+                                                <th scope="col">Instrutor</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($classes as $date => $class)
+
+                                            <tr class="">
+                                                <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
+                                                <td>{{ $class->datetime->format('H:m') }}</td>
+                                                <td>
+                                                    <x-page.user-avatar size="xs" :user="$class->instructor->user">
+                                                        <span class="small">
+                                                            {{ $class->instructor->user->shortName }}
+                                                        </span>
+                                                    </x-page.user-avatar>
+                                                </td>
+                                                <td>
+                                                    <x-page.status color="{{ $class->status->color() }}">{{
+                                                        $class->status->label()
+                                                        }}
+                                                    </x-page.status>
+
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </x-table.table>
+
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tabs-activity-8" role="tabpanel">

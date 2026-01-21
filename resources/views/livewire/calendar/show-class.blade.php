@@ -14,6 +14,7 @@
                 <div class="row d-flex flex-fill mbs-4">
                     <div class="col">
                         @include('livewire.calendar.event-header')
+
                     </div>
                     @if($props['type'] =='class')
                         <div class="col-auto d-flex align-items-center justify-content-end">
@@ -75,6 +76,12 @@
                     <button type="button" data-bs-dissmiss="modal" wire:click="editClass()" class="btn btn-primary">
                         <span class="d-flex align-items-center">
                             <x-icons.calendar class="me-2" /> <span>Editar</span>
+                        </span>
+                    </button>
+
+                    <button type="button" data-bs-dissmiss="modal" wire:click="makePresence()" class="btn btn-primary">
+                        <span class="d-flex align-items-center">
+                            <x-icons.calendar class="me-2" /> <span>Registrar Aula</span>
                         </span>
                     </button>
                 @endif

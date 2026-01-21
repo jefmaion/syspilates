@@ -8,8 +8,12 @@
         <div class="text-secondary">
             Professor: {{ $instructor->user->shortName }}
         </div>
+        @if($this->props['type_class'])
+        <div>
+            <span class="badge badge-outline text-{{$this->props['type_class_color']}}">{{$this->props['type_class']}}</span>
 
-
+        </div>
+        @endif
     </div>
 </x-page.user-block>
 

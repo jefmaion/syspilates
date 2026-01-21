@@ -69,10 +69,9 @@
                     },
                     dateClick: function(info) {
                         Livewire.dispatch('calendar-slot-clicked', {
-                            x:info.jsEvent.pageX,
-                            y:info.jsEvent.pageY,
-                            date: info.dateStr,
-                            allDay: info.allDay
+                            datetime: info.dateStr,
+                            x:info.jsEvent.clientX,
+                            y:info.jsEvent.clientY
                         });
                     },
                     eventClick: function(info) {

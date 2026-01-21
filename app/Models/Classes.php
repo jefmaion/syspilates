@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Enums\ClassStatusEnum;
+use App\Enums\ClassTypesEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classes extends BaseModel
@@ -18,6 +19,7 @@ class Classes extends BaseModel
         'datetime'           => 'datetime',
         'scheduled_datetime' => 'datetime',
         'status'             => ClassStatusEnum::class,
+        'type'=> ClassTypesEnum::class
     ];
 
     public function registration()

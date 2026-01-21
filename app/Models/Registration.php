@@ -46,16 +46,16 @@ class Registration extends BaseModel
         );
     }
 
-    protected function nextClass(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value, $attributes) {
-                // $dates = $this->classScheduled(now(), $this->end);
+    // protected function nextClass(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value, $attributes) {
+    //             // $dates = $this->classScheduled(now(), $this->end);
 
-                return now();
-            }
-        );
-    }
+    //             return now();
+    //         }
+    //     );
+    // }
 
     public function scopeWithinRange(Builder $query, $start, $end): Builder
     {
@@ -90,64 +90,64 @@ class Registration extends BaseModel
     //     return $scheduled;
     // }
 
-    protected function plannedClasses(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value, $attributes) {
-                $schedules = $this->schedule()->with('instructor.user')->get();
-                $period    = CarbonPeriod::create($this->start, $this->end);
-                $data      = [];
+    // protected function plannedClasses(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value, $attributes) {
+    //             $schedules = $this->schedule()->with('instructor.user')->get();
+    //             $period    = CarbonPeriod::create($this->start, $this->end);
+    //             $data      = [];
 
-                foreach ($period as $date) {
-                    foreach ($schedules as $schedule) {
-                        if ($date->dayOfWeek === $schedule->weekday->value) {
-                            $key = $date->format('Y-m-d') . '.' . $schedule->id;
+    //             foreach ($period as $date) {
+    //                 foreach ($schedules as $schedule) {
+    //                     if ($date->dayOfWeek === $schedule->weekday->value) {
+    //                         $key = $date->format('Y-m-d') . '.' . $schedule->id;
 
-                            $data[$key] = [
-                                'registration_id'          => $this->id,
-                                'instructor_id'            => $schedule->instructor_id,
-                                'registration_schedule_id' => $schedule->id,
-                                'student_id'               => $this->student_id,
-                                'datetime'                 => $date->format('Y-m-d') . ' ' . $schedule->time,
-                                'scheduled_datetime'       => $date->format('Y-m-d') . ' ' . $schedule->time,
-                                'executed_datetime'        => null,
-                                'status'                   => ClassStatusEnum::SCHEDULED->color(),
-                            ];
-                        }
-                    }
-                }
+    //                         $data[$key] = [
+    //                             'registration_id'          => $this->id,
+    //                             'instructor_id'            => $schedule->instructor_id,
+    //                             'registration_schedule_id' => $schedule->id,
+    //                             'student_id'               => $this->student_id,
+    //                             'datetime'                 => $date->format('Y-m-d') . ' ' . $schedule->time,
+    //                             'scheduled_datetime'       => $date->format('Y-m-d') . ' ' . $schedule->time,
+    //                             'executed_datetime'        => null,
+    //                             'status'                   => ClassStatusEnum::SCHEDULED->color(),
+    //                         ];
+    //                     }
+    //                 }
+    //             }
 
-                return $data;
-            }
-        );
-    }
+    //             return $data;
+    //         }
+    //     );
+    // }
 
-    protected function agenda(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value, $attributes) {
-                $planned = $this->plannedClasses;
+    // protected function agenda(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function ($value, $attributes) {
+    //             $planned = $this->plannedClasses;
 
-                foreach ($this->classes as $class) {
-                    $key = $class->scheduled_datetime->format('Y-m-d') . '.' . $class->registration_schedule_id;
+    //             foreach ($this->classes as $class) {
+    //                 $key = $class->scheduled_datetime->format('Y-m-d') . '.' . $class->registration_schedule_id;
 
-                    $planned[$key] = [
-                        'class_id'                 => $class->id,
-                        'registration_id'          => $class->registration_id,
-                        'instructor_id'            => $class->instructor_id,
-                        'registration_schedule_id' => $class->registration_schedule_id,
-                        'student_id'               => $class->student_id,
-                        'datetime'                 => $class->datetime->format('Y-m-d H:i:s'),
-                        'scheduled_datetime'       => $class->scheduled_datetime->format('Y-m-d H:i:s'),
-                        'executed_datetime'        => $class->datetime->format('Y-m-d H:i:s'),
-                        'status'                   => $class->status->color(),
-                    ];
-                }
+    //                 $planned[$key] = [
+    //                     'class_id'                 => $class->id,
+    //                     'registration_id'          => $class->registration_id,
+    //                     'instructor_id'            => $class->instructor_id,
+    //                     'registration_schedule_id' => $class->registration_schedule_id,
+    //                     'student_id'               => $class->student_id,
+    //                     'datetime'                 => $class->datetime->format('Y-m-d H:i:s'),
+    //                     'scheduled_datetime'       => $class->scheduled_datetime->format('Y-m-d H:i:s'),
+    //                     'executed_datetime'        => $class->datetime->format('Y-m-d H:i:s'),
+    //                     'status'                   => $class->status->color(),
+    //                 ];
+    //             }
 
-                return array_values($planned);
-            }
-        );
-    }
+    //             return array_values($planned);
+    //         }
+    //     );
+    // }
 
     // public function classScheduled($start = null, $end = null)
     // {

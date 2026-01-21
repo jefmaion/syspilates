@@ -25,10 +25,11 @@ return new class () extends Migration
             $table->foreignId('registration_schedule_id')->nullable()->index();
             $table->dateTime('scheduled_datetime')->nullable();
             $table->dateTime('datetime')->nullable();
-            // $table->date('date');
-            // $table->time('time');
             $table->enum('type', ClassTypesEnum::cases());
             $table->enum('status', ClassStatusEnum::cases());
+            $table->boolean('is_makeup')->default(false);
+            $table->integer('original_class_id')->nullable();
+            $table->integer('makeup_credit_id')->nullable();
             $table->text('evolution')->nullable();
         });
     }
