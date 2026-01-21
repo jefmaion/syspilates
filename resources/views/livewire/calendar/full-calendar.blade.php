@@ -7,6 +7,8 @@
     <link href="{{  asset('css/fc.css') }}" rel="stylesheet" />
     @endsection
 
+ 
+
     <div wire:ignore id="{{ $id }}"  style="width: 100%"></div>
 
     @script
@@ -87,21 +89,31 @@
                     eventContent: function(arg) {
                         return { html: arg.event.title };
                     },
-                    eventAllow: function(dropInfo, draggedEvent) {
-                        if(draggedEvent.extendedProps.type == 'C') {
-
-                            const originalDay = draggedEvent.start.getDay(); // 0=domingo, 1=segunda, etc.
-                            const targetDay = dropInfo.start.getDay();
-                            return originalDay === targetDay;
-                        }
-                        return true;
-                    },
+                    
+                  
                     eventDrop: function(info) {
                         Livewire.dispatch('calendar-event-dropped', {
                             id: info.event.id,
-                            type: info.event.extendedProps.type,
                             start: info.event.startStr,
+                            props: info.event.extendedProps,
                         });
+                    },
+                    eventAllow: function(dropInfo, draggedEvent) { 
+                        
+                        @if($config['allow_move_event_same_day'])
+                            
+                            if(draggedEvent.extendedProps.move) {
+                                return true
+                            }
+
+                            // pega o dia original e o dia alvo 
+                            const originalDay = draggedEvent.start.getDay();
+                            // 0=domingo, 1=segunda... 
+                            const targetDay = dropInfo.start.getDay(); // só permite se for o mesmo dia 
+                            return originalDay === targetDay; 
+                         @else
+                         return true
+                         @endif
                     },
                     eventResize: function(info) {
                         Livewire.dispatch('calendar-event-resized', {

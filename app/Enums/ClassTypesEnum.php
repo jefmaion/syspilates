@@ -6,28 +6,38 @@ namespace App\Enums;
 
 enum ClassTypesEnum: string
 {
-    case NORMAL       = 'aula normal';
-    case REPOSITION   = 'reposicao';
+    case REGULAR      = 'regular';
+    case MAKEUP       = 'makeup';
     case EXPERIMENTAL = 'experimental';
-    case SINGLE       = 'avulsa';
+    case SINGLE       = 'single';
 
     public function label(): string
     {
         return match ($this) {
-            self::NORMAL       => 'Aula Normal',
-            self::REPOSITION   => 'Reposição',
+            self::REGULAR      => 'Aula Normal',
+            self::MAKEUP       => 'Reposição',
             self::EXPERIMENTAL => 'Experimental',
             self::SINGLE       => 'Aula Avulsa',
+        };
+    }
+
+    public function nick(): string
+    {
+        return match ($this) {
+            self::REGULAR      => '',
+            self::MAKEUP       => 'REP',
+            self::EXPERIMENTAL => 'EXP',
+            self::SINGLE       => 'AVU',
         };
     }
 
     public function color(): string
     {
         return match ($this) {
-            self::NORMAL       => 'white',
-            self::REPOSITION   => 'red',
-            self::EXPERIMENTAL => 'warning',
-            self::SINGLE       => 'purple',
+            self::REGULAR      => 'white',
+            self::MAKEUP       => 'info',
+            self::EXPERIMENTAL => 'purple',
+            self::SINGLE       => 'gray',
         };
     }
 

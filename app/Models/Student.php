@@ -22,11 +22,13 @@ class Student extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-    public function registrations() {
+    public function registrations()
+    {
         return $this->hasMany(Registration::class);
     }
 
-    public function makeup() {
+    public function makeup()
+    {
         return $this->hasMany(ClassMakeup::class);
     }
 }

@@ -90,7 +90,7 @@ class RegistrationShow extends Component
     {
         return view('livewire.registration.registration-show', [
             'scheduled' => $this->paginate($this->generateClasses(), $this->pages),
-            'classes' => $this->registration->classes
+            'classes'   => $this->registration->classes,
         ]);
     }
 }

@@ -29,6 +29,7 @@ return new class () extends Migration
             $table->enum('status', ClassStatusEnum::cases());
             $table->boolean('is_makeup')->default(false);
             $table->integer('original_class_id')->nullable();
+            $table->integer('makeup_class_id')->nullable();
             $table->integer('makeup_credit_id')->nullable();
             $table->text('evolution')->nullable();
         });

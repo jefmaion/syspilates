@@ -8,10 +8,9 @@
         <div class="text-secondary">
             Professor: {{ $instructor->user->shortName }}
         </div>
-        @if($this->props['type_class'])
+        @if(isset($this->props['type_class']) && isset($this->props['type_class_color']) && !empty($this->props['type_class_color']))
         <div>
-            <span class="badge badge-outline text-{{$this->props['type_class_color']}}">{{$this->props['type_class']}}</span>
-
+            <span class="badge badge-outline text-{{ $this->props['type_class_color'] }} ">{{$this->props['type_class']}}</span>
         </div>
         @endif
     </div>

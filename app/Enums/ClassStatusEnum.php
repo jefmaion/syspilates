@@ -27,10 +27,21 @@ enum ClassStatusEnum: string
     {
         return match ($this) {
             self::SCHEDULED => 'blue',
-            self::PRESENCE  => 'success',
+            self::PRESENCE  => 'teal',
             self::ABSENSE   => 'danger',
             self::JUSTIFIED => 'warning',
             self::CANCELED  => 'secondary',
+        };
+    }
+
+    public function icon(): string
+    {
+        return match ($this) {
+            self::SCHEDULED => '',
+            self::PRESENCE  => '',
+            self::ABSENSE   => '',
+            self::JUSTIFIED => '',
+            self::CANCELED  => '',
         };
     }
 

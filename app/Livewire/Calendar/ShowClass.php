@@ -7,8 +7,10 @@ namespace App\Livewire\Calendar;
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\ClassMakeup;
+use App\Models\ExperimentalClass;
 use App\Models\Instructor;
 use App\Models\Registration;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -24,6 +26,8 @@ class ShowClass extends Component
 
     public $class;
 
+    public $exp;
+
     public $instructor;
 
     public $status;
@@ -35,13 +39,25 @@ class ShowClass extends Component
     {
         // $this->reset();
 
-        $this->props        = $props;
-        $this->datetime     = $start;
+        $this->props    = $props;
+        $this->datetime = Carbon::parse($start);
+
+        $this->class        = null;
+        $this->exp          = null;
+        $this->registration = null;
+        $this->instructor   = null;
+
+        if ($this->props['type'] == 'exp') {
+            $this->exp = ExperimentalClass::with(['modality', 'instructor.user'])->find($this->props['exp_class_id']);
+
+            return $this->dispatch('show-modal', modal: 'modal-show-exp');
+        }
+
         $this->registration = Registration::find($this->props['registration_id']);
         $this->instructor   = Instructor::with('user')->find($this->props['instructor_id']);
 
         if (isset($this->props['class_id'])) {
-            $this->class = Classes::find($this->props['class_id']);
+            $this->class = Classes::with(['makeupClass.makeup', 'originMakeupClass.origin'])->find($this->props['class_id']);
         }
 
         $this->dispatch('show-modal', modal: 'modal-show-class');
@@ -49,6 +65,8 @@ class ShowClass extends Component
 
     public function makePresence()
     {
+        $this->reset('status', 'evolution');
+
         $this->dispatch('show-modal', modal: 'modal-register-class');
     }
 
@@ -63,7 +81,6 @@ class ShowClass extends Component
     public function save()
     {
         if ($this->props['type'] == 'scheduled') {
-
             $class = Classes::create([
                 'registration_id'          => $this->registration->id,
                 'student_id'               => $this->registration->student_id,
@@ -75,7 +92,6 @@ class ShowClass extends Component
                 'status'                   => $this->status,
                 'evolution'                => $this->evolution,
             ]);
-
         } else {
             $class = Classes::find($this->props['class_id']);
             $class->update([
@@ -84,22 +100,18 @@ class ShowClass extends Component
             ]);
         }
 
-
-        if($this->status == ClassStatusEnum::JUSTIFIED->value || $this->status == ClassStatusEnum::CANCELED->value) {
-
-            if(ClassMakeup::where('origin_class_id', $class->id)->count() > 0)  {
+        if ($this->status == ClassStatusEnum::JUSTIFIED->value || $this->status == ClassStatusEnum::CANCELED->value) {
+            if (ClassMakeup::where('origin_class_id', $class->id)->count() > 0) {
                 return;
             }
 
-
-
             ClassMakeup::create([
-                'student_id'        => $class->student_id,
-                'registration_id'   => $class->registration_id,
-                'origin_class_id'   => $class->id,
-                'reason'            => $this->status,
-                'expires_at'        => now()->addDays(20),
-                'status'            => 'active',
+                'student_id'      => $class->student_id,
+                'registration_id' => $class->registration_id,
+                'origin_class_id' => $class->id,
+                'reason'          => $this->status,
+                'expires_at'      => now()->addDays(20),
+                'status'          => 'active',
             ]);
         }
 

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+return new class () extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('class_makeups', function (Blueprint $table) {
             $table->id();
-           // Relacionamentos principais
+            // Relacionamentos principais
             $table->foreignId('student_id')
                 ->constrained()
                 ->cascadeOnDelete();

@@ -16,10 +16,9 @@ class FullCalendar extends Component
 
     public $endpoint = null;
 
-    // #[On('')]
-    // public function setEvents() {
-    //     $this->dispatch('calendar-set-events', events: $this->events);
-    // }
+    public $config = [
+        'allow_move_event_same_day' => false,
+    ];
 
     public function render(): View | Closure | string
     {
