@@ -6,7 +6,7 @@
             - <span class="text-muted">{{ $registration->modality->name }}</span>
         </h4>
         <div class="text-secondary">
-            Professor: {{ $instructor->user->shortName }}
+            Professor: {{ $instructor->user->shortName ?? null }}
         </div>
         @if(isset($this->props['type_class']) && isset($this->props['type_class_color']) && !empty($this->props['type_class_color']))
         <div>

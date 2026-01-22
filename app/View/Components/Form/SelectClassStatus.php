@@ -16,9 +16,9 @@ class SelectClassStatus extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($except = [])
     {
-        $this->status = ClassStatusEnum::toSelectArray();
+        $this->status = ClassStatusEnum::toSelectArray($except);
     }
 
     /**

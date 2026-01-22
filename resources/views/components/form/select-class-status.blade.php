@@ -1,3 +1,5 @@
+@props(['except'=> null])
+
 <x-form.select {{ $attributes }}>
     <option value=""></option>
     @foreach($status as $id => $label)

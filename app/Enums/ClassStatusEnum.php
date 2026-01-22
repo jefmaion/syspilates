@@ -45,11 +45,15 @@ enum ClassStatusEnum: string
         };
     }
 
-    public static function toSelectArray(): array
+    public static function toSelectArray($except = []): array
     {
         $array = [];
 
         foreach (self::cases() as $case) {
+            if (in_array($case, $except)) {
+                continue;
+            }
+
             $array[$case->value] = $case->label(); // Use $case->value for the key and $case->name for the label
         }
 

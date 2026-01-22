@@ -104,19 +104,12 @@ class CalendarPage extends Component
                     'className' => $eventClass . 'bg-' . ClassStatusEnum::SCHEDULED->color(),
                     'textColor' => 'white',
 
-                    'event_id' => $reg->id,
-
+                    'event_id'                 => $reg->id,
                     'type'                     => 'scheduled',
-                    'type_class'               => '',
-                    'type_class_color'         => '',
-                    'registration_id'          => $reg->id,
                     'instructor_id'            => $item['instructor_id'],
                     'registration_schedule_id' => $item['id'],
-                    'student_id'               => $reg->student_id,
                     'datetime'                 => $item['datetime'],
                     'scheduled_datetime'       => $item['datetime'],
-                    'executed_datetime'        => null,
-                    'status'                   => ClassStatusEnum::SCHEDULED->value,
                     '_type'                    => ClassTypesEnum::REGULAR->value,
                 ];
             }
@@ -140,20 +133,13 @@ class CalendarPage extends Component
                 'className' => $eventClass . $bgColor,
                 'textColor' => 'white',
 
-                'event_id'                 => $class->id,
-                'type'                     => 'class',
-                'type_class'               => $class->type->label(),
-                'type_class_color'         => $class->type->color(),
-                'class_id'                 => $class->id,
-                'registration_id'          => $class->registration_id,
-                'instructor_id'            => $class->instructor_id,
-                'registration_schedule_id' => $class->registration_schedule_id,
-                'student_id'               => $class->student_id,
-                'datetime'                 => $class->datetime->format('Y-m-d H:i:s'),
-                'scheduled_datetime'       => $class->scheduled_datetime->format('Y-m-d H:i:s'),
-                'executed_datetime'        => $class->datetime->format('Y-m-d H:i:s'),
-                'status'                   => $class->status->value,
-                '_type'                    => $class->type->value,
+                'event_id'      => $class->id,
+                'type'          => 'class',
+                'instructor_id' => $class->instructor_id,
+                // 'registration_schedule_id' => $class->registration_schedule_id,
+                'datetime'           => $class->datetime->format('Y-m-d H:i:s'),
+                'scheduled_datetime' => $class->scheduled_datetime->format('Y-m-d H:i:s'),
+                '_type'              => $class->type->value,
             ];
 
             $events[$key] = $item;
@@ -171,11 +157,9 @@ class CalendarPage extends Component
                 'textColor' => 'white',
 
                 'event_id'      => $exp->id,
-                'exp_class_id'  => $exp->id,
-                'type'          => 'exp',
+                'type'          => 'class',
                 'instructor_id' => $exp->instructor_id,
                 'datetime'      => $exp->datetime->format('Y-m-d H:i:s'),
-                'status'        => $exp->status->value,
                 'move'          => true,
                 '_type'         => ClassTypesEnum::EXPERIMENTAL->value,
             ];
@@ -199,10 +183,15 @@ class CalendarPage extends Component
     #[On('calendar-show-event')]
     public function open($id, $start, $props)
     {
-        $this->currentType = $props['type'];
-        $this->currentId   = $props['event_id'];
+        // $props['datetime'] = Carbon::parse($props['datetime']);
 
-        // $this->dispatch('show-modal', 'modal-show-events');
+        if ($props['type'] == 'scheduled') {
+            return $this->dispatch('event-show', id: $props['event_id'], props:$props)->to(ShowClassScheduled::class);
+        }
+
+        if ($props['type'] == 'class') {
+            return $this->dispatch('event-show', id: $props['event_id'], props:$props)->to(ShowClassReal::class);
+        }
     }
 
     #[On('calendar-slot-clicked')]
