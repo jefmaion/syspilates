@@ -26,6 +26,8 @@ class ShowClassCard extends Component
 
     // ----
 
+    public $data = [];
+
     public $eventObjective;
 
     public $eventHistory;
@@ -103,6 +105,18 @@ class ShowClassCard extends Component
         $this->eventStudent    = $student;
         $this->eventModality   = $modality;
         $this->eventStatus     = $status;
+
+        $this->data = [
+            'datetime'   => $this->eventDatetime,
+            'status'     => $status,
+            'modality'   => $modality,
+            'student'    => $student,
+            'instructor' => $instructor,
+            'history'    => $history,
+            'objective'  => $objective,
+        ];
+
+        // dd($this->data);
     }
 
     public function render(): View | Closure | string
