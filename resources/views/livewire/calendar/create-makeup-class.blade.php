@@ -1,0 +1,65 @@
+<x-modal.modal class="blur" id="modal-makeup" sisze="modal-lg">
+    
+    <form wire:submit="saveMakeup">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title align-items-center" id="modalTitleId">
+                    <x-icons.calendar /> Agendar Reposição - {{ $datetime?->format('d/m/Y H:i') ?? null }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pst-2">
+                <div class="mb-3">
+
+                    <label class="form-label">Aluno</label>
+                    <x-form.select name="student" wire:model='makeupStudentId'
+                        wire:change='listAvailableClass($event.target.value)'>
+                        <option value=""></option>
+
+                        @if($students)
+                        @foreach($students as $key => $name)
+                        <option value="{{$key}}">{{$name}}</option>
+                        @endforeach
+                        @endif
+                    </x-form.select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">Aula a repor</label>
+                    <x-form.select name="student" wire:model='makeupId'>
+                        <option value=""></option>
+                        @if($makeupClasses)
+                        @foreach($makeupClasses as $key => $name)
+                        <option value="{{$key}}">{{$name}}</option>
+                        @endforeach
+                        @endif
+                    </x-form.select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Professor</label>
+                    <x-form.select-instructor wire:model='makeupInstructorId' />
+                </div>
+            </div>
+
+            <div class="modal-footer border-0 bg-transparent">
+                <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    <x-page.spinner>
+                        <span class="d-flex align-items-center">
+                            <x-icons.success class="me-2" /> <span>Salvar</span>
+                        </span>
+                    </x-page.spinner>
+                </button>
+
+
+
+            </div>
+        </div>
+    </form>
+
+</x-modal.modal>

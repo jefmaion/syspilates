@@ -20,9 +20,6 @@
     </x-page.page-header>
 
     <x-page.page-body>
-
-
-
         <div class="row flex-sfill">
 
             <div class="col-auto">
@@ -53,41 +50,41 @@
                 </x-form.select>
             </div>
         </div>
-
-
-
         <livewire:calendar.full-calendar :endpoint="route('events')" wire:ignore.self wire:key='calendar' id="calendar" :config="$calendarConfig" />
+        <livewire:calendar.show-class-card wire:key='{{ $currentId }}' />
+        <livewire:calendar.form-register-class wire:key='form-{{ $currentId }}' />
 
-        <livewire:calendar.show-class-scheduled  />
-        <livewire:calendar.show-class-real  />
-        <livewire:calendar.form-register-class  />
-        
-      
+        <livewire:calendar.create-makeup-class />
 
-        
+        @if ($showSlotMenu)
+            <div class="dropdown-menu show shadow-lg" style="
+                    position: fixed;
+                    left: {{ $slotMenuX }}px;
+                    top: {{ $slotMenuY }}px;
+                    z-index: 2000;
+                    min-width: 220px;
+                " wire:click.outside="$set('showSlotMenu', false)">
+                <h6 class="dropdown-header">
+                    {{ \Carbon\Carbon::parse($slotDatetime)->format('d/m/Y H:i') }}
+                </h6>
 
+                <a href="#" class="dropdown-item" wire:click.prevent="openScheduleClass('{{ $slotDatetime }}')">
+                    Agendar aula
+                </a>
 
+                <a href="#" class="dropdown-item" wire:click="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })"
+                    wire:click.prevent="$set('showSlotMenu', false)">
+                    Agendar reposiçãos
+                </a>
 
+                <div class="dropdown-divider"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <a href="#" class="dropdown-item text-muted" wire:click.prevent="$set('showSlotMenu', false)">
+                    ✖ Cancelar
+                </a>
+            </div>
+            
+        @endif
 
 
     </x-page.page-body>

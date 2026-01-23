@@ -23,6 +23,8 @@ class CalendarPage extends Component
 
     public $currentId;
 
+    public $currentProps;
+
     public $modality_id;
 
     public $showSlotMenu = false;
@@ -56,6 +58,8 @@ class CalendarPage extends Component
     public $expInstructorId;
 
     public $expComments;
+
+    public $showEvent = false;
 
     public function events()
     {
@@ -183,15 +187,8 @@ class CalendarPage extends Component
     #[On('calendar-show-event')]
     public function open($id, $start, $props)
     {
-        // $props['datetime'] = Carbon::parse($props['datetime']);
-
-        if ($props['type'] == 'scheduled') {
-            return $this->dispatch('event-show', id: $props['event_id'], props:$props)->to(ShowClassScheduled::class);
-        }
-
-        if ($props['type'] == 'class') {
-            return $this->dispatch('event-show', id: $props['event_id'], props:$props)->to(ShowClassReal::class);
-        }
+        $this->currentId = $id;
+        $this->dispatch('show-class-card', props: $props);
     }
 
     #[On('calendar-slot-clicked')]
@@ -199,121 +196,124 @@ class CalendarPage extends Component
     {
         $this->slotMenuX    = $x;
         $this->slotMenuY    = $y;
-        $this->slotDatetime = Carbon::parse($datetime);
+        $this->slotDatetime = $datetime;
         $this->showSlotMenu = true;
     }
 
-    public function makeup($datetime)
-    {
-        $this->slotDatetime = Carbon::parse($datetime);
+    // public function makeup($datetime)
+    // {
+    //     $this->slotDatetime = Carbon::parse($datetime);
 
-        $this->makeupStudents = Student::with(['makeup', 'user'])->whereHas('makeup', function ($q) {
-            return $q->where('status', 'active')->where('expires_at', '>=', now())->orderBy('expires_at');
-        })->get()->sortBy('user.name')->pluck('user.name', 'id');
+    //     $this->makeupStudents = Student::with(['makeup', 'user'])->whereHas('makeup', function ($q) {
+    //         return $q->where('status', 'active')->where('expires_at', '>=', now())->orderBy('expires_at');
+    //     })->get()->sortBy('user.name')->pluck('user.name', 'id');
 
-        $this->dispatch('show-modal', modal:'modal-makeup');
-    }
+    //     $this->dispatch('show-modal', modal:'modal-makeup');
+    // }
 
-    public function createExperimentalClass($datetime = null)
-    {
-        $this->slotDatetime = Carbon::parse($datetime);
-        $this->dispatch('show-modal', modal:'modal-experimental');
-    }
+    // public function createExperimentalClass($datetime = null)
+    // {
+    //     $this->slotDatetime = Carbon::parse($datetime);
+    //     $this->dispatch('show-modal', modal:'modal-experimental');
+    // }
 
-    public function saveExperimental()
-    {
-        ExperimentalClass::create([
-            'name'          => $this->expName,
-            'phone'         => $this->expPhone,
-            'datetime'      => $this->slotDatetime,
-            'instructor_id' => $this->expInstructorId,
-            'modality_id'   => $this->expModalityId,
-            'comments'      => $this->expComments,
-        ]);
+    // public function saveExperimental()
+    // {
+    //     ExperimentalClass::create([
+    //         'name'          => $this->expName,
+    //         'phone'         => $this->expPhone,
+    //         'datetime'      => $this->slotDatetime,
+    //         'instructor_id' => $this->expInstructorId,
+    //         'modality_id'   => $this->expModalityId,
+    //         'comments'      => $this->expComments,
+    //     ]);
 
-        $this->dispatch('hide-modal', modal:'modal-experimental');
-        $this->dispatch('refresh-calendar');
-    }
+    //     $this->dispatch('hide-modal', modal:'modal-experimental');
+    //     $this->dispatch('refresh-calendar');
+    // }
 
-    public function listMakeupClass($studentId)
-    {
-        $classes = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
+    // public function listMakeupClass($studentId)
+    // {
+    //     $classes = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
 
-        foreach ($classes as $class) {
-            $this->makeupClasses[$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . $class->origin->datetime->format('l') . ' - ' . $class->origin->status->label();
-        }
+    //     dd($classes);
 
-        // $this->makeupClasses = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get()->pluck('origin.datetime', 'id');
-    }
+    //     foreach ($classes as $class) {
+    //         $this->makeupClasses[$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . $class->origin->datetime->format('l') . ' - ' . $class->origin->status->label();
+    //     }
 
-    public function saveMakeup()
-    {
-        // dd($this->makeupInstructorId, $this->makeupStudentId, $this->makeupId, $this->slotDatetime);
+    //     // $this->makeupClasses = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get()->pluck('origin.datetime', 'id');
+    // }
 
-        $makeup = ClassMakeup::with('origin')->find($this->makeupId);
+    // public function saveMakeup()
+    // {
+    //     // dd($this->makeupInstructorId, $this->makeupStudentId, $this->makeupId, $this->slotDatetime);
 
-        $origin = Classes::find($makeup->origin_class_id);
+    //     $makeup = ClassMakeup::with('origin')->find($this->makeupId);
 
-        $class = Classes::create([
-            'student_id'      => $makeup->student_id,
-            'registration_id' => $makeup->origin->registration_id,
+    //     $origin = Classes::find($makeup->origin_class_id);
 
-            'modality_id'   => $makeup->origin->modality_id,
-            'instructor_id' => $this->makeupInstructorId,
+    //     $class = Classes::create([
+    //         'student_id'      => $makeup->student_id,
+    //         'registration_id' => $makeup->origin->registration_id,
 
-            'scheduled_datetime' => $this->slotDatetime,
-            'datetime'           => $this->slotDatetime,
+    //         'modality_id'   => $makeup->origin->modality_id,
+    //         'instructor_id' => $this->makeupInstructorId,
 
-            'status'            => ClassStatusEnum::SCHEDULED,
-            'type'              => ClassTypesEnum::MAKEUP,
-            'is_makeup'         => true,
-            'original_class_id' => $makeup->origin_class_id,
-            'makeup_credit_id'  => $makeup->id,
-        ]);
+    //         'scheduled_datetime' => $this->slotDatetime,
+    //         'datetime'           => $this->slotDatetime,
 
-        // 2) Consome o crédito
-        $makeup->update([
-            'status'        => 'used',
-            'used_at'       => now(),
-            'used_class_id' => $class->id,
-        ]);
+    //         'status'            => ClassStatusEnum::SCHEDULED,
+    //         'type'              => ClassTypesEnum::MAKEUP,
+    //         'is_makeup'         => true,
+    //         'original_class_id' => $makeup->origin_class_id,
+    //         'makeup_credit_id'  => $makeup->id,
+    //     ]);
 
-        $origin->update(['makup_class_id' => $class->id]);
+    //     // 2) Consome o crédito
+    //     $makeup->update([
+    //         'status'        => 'used',
+    //         'used_at'       => now(),
+    //         'used_class_id' => $class->id,
+    //     ]);
 
-        $this->dispatch('hide-modal', modal:'modal-makeup');
-        $this->dispatch('refresh-calendar');
-    }
+    //     $origin->update(['makup_class_id' => $class->id]);
 
-    #[On('calendar-event-dropped')]
-    public function createClassOnMove($id, $start, $props)
-    {
-        if ($props['type'] == 'scheduled') {
-            $registration = Registration::find($props['registration_id']);
+    //     $this->dispatch('hide-modal', modal:'modal-makeup');
+    //     $this->dispatch('refresh-calendar');
+    //     $this->dispatch('$refresh');
+    // }
 
-            $class = Classes::create([
-                'registration_id'          => $registration->id,
-                'student_id'               => $registration->student_id,
-                'instructor_id'            => $props['instructor_id'],
-                'modality_id'              => $registration->modality_id,
-                'datetime'                 => Carbon::parse($start),
-                'scheduled_datetime'       => $props['scheduled_datetime'],
-                'registration_schedule_id' => $props['registration_schedule_id'],
-                'status'                   => ClassStatusEnum::SCHEDULED,
-            ]);
-        } else {
-            if ($props['type'] == 'exp') {
-                $class = ExperimentalClass::find($props['exp_class_id']);
-            } else {
-                $class = Classes::find($props['class_id']);
-            }
+    // #[On('calendar-event-dropped')]
+    // public function createClassOnMove($id, $start, $props)
+    // {
+    //     if ($props['type'] == 'scheduled') {
+    //         $registration = Registration::find($props['registration_id']);
 
-            $class->update([
-                'datetime' => Carbon::parse($start),
-            ]);
-        }
+    //         $class = Classes::create([
+    //             'registration_id'          => $registration->id,
+    //             'student_id'               => $registration->student_id,
+    //             'instructor_id'            => $props['instructor_id'],
+    //             'modality_id'              => $registration->modality_id,
+    //             'datetime'                 => Carbon::parse($start),
+    //             'scheduled_datetime'       => $props['scheduled_datetime'],
+    //             'registration_schedule_id' => $props['registration_schedule_id'],
+    //             'status'                   => ClassStatusEnum::SCHEDULED,
+    //         ]);
+    //     } else {
+    //         if ($props['type'] == 'exp') {
+    //             $class = ExperimentalClass::find($props['exp_class_id']);
+    //         } else {
+    //             $class = Classes::find($props['class_id']);
+    //         }
 
-        $this->dispatch('refresh-calendar');
-    }
+    //         $class->update([
+    //             'datetime' => Carbon::parse($start),
+    //         ]);
+    //     }
+
+    //     $this->dispatch('refresh-calendar');
+    // }
 
     public function render(): View | Closure | string
     {

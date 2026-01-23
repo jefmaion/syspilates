@@ -78,47 +78,47 @@ class ShowClass extends Component
         $this->dispatch('show-modal', modal: 'modal-register-class');
     }
 
-    public function save()
-    {
-        if ($this->props['type'] == 'scheduled') {
-            $class = Classes::create([
-                'registration_id'          => $this->registration->id,
-                'student_id'               => $this->registration->student_id,
-                'instructor_id'            => $this->props['instructor_id'],
-                'modality_id'              => $this->registration->modality_id,
-                'datetime'                 => $this->datetime,
-                'scheduled_datetime'       => $this->props['scheduled_datetime'],
-                'registration_schedule_id' => $this->props['registration_schedule_id'],
-                'status'                   => $this->status,
-                'evolution'                => $this->evolution,
-            ]);
-        } else {
-            $class = Classes::find($this->props['class_id']);
-            $class->update([
-                'status'    => $this->status,
-                'evolution' => $this->evolution,
-            ]);
-        }
+    // public function save()
+    // {
+    //     if ($this->props['type'] == 'scheduled') {
+    //         $class = Classes::create([
+    //             'registration_id'          => $this->registration->id,
+    //             'student_id'               => $this->registration->student_id,
+    //             'instructor_id'            => $this->props['instructor_id'],
+    //             'modality_id'              => $this->registration->modality_id,
+    //             'datetime'                 => $this->datetime,
+    //             'scheduled_datetime'       => $this->props['scheduled_datetime'],
+    //             'registration_schedule_id' => $this->props['registration_schedule_id'],
+    //             'status'                   => $this->status,
+    //             'evolution'                => $this->evolution,
+    //         ]);
+    //     } else {
+    //         $class = Classes::find($this->props['class_id']);
+    //         $class->update([
+    //             'status'    => $this->status,
+    //             'evolution' => $this->evolution,
+    //         ]);
+    //     }
 
-        if ($this->status == ClassStatusEnum::JUSTIFIED->value || $this->status == ClassStatusEnum::CANCELED->value) {
-            if (ClassMakeup::where('origin_class_id', $class->id)->count() > 0) {
-                return;
-            }
+    //     if ($this->status == ClassStatusEnum::JUSTIFIED->value || $this->status == ClassStatusEnum::CANCELED->value) {
+    //         if (ClassMakeup::where('origin_class_id', $class->id)->count() > 0) {
+    //             return;
+    //         }
 
-            ClassMakeup::create([
-                'student_id'      => $class->student_id,
-                'registration_id' => $class->registration_id,
-                'origin_class_id' => $class->id,
-                'reason'          => $this->status,
-                'expires_at'      => now()->addDays(20),
-                'status'          => 'active',
-            ]);
-        }
+    //         ClassMakeup::create([
+    //             'student_id'      => $class->student_id,
+    //             'registration_id' => $class->registration_id,
+    //             'origin_class_id' => $class->id,
+    //             'reason'          => $this->status,
+    //             'expires_at'      => now()->addDays(20),
+    //             'status'          => 'active',
+    //         ]);
+    //     }
 
-        $this->dispatch('hide-modal', modal: 'modal-register-class');
-        $this->dispatch('refresh-calendar');
-        $this->dispatch('show-event-refresh');
-    }
+    //     $this->dispatch('hide-modal', modal: 'modal-register-class');
+    //     $this->dispatch('refresh-calendar');
+    //     $this->dispatch('show-event-refresh');
+    // }
 
     public function render(): View | Closure | string
     {

@@ -36,18 +36,23 @@ class ShowClassReal extends Component
 
         $this->props = $props;
 
-        $this->class = Classes::with(['registration'])->find($id);
+        $this->class = Classes::with(['registration', 'modality'])->find($id);
 
         $this->registration = $this->class->registration;
         $this->datetime     = Carbon::parse($this->props['datetime']);
         $this->instructor   = $this->class->instructor;
 
-        $this->dispatch('show-modal', modal:'modal-show-real');
+        $this->dispatch('show-modal', modal: 'modal-show-real');
     }
 
     public function editClass()
     {
-        $this->dispatch('show-form-register', rules:null, onSubmit:$this::class, data:['status' => $this->class->status, 'evolution' => $this->class->evolution]);
+        $data = [
+            'status'    => $this->class->status->value,
+            'evolution' => $this->class->evolution,
+        ];
+
+        $this->dispatch('show-form-register', rules: null, onSubmit: $this::class, data: $data);
     }
 
     #[On('save-class')]

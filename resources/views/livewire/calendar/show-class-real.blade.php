@@ -10,17 +10,11 @@
             </div>
             <div class="modal-body pst-2">
 
-                <div class="row d-flex flex-fill mbs-4">
-                    <div class="col">
-                        @include('livewire.calendar.event-header')
-                    </div>
+                <x-page.event-header :student="$class->student->user" :modality="$class->modality->name ?? null" :instructor="$instructor->user->shortName" :time="$datetime->format('H:i')">
+                    <x-page.status color="{{  $this->class->status->color() }}">{{$this->class->status->label() }}</x-page.status>
+                </x-page.event-header>
 
-                    <div class="col-auto d-flex align-items-center justify-content-end">
-                        <x-page.status color="{{  $this->class->status->color() }}">
-                            {{$this->class->status->label() }}</x-page.status>
-                    </div>
-
-                </div>
+                
             </div>
 
             <div class="modal-body">

@@ -8,17 +8,11 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
-
-                    
-
-                    @if($type !== 'presence')
                     <div class="mb-3">
                         <label for="" class="form-label">Status</label>
-                        <x-form.select-class-status name="status" wire:model='status' :except="$fieldsExcept" />
+                        <x-form.select-class-status name="status" wire:model='status' />
                     </div>
-                    @endif
 
                     <div class="mb-3">
                         <label class="form-label">Evolução/Comentários</label> 

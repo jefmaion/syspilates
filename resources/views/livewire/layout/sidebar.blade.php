@@ -50,7 +50,7 @@
                
                 <li class="nav-item {{ $item['active'] ? 'active' :  '' }} @if(isset($item['submenu'])) dropdown @endif">
                     <a  class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"  @if(isset($item['submenu'])) href="#navbar-{{ $title }}"
-                        data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" @else wire:navigate href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
+                        data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" @else wire:navisgate href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             {!! $item['icon'] !!}
                         </span>

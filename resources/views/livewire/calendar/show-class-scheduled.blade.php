@@ -5,25 +5,16 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title align-items-center" id="modalTitleId">
                     
-                    <x-icons.calendar />{{ ucfirst($datetime->translatedFormat('l, d \d\e F \d\e Y - H:i\h\r\s')); }}
+                    <x-icons.calendar />{{ ($datetime) ? ucfirst($datetime->translatedFormat('l, d \d\e F \d\e Y - H:i\h\r\s')) : ''; }}
                    
                    
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body pst-2">
-
-                <div class="row d-flex flex-fill mbs-4">
-                    <div class="col">
-                        @include('livewire.calendar.event-header')
-                    </div>
-
-                    <div class="col-auto d-flex align-items-center justify-content-end">
-                        <x-page.status color="{{  App\Enums\ClassStatusEnum::SCHEDULED->color() }}">
-                            {{App\Enums\ClassStatusEnum::SCHEDULED->label() }}</x-page.status>
-                    </div>
-
-                </div>
+                <x-page.event-header :student="$registration->student->user" :modality="$registration->modality->name ?? null" :instructor="$instructor->user->shortName" :time="$datetime->format('H:i')">
+                    <x-page.status color="{{  App\Enums\ClassStatusEnum::SCHEDULED->color() }}">{{App\Enums\ClassStatusEnum::SCHEDULED->label() }}</x-page.status>
+                </x-page.event-header>
             </div>
 
             <div class="modal-body">

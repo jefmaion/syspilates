@@ -55,6 +55,11 @@ class Classes extends BaseModel
         return $this->belongsTo(Student::class);
     }
 
+    public function modality()
+    {
+        return $this->belongsTo(Modality::class);
+    }
+
     public function instructor()
     {
         return $this->belongsTo(Instructor::class);
