@@ -1,10 +1,12 @@
 <x-modal.modal class="blur" id="modal-makeup" sise="modal-lg">
 
+    @if($students)
+
     <form wire:submit="saveMakeup">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <h5 class="modal-title align-items-center" id="modalTitleId">
-                    <x-icons.calendar /> Agendar Reposição - {{ $datetime?->format('d/m/Y H:i') ?? null }}
+                    <x-icons.calendar /> Agendar Reposição
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -21,7 +23,7 @@
                             {{-- <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $user->name }}</a> --}}
                         </div>
             </div>
-            <div class="modal-body pt-3">
+            <div class="modal-body">
 
 
 
@@ -29,15 +31,11 @@
                 <div class="mb-3">
 
                     <label class="form-label">Aluno</label>
-                    <x-form.select name="student" wire:model='makeupStudentId'
-                        wire:change='listAvailableClass($event.target.value)'>
+                    <x-form.select name="student" wire:model='makeupStudentId' wire:change='listAvailableClass($event.target.value)'>
                         <option value=""></option>
-
-                        @if($students)
                         @foreach($students as $key => $name)
-                        <option value="{{$key}}">{{$name}}</option>
+                            <option value="{{$key}}">{{$name}}</option>
                         @endforeach
-                        @endif
                     </x-form.select>
 
                 </div>
@@ -48,9 +46,9 @@
                     <x-form.select name="student" wire:model='makeupId'>
                         <option value=""></option>
                         @if($makeupClasses)
-                        @foreach($makeupClasses as $key => $name)
-                        <option value="{{$key}}">{{$name}}</option>
-                        @endforeach
+                            @foreach($makeupClasses as $key => $item)
+                            <option value="{{$item->id}}">{{ $item->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($item->origin->datetime->translatedFormat('l')) . ' - ' . $item->origin->status->label() }}</option>
+                            @endforeach
                         @endif
                     </x-form.select>
 
@@ -85,5 +83,6 @@
             </div>
         </div>
     </form>
+    @endif
 
 </x-modal.modal>

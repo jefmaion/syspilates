@@ -32,7 +32,6 @@ class CreateRegistration extends Component
     public function save()
     {
         $registration = $this->form->create();
-        // $this->dispatch('hide-modal', modal:'modal-create-registration');
         $this->redirect(route('registration.show', $registration), navigate:true);
     }
 

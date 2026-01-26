@@ -52,17 +52,18 @@ class RegistrationShow extends Component
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
 
-        $period  = CarbonPeriod::create(now(), $this->registration->end);
+        $period = CarbonPeriod::create(now(), $this->registration->end);
+
         foreach ($period as $date) {
             foreach ($this->registration->schedule as $schedule) {
                 if ($date->dayOfWeek === $schedule->weekday->value) {
                     $this->registration->classes()->create([
                         'student_id'               => $this->registration->student_id,
                         'modality_id'              => $this->registration->modality_id,
-                        'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
+                        'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
                         'instructor_id'            => $schedule->instructor_id,
-                        'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
-                        'type' => ClassTypesEnum::REGULAR,
+                        'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
+                        'type'                     => ClassTypesEnum::REGULAR,
                         'registration_schedule_id' => $schedule->id,
                         'status'                   => ClassStatusEnum::SCHEDULED,
                     ]);

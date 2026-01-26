@@ -60,7 +60,7 @@ class Registration extends BaseModel
 
             foreach ($this->schedule as $schedule) {
                 if ($date->dayOfWeek === $schedule->weekday->value) {
-                    $key           = $date->format('Y-m-d ' . $schedule->time) . '.' . $schedule->id.'.'.$this->id;
+                    $key           = $date->format('Y-m-d ' . $schedule->time) . '.' . $schedule->id . '.' . $this->id;
                     $classes[$key] = array_merge($schedule->toArray(), ['datetime' => $date->format('Y-m-d ' . $schedule->time)]);
                 }
             }

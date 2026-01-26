@@ -22,8 +22,10 @@ return new class () extends Migration
             $table->foreignId('modality_id')->nullable()->index();
             $table->foreignId('instructor_id')->nullable()->index();
             $table->dateTime('datetime')->nullable();
+            $table->float('value')->nullable();
             $table->enum('status', ClassStatusEnum::cases());
             $table->text('comments')->nullable();
+            $table->text('instructor_comments')->nullable();
         });
     }
 

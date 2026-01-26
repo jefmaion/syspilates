@@ -51,10 +51,15 @@
             </div>
         </div>
         <livewire:calendar.full-calendar :endpoint="route('events')" wire:ignore.self wire:key='calendar' id="calendar" :config="$calendarConfig" />
+
         <livewire:calendar.show-class-card wire:key='{{ $currentId }}' />
         <livewire:calendar.form-register-class wire:key='form-{{ $currentId }}' />
 
         <livewire:calendar.create-makeup-class />
+
+        <livewire:calendar.show-experimental-class />
+        <livewire:calendar.create-experimental-class />
+        <livewire:calendar.register-experimental-class  />
 
         @if ($showSlotMenu)
             <div class="dropdown-menu show shadow-lg" style="
@@ -68,13 +73,12 @@
                     {{ \Carbon\Carbon::parse($slotDatetime)->format('d/m/Y H:i') }}
                 </h6>
 
-                <a href="#" class="dropdown-item" wire:click.prevent="openScheduleClass('{{ $slotDatetime }}')">
+                <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-experimental-class', { datetime: '{{ $slotDatetime }}' })" wire:click.prevent="$set('showSlotMenu', false)">
                     Agendar aula
                 </a>
 
-                <a href="#" class="dropdown-item" wire:click="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })"
-                    wire:click.prevent="$set('showSlotMenu', false)">
-                    Agendar reposiçãos
+                <a href="#" class="dropdown-item" wire:click="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })" wire:click.prevent="$set('showSlotMenu', false)">
+                    Agendar reposição
                 </a>
 
                 <div class="dropdown-divider"></div>

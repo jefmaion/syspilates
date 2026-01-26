@@ -24,8 +24,6 @@ class Classes extends BaseModel
         'type'               => ClassTypesEnum::class,
     ];
 
-
-
     protected function canEdit(): Attribute
     {
         return Attribute::make(

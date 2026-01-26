@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Storage;
 
 class AvatarUploader extends Component
 {
     use WithFileUploads;
 
     public $photo;
+
     public $croppedImage;
+
     public $currentAvatar;
 
     public function mount($currentAvatar = null)
@@ -36,7 +40,7 @@ class AvatarUploader extends Component
 
     public function saveCropped()
     {
-        if (!$this->croppedImage) {
+        if (! $this->croppedImage) {
             return;
         }
 

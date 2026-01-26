@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Database\Seeders;
 
-use App\Enums\ClassStatusEnum;
-use App\Enums\ClassTypesEnum;
+use App\Actions\CreateRegistration;
 use App\Enums\PlanEnum;
 use App\Models\Instructor;
 use App\Models\Modality;
@@ -13,7 +12,6 @@ use App\Models\Registration;
 use App\Models\Student;
 use App\View\Components\Form\SelectTime;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use Illuminate\Database\Seeder;
 
 class RegistrationSeeder extends Seeder
@@ -38,7 +36,17 @@ class RegistrationSeeder extends Seeder
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);
 
-            $registration = Registration::create([
+            $schedule = [];
+
+            for ($i = 0; $i <= $classPerWeek; $i++) {
+                $schedule[] = [
+                    'weekday'       => rand(0, 6),
+                    'time'          => fake()->randomElements(array_keys($times->times))[0],
+                    'instructor_id' => Instructor::inRandomOrder()->first()->id,
+                ];
+            }
+
+            CreateRegistration::run([
                 'student_id'     => Student::inRandomOrder()->first()->id,
                 'modality_id'    => Modality::inRandomOrder()->first()->id,
                 'duration'       => $duration,
@@ -48,35 +56,8 @@ class RegistrationSeeder extends Seeder
                 'start'          => $date,
                 'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),
                 'status'         => 'active',
+                'schedule'       => $schedule,
             ]);
-
-            for ($i = 0; $i <= $classPerWeek; $i++) {
-                $registration->schedule()->create([
-                    'weekday'       => rand(0, 6),
-                    'time'          => fake()->randomElements(array_keys($times->times))[0],
-                    'instructor_id' => Instructor::inRandomOrder()->first()->id,
-                ]);
-            }
-
-            $period  = CarbonPeriod::create($registration->start, $registration->end);
-            $classes = [];
-
-            foreach ($period as $date) {
-                foreach ($registration->schedule as $schedule) {
-                    if ($date->dayOfWeek === $schedule->weekday->value) {
-                        $registration->classes()->create([
-                            'student_id'               => $registration->student_id,
-                            'modality_id'              => $registration->modality_id,
-                            'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
-                            'instructor_id'            => $schedule->instructor_id,
-                            'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
-                            'type' => ClassTypesEnum::REGULAR,
-                            'registration_schedule_id' => $schedule->id,
-                            'status'                   => ClassStatusEnum::SCHEDULED,
-                        ]);
-                    }
-                }
-            }
         }
     }
 }

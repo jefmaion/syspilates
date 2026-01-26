@@ -42,23 +42,20 @@ class CreateMakeupClass extends Component
 
         $this->datetime = Carbon::parse($datetime ?? now());
 
-        $students = Student::with(['makeup', 'user'])->whereHas('makeup', function ($q) {
-            return $q->where('status', 'active')->where('expires_at', '>=', now())->orderBy('expires_at');
-        })->get()->sortBy('user.name');
+        $this->loadData();
 
-        $this->classes = [];
-
-        foreach ($students as $student) {
-            $classes = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $student->id)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
-            $this->_classes = $classes;
-            foreach ($classes as $class) {
-                $this->classes[$student->id][$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($class->origin->datetime->translatedFormat('l')) . ' - ' . $class->origin->status->label();
-            }
+        if ($this->students->isEmpty()) {
+            return lw_alert($this, 'Não existem aulas de reposição para serem agendadas');
         }
 
-        $this->students = $students->pluck('user.name', 'id');
-
         $this->dispatch('show-modal', modal:'modal-makeup');
+    }
+
+    public function loadData()
+    {
+        $this->students = Student::with(['makeup', 'user'])->whereHas('makeup', function ($q) {
+            return $q->where('status', 'active')->where('expires_at', '>=', now())->orderBy('expires_at');
+        })->get()->sortBy('user.name')->pluck('user.shortName', 'id');
     }
 
     public function listAvailableClass($studentId)
@@ -67,21 +64,11 @@ class CreateMakeupClass extends Component
             return;
         }
 
-        $this->makeupClasses = $this->classes[$studentId];
-        // $classes = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
-
-        // dd($classes);
-
-        // foreach ($classes as $class) {
-        //     $this->makeupClasses[$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . $class->origin->datetime->format('l') . ' - ' . $class->origin->status->label();
-        // }
+        $this->makeupClasses = ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
     }
 
     public function saveMakeup()
     {
-
-
-
         // dd($this->makeupInstructorId, $this->makeupStudentId, $this->makeupId, $this->slotDatetime);
         $makeup = ClassMakeup::with('origin')->find($this->makeupId);
 
@@ -109,7 +96,7 @@ class CreateMakeupClass extends Component
             'status'        => 'used',
             'used_at'       => now(),
             'used_class_id' => $class->id,
-            'comments' => $this->comments
+            'comments'      => $this->comments,
         ]);
 
         $origin->update(['makup_class_id' => $class->id]);
