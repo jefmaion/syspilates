@@ -85,6 +85,12 @@
                             </div>
                         </div>
                     </div>
+
+                <livewire:avatar-uploader :currentAvatar="$student->user->avatar" />
+
+
+
+
                 </div>
             </div>
 

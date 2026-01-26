@@ -8,44 +8,64 @@
     </div>
 
     <div class="modal-body pst-2">
-        <x-page.user-block size="lg" class="" :user="$eventStudent ?? null">
+
+        <div class="d-flex aslign-items-center">
+            <span
+                class="avatar rounded-csircle avatar-lg me-2  {{ ($eventStudent?->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{$eventStudent?->initials
+                }}</span>
             <div class="flex-fill">
-                <h3 class="font-weight-medium mb-0">
+                <h3 class="font-weight-medium mb-1">
                     <strong>{{ $eventStudent->shortName ?? null }}</strong>
                 </h3>
-                <div class="text-secondary text-sm">
+                <div class="text-secondary text-sm mb-1">
 
-                    <x-icons.modality /> {{ $eventModality }} •
-                    <x-icons.time /> {{ ($eventDatetime) ? $eventDatetime->format('H:m') : '' }} •
-                    <x-icons.phone /> {{ $eventStudent->phone1 ?? null }} •
+                    <x-icons.modality /> {{ $eventModality }} |
+                    <x-icons.time /> {{ ($eventDatetime) ? $eventDatetime->format('H\h') : '' }} |
+                    <x-icons.phone /> {{ $eventStudent->phone1 ?? null }} |
                     <x-icons.instructor />{{ $eventInstructor->shortName ?? null }}
 
                 </div>
 
-                <div>
-                    @if($eventStatus)
-                    <x-page.status color="{{  $eventStatus->color() }}">{{$eventStatus->label() }}</x-page.status>
-                    @endif
-                </div>
+
             </div>
-        </x-page.user-block>
+            {{-- <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $user->name }}</a> --}}
+        </div>
+
     </div>
-
-
 
     <div class="modal-body">
-        <strong>Objetivo:</strong> {{ $eventObjective }}
+        <div class="mb-1 mst-3 text-sm text-secondary">
+            <strong>Objetivo: </strong> {{ $eventObjective }}
+        </div>
+
+        <div class="mt-3">
+            @if($eventStatus)
+            <x-page.status color="{{  $eventStatus->color() }}">{{$eventStatus->label() }}</x-page.status>
+            @endif
+
+            @if($class && $class->is_makeup)
+            <x-page.status color="purple">Reposição</x-page.status>
+            @endif
+        </div>
     </div>
 
+
+
+    {{-- <div class="modal-body">
+        <strong>Objetivo:</strong> {{ $eventObjective }}
+    </div> --}}
+
     @if($eventHistory && !$eventHistory->isEmpty())
+    {{-- @dd($eventHistory) --}}
     <div class="modal-body">
         <p class="mb-0"><strong>Histórico Recente</strong></p>
         <table class="table table-striped w-100">
             <tbody>
                 @foreach($eventHistory as $_class)
+
                 <tr>
                     <td classs="text-center">
-                        <div class="mb-1">
+                        <div class="mb-3 text-secondary">
                             <strong> {{ $_class->datetime->format('d/m') }} às {{
                                 $_class->datetime->format('H:i')}} </strong> -
 
@@ -59,9 +79,10 @@
                             </span>
                         </div>
 
-                        <div class="mb-1">{{ $_class->evolution }}</div>
+                        <div class="mb-3">{{ $_class->evolution }}</div>
                         <div class="text-muted"><small>
-                                <x-icons.instructor /> {{ $_class?->instructor?->user?->shortName }}
+                                <x-icons.instructor /> <strong>{{ $_class->instructor?->user?->shortName ?? null
+                                    }}</strong> em <strong>{{$_class->created_at->format('d/m/y \à\s H:i:s')}}</strong>
                             </small>
                         </div>
                     </td>
@@ -73,13 +94,16 @@
     </div>
     @endif
 
-    @if($eventType == 'scheduled')
-    @include('livewire.calendar.class-card-scheduled')
-    @endif
-
-    @if($eventType == 'class')
-    @include('livewire.calendar.class-card-class')
-    @endif
+    <div class="modal-footer border-0 bg-transparent">
+        <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
+            Fechar
+        </button>
+        @if($eventStatus == App\Enums\ClassStatusEnum::SCHEDULED)
+        @include('livewire.calendar.class-card-scheduled')
+        @else
+        @include('livewire.calendar.class-card-class')
+        @endif
+    </div>
 
 
 </x-modal.modal>

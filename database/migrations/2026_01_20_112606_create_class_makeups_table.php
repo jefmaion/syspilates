@@ -35,6 +35,8 @@ return new class () extends Migration
             $table->string('reason', 100);
             // exemplos: absence, instructor_cancel, other
 
+            $table->text('comments')->nullable();
+
             // Validade do crédito
             $table->timestamp('expires_at');
 

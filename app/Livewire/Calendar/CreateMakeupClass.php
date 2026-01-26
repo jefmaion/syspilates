@@ -31,9 +31,15 @@ class CreateMakeupClass extends Component
 
     public $makeupInstructorId;
 
+    public $comments;
+
+    public $_classes = [];
+
     #[On('create-makeup-class')]
     public function show($datetime = null)
     {
+        $this->reset();
+
         $this->datetime = Carbon::parse($datetime ?? now());
 
         $students = Student::with(['makeup', 'user'])->whereHas('makeup', function ($q) {
@@ -44,9 +50,9 @@ class CreateMakeupClass extends Component
 
         foreach ($students as $student) {
             $classes = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $student->id)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
-
+            $this->_classes = $classes;
             foreach ($classes as $class) {
-                $this->classes[$student->id][$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . $class->origin->datetime->format('l') . ' - ' . $class->origin->status->label();
+                $this->classes[$student->id][$class->id] = $class->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($class->origin->datetime->translatedFormat('l')) . ' - ' . $class->origin->status->label();
             }
         }
 
@@ -73,6 +79,9 @@ class CreateMakeupClass extends Component
 
     public function saveMakeup()
     {
+
+
+
         // dd($this->makeupInstructorId, $this->makeupStudentId, $this->makeupId, $this->slotDatetime);
         $makeup = ClassMakeup::with('origin')->find($this->makeupId);
 
@@ -100,6 +109,7 @@ class CreateMakeupClass extends Component
             'status'        => 'used',
             'used_at'       => now(),
             'used_class_id' => $class->id,
+            'comments' => $this->comments
         ]);
 
         $origin->update(['makup_class_id' => $class->id]);

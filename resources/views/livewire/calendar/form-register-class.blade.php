@@ -11,14 +11,24 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="" class="form-label">Status</label>
-                        <x-form.select-class-status name="status" wire:model='status' />
+                        <x-form.select-class-status name="status" wire:model.live='status' />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Evolução/Comentários</label> 
-                        <textarea class="form-control {{ ($errors->has('evolution') ? ' is-invalid' : '') }}" rows="5" name="evolution" wire:model="evolution"></textarea>
+                        <label class="form-label">Evolução/Comentários</label>
+                        <textarea class="form-control {{ ($errors->has('evolution') ? ' is-invalid' : '') }}" rows="5"
+                            name="evolution" wire:model="evolution"></textarea>
                         @error('evolution')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
+
+                    @if(in_array($status, $makeupConditions))
+                    <div class="mb-3">
+                        <label class="form-check">
+                            <input class="form-check-input" wire:model='canMakeup' type="checkbox" checked>
+                            <span class="form-check-label">Permitir reposição</span>
+                        </label>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="modal-footer">

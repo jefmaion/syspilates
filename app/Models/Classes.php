@@ -24,17 +24,7 @@ class Classes extends BaseModel
         'type'               => ClassTypesEnum::class,
     ];
 
-    //     use Carbon\Carbon;
 
-    // $data = Carbon::parse('2026-01-20 14:00:00'); // exemplo
-    // $agora = Carbon::now();
-
-    // // diferença em horas
-    // if ($agora->diffInHours($data) >= 24 && $agora->greaterThan($data)) {
-    //     echo "Já se passaram 24 horas!";
-    // } else {
-    //     echo "Ainda não se passaram 24 horas.";
-    // }
 
     protected function canEdit(): Attribute
     {

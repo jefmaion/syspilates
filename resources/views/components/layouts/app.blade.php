@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     @include('layouts.parts.header')
+
+    <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
 </head>
 
 <body>
@@ -15,6 +18,15 @@
         </div>
     </div>
     @include('layouts.parts.scripts')
+
+
+
+
+
+
+     {{-- 2) CropperJS REAL (global) --}}
+    <script src="https://unpkg.com/cropperjs@1.6.1/dist/cropper.min.js"></script>
+
     <script>
         window.addEventListener('show-modal', (params) => {
 			return getModal(params.detail.modal).show()
@@ -44,8 +56,11 @@
 				}, 3000); // Oculta após 3 segundos
 			}
         });
-		
+
     </script>
+
+@stack('scripts')
+
 </body>
 
 </html>

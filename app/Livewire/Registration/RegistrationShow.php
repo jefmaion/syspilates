@@ -5,10 +5,12 @@ declare(strict_types = 1);
 namespace App\Livewire\Registration;
 
 use App\Enums\ClassStatusEnum;
+use App\Enums\ClassTypesEnum;
 use App\Livewire\Forms\RegistrationForm;
 use App\Models\Registration;
 use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\View\View;
@@ -49,6 +51,24 @@ class RegistrationShow extends Component
     {
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
+
+        $period  = CarbonPeriod::create(now(), $this->registration->end);
+        foreach ($period as $date) {
+            foreach ($this->registration->schedule as $schedule) {
+                if ($date->dayOfWeek === $schedule->weekday->value) {
+                    $this->registration->classes()->create([
+                        'student_id'               => $this->registration->student_id,
+                        'modality_id'              => $this->registration->modality_id,
+                        'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
+                        'instructor_id'            => $schedule->instructor_id,
+                        'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' '.$schedule->time),
+                        'type' => ClassTypesEnum::REGULAR,
+                        'registration_schedule_id' => $schedule->id,
+                        'status'                   => ClassStatusEnum::SCHEDULED,
+                    ]);
+                }
+            }
+        }
 
         $this->dispatch('hide-modal', modal:'modal-classes');
 

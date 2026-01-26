@@ -1,5 +1,5 @@
-<x-modal.modal class="blur" id="modal-makeup" sisze="modal-lg">
-    
+<x-modal.modal class="blur" id="modal-makeup" sise="modal-lg">
+
     <form wire:submit="saveMakeup">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -8,7 +8,24 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body pst-2">
+            <div class="modal-body">
+                 <div class="d-flex aslign-items-center">
+                            <span class="avatar rounded-csircle avatar-lg me-2 "><x-icons.calendar /></span>
+                            <div class="flex-fill">
+                                <h3 class="font-weight-medium mb-1">
+                                    <strong>{{ ($datetime) ? ucfirst($datetime->translatedFormat('l, d \d\e F \d\e Y')) : ''; }}</strong>
+                                </h3>
+                                <div class="text-secondary">{{  $datetime?->format('H:i') }} hrs</div>
+
+                            </div>
+                            {{-- <a href="{{ route('instructor.show', $item) }}" wire:navigate>{{ $user->name }}</a> --}}
+                        </div>
+            </div>
+            <div class="modal-body pt-3">
+
+
+
+
                 <div class="mb-3">
 
                     <label class="form-label">Aluno</label>
@@ -36,10 +53,17 @@
                         @endforeach
                         @endif
                     </x-form.select>
+
+
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Professor</label>
                     <x-form.select-instructor wire:model='makeupInstructorId' />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Comentários</label>
+                    <textarea class="form-control {{ ($errors->has('comments') ? ' is-invalid' : '') }}" rows="5"
+                        name="comments" wire:model="comments"></textarea>
                 </div>
             </div>
 

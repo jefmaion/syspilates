@@ -99,28 +99,31 @@ class CalendarPage extends Component
 
         $bullet = '<span class="mx-1"><span class="bg-%s status-dot"></span></span>';
 
-        foreach ($registrations as $reg) {
-            foreach ($reg->getScheduleClasses($start, $end) as $key => $item) {
-                $events[$key] = [
-                    'id'        => 'scheduled-' . $reg->id,
-                    'start'     => $item['datetime'],
-                    'title'     => ClassStatusEnum::SCHEDULED->icon() . $reg->student->user->shortName,
-                    'className' => $eventClass . 'bg-' . ClassStatusEnum::SCHEDULED->color(),
-                    'textColor' => 'white',
+        // foreach ($registrations as $reg) {
+        //     foreach ($reg->getScheduleClasses($start, $end) as $key => $item) {
+        //         $events[$key] = [
+        //             'id'        => 'scheduled-' . $reg->id,
+        //             'start'     => $item['datetime'],
+        //             'title'     => ClassStatusEnum::SCHEDULED->icon() . $reg->student->user->shortName,
+        //             'className' => $eventClass . 'bg-' . ClassStatusEnum::SCHEDULED->color(),
+        //             'textColor' => 'white',
 
-                    'event_id'                 => $reg->id,
-                    'type'                     => 'scheduled',
-                    'instructor_id'            => $item['instructor_id'],
-                    'registration_schedule_id' => $item['id'],
-                    'datetime'                 => $item['datetime'],
-                    'scheduled_datetime'       => $item['datetime'],
-                    '_type'                    => ClassTypesEnum::REGULAR->value,
-                ];
-            }
-        }
+        //             'event_id'                 => $reg->id,
+        //         // 'type'                     => 'scheduled',
+        //             'type'                     => ClassStatusEnum::SCHEDULED,
+        //             'instructor_id'            => $item['instructor_id'],
+        //             'registration_schedule_id' => $item['id'],
+        //             'datetime'                 => $item['datetime'],
+        //             'scheduled_datetime'       => $item['datetime'],
+        //             '_type'                    => ClassTypesEnum::REGULAR->value,
+        //         ];
+        //     }
+        // }
+
+
 
         foreach ($classes as $class) {
-            $key = $class->scheduled_datetime->format('Y-m-d') . '.' . $class->registration_schedule_id;
+            $key = $class->scheduled_datetime->format('Y-m-d H:i:s') . '.' . $class->registration_schedule_id.'.'.$class->registration_id;
 
             $badge   = null;
             $bgColor = 'bg-' . $class->status->color();
@@ -139,6 +142,7 @@ class CalendarPage extends Component
 
                 'event_id'      => $class->id,
                 'type'          => 'class',
+                'type'          => $class->type,
                 'instructor_id' => $class->instructor_id,
                 // 'registration_schedule_id' => $class->registration_schedule_id,
                 'datetime'           => $class->datetime->format('Y-m-d H:i:s'),
@@ -161,7 +165,7 @@ class CalendarPage extends Component
                 'textColor' => 'white',
 
                 'event_id'      => $exp->id,
-                'type'          => 'class',
+                'type'          => ClassTypesEnum::EXPERIMENTAL,
                 'instructor_id' => $exp->instructor_id,
                 'datetime'      => $exp->datetime->format('Y-m-d H:i:s'),
                 'move'          => true,
