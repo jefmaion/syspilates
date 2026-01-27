@@ -82,8 +82,7 @@
                         <h3 class="card-title">Matrícula Atual</h3>
                     </div>
 
-                    <div class="card-body">
-                        <table class="table">
+                    <table class="table">
 
                             <tbody>
                                 <tr>
@@ -125,7 +124,7 @@
                                     </td>
                                 </tr>
 
-                                
+
 
                                 {{-- <tr>
                                     <td scope="row"><strong>Início:</strong> 20/01/2025</td>
@@ -138,7 +137,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
                 </div>
             </div>
 
@@ -174,7 +172,132 @@
 
                 </div>
 
-                <div class="card flex-fill">
+                <div class="card-tabs flex-fill">
+                    <!-- Cards navigation -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><a href="#tab-top-1" class="nav-link active"
+                                data-bs-toggle="tab" aria-selected="true" role="tab">Próximas Aulas</a></li>
+                        <li class="nav-item" role="presentation"><a href="#tab-top-2" class="nav-link"
+                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Aulas Realizadas</a>
+                        </li>
+                        <li class="nav-item" role="presentation"><a href="#tab-top-3" class="nav-link"
+                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Faltas</a></li>
+                        <li class="nav-item" role="presentation"><a href="#tab-top-4" class="nav-link"
+                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Tab 4</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Content of card #1 -->
+                        <div id="tab-top-1" class="card tab-pane active show" role="tabpanel">
+                            <div class="card-body">
+                                <div class="card-title">Content of tab #1</div>
+
+                            </div>
+                            <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dia</th>
+                                        <th scope="col">Horário</th>
+                                        <th>Tipo</th>
+                                        <th scope="col">Instrutor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($scheduled as $date => $class)
+
+                                    <tr class="">
+                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
+                                        <td>{{ $class->datetime->format('H:i') }}</td>
+                                        <td>
+                                            {{ $class->type->label() }}
+                                        </td>
+                                        <td>
+                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
+                                                <span class="small">
+                                                    {{ $class->instructor->user->shortName }}
+                                                </span>
+                                            </x-page.user-avatar>
+                                        </td>
+
+                                        <td>
+                                            <x-page.status color="{{ $class->status->color() }}">{{
+                                                $class->status->label()
+                                                }}
+                                            </x-page.status>
+
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-table.table>
+                            {{$scheduled->links()}}
+                        </div>
+                        <!-- Content of card #2 -->
+                        <div id="tab-top-2" class="card tab-pane" role="tabpanel">
+                            <div class="card-body">
+                                <div class="card-title">Content of tab #2</div>
+                            </div>
+                            <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dia</th>
+                                        <th scope="col">Horário</th>
+                                        <th scope="col">Instrutor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($classes as $date => $class)
+
+                                    <tr class="">
+                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
+                                        <td>{{ $class->datetime->format('H:i') }}</td>
+                                        <td>
+                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
+                                                <span class="small">
+                                                    {{ $class->instructor->user->shortName }}
+                                                </span>
+                                            </x-page.user-avatar>
+                                        </td>
+                                        <td>
+                                            <x-page.status color="{{ $class->status->color() }}">{{
+                                                $class->status->label()
+                                                }}
+                                            </x-page.status>
+
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-table.table>
+                            {{$classes->links()}}
+                        </div>
+                        <!-- Content of card #3 -->
+                        <div id="tab-top-3" class="card tab-pane" role="tabpanel">
+                            <div class="card-body">
+                                <div class="card-title">Content of tab #3</div>
+                                <p class="text-secondary">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
+                                    distinctio dolorem expedita, fugiat hic magni
+                                    molestiae molestias odit.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Content of card #4 -->
+                        <div id="tab-top-4" class="card tab-pane" role="tabpanel">
+                            <div class="card-body">
+                                <div class="card-title">Content of tab #4</div>
+                                <p class="text-secondary">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
+                                    distinctio dolorem expedita, fugiat hic magni
+                                    molestiae molestias odit.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- <div class="card flex-fill">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -211,7 +334,7 @@
                                             <tr class="">
                                                 <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
                                                 <td>{{ $class->datetime->format('H:i') }}</td>
-                                                 <td>
+                                                <td>
                                                     {{ $class->type->label() }}
                                                 </td>
                                                 <td>
@@ -221,7 +344,7 @@
                                                         </span>
                                                     </x-page.user-avatar>
                                                 </td>
-                                               
+
                                                 <td>
                                                     <x-page.status color="{{ $class->status->color() }}">{{
                                                         $class->status->label()
@@ -285,7 +408,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="col-3 d-flex flex-column">
@@ -331,7 +454,7 @@
                                     <div class="card-body">
                                         <div class="text-secondary float-end">10 hrs ago</div>
                                         <h4>{{ $class->instructor->user->shortName }} <span> escreveu:</span></h4>
-                                        <p class="text-secondary">{{  $class->evolution }}
+                                        <p class="text-secondary">{{ $class->evolution }}
                                         </p>
                                     </div>
                                 </div>

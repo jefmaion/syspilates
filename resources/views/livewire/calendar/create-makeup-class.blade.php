@@ -19,7 +19,7 @@
                 <div class="mb-3">
 
                     <label class="form-label">Aluno</label>
-                    <x-form.select name="student" wire:model='makeupStudentId' wire:change='listAvailableClass($event.target.value)'>
+                    <x-form.select name="makeupStudentId" wire:model='makeupStudentId' wire:change='listAvailableClass($event.target.value)'>
                         <option value=""></option>
                         @foreach($students as $key => $name)
                             <option value="{{$key}}">{{$name}}</option>
@@ -31,11 +31,11 @@
                 <div class="mb-3">
 
                     <label class="form-label">Aula a repor</label>
-                    <x-form.select name="student" wire:model='makeupId'>
+                    <x-form.select name="makeupId" wire:model='makeupId'>
                         <option value=""></option>
                         @if($makeupClasses)
                             @foreach($makeupClasses as $key => $item)
-                            <option value="{{$item->id}}">{{ $item->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($item->origin->datetime->translatedFormat('l')) . ' - ' . $item->origin->status->label() }}</option>
+                            <option value="{{$key}}">{{ $item }}</option>
                             @endforeach
                         @endif
                     </x-form.select>
@@ -43,8 +43,9 @@
 
                 </div>
                 <div class="mb-3">
+
                     <label class="form-label">Professor</label>
-                    <x-form.select-instructor wire:model='makeupInstructorId' />
+                    <x-form.select-instructor name="makeupInstructorId" wire:model='makeupInstructorId' />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Comentários</label>

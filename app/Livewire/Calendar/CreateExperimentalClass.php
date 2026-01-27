@@ -83,6 +83,16 @@ class CreateExperimentalClass extends Component
 
     public function save()
     {
+        $this->validate([
+            'name'          => ['required'],
+            'phone'         => ['required'],
+            'modality_id'   => ['required'],
+            'instructor_id' => ['required'],
+            'date'          => ['required'],
+            'time'          => ['required'],
+
+        ]);
+
         if (! $this->update) {
             $this->class = ExperimentalClass::create([
                 'datetime'      => $this->datetime,

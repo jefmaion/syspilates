@@ -41,7 +41,7 @@
 
                     <div class="col-6 mb-3">
                         <label class="form-label">Professor</label>
-                        <x-form.select-instructor wire:model='instructor_id' />
+                        <x-form.select-instructor name="instructor_id" wire:model='instructor_id' />
                     </div>
 
                     <div class="col-6 mb-3">

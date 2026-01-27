@@ -39,6 +39,7 @@ class CreateMakeupClass extends Component
     public function show($datetime = null)
     {
         $this->reset();
+        $this->resetValidation();
 
         $this->datetime = Carbon::parse($datetime ?? now());
 
@@ -64,11 +65,27 @@ class CreateMakeupClass extends Component
             return;
         }
 
-        $this->makeupClasses = ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
+        $this->loadData();
+
+        $data = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
+
+        $this->makeupClasses = [];
+
+        foreach ($data as $item) {
+            $this->makeupClasses[$item->id] = $item->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($item->origin->datetime->translatedFormat('l')) . ' - ' . $item->origin->status->label();
+        }
+
+        // $this->makeupClasses = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
     }
 
     public function saveMakeup()
     {
+        $this->validate([
+            'makeupStudentId'    => ['required'],
+            'makeupInstructorId' => ['required'],
+            'makeupId'           => ['required'],
+        ]);
+
         $makeup = ClassMakeup::with('origin')->find($this->makeupId);
 
         $origin = Classes::find($makeup->origin_class_id);
