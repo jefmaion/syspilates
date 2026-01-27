@@ -81,41 +81,48 @@ class RegistrationShow extends Component
         return $this->dispatch('$refresh');
     }
 
-    public function generateClasses()
+    // public function generateClasses()
+    // {
+    //     $this->registration->load('schedule.instructor.user');
+    //     $period = CarbonPeriod::create($this->registration->start, $this->registration->end);
+
+    //     $classes = [];
+
+    //     foreach ($period as $date) {
+    //         foreach ($this->registration->schedule as $schedule) {
+    //             if ($date->dayOfWeek === $schedule->weekday->value) {
+    //                 $classes[$date->format('Y-m-d')] = [
+    //                     'date'       => $date,
+    //                     'time'       => $schedule->time,
+    //                     'datetime'   => $date . 'T' . $schedule->time,
+    //                     'instructor' => $schedule->instructor,
+    //                     'status'     => ClassStatusEnum::SCHEDULED,
+    //                 ];
+    //             }
+    //         }
+    //     }
+
+    //     return $classes;
+    // }
+
+    #[On('refresh-registration')]
+    #[On('class-saved')]
+    public function refresh()
     {
-        $this->registration->load('schedule.instructor.user');
-        $period = CarbonPeriod::create($this->registration->start, $this->registration->end);
-
-        $classes = [];
-
-        foreach ($period as $date) {
-            foreach ($this->registration->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday->value) {
-                    $classes[$date->format('Y-m-d')] = [
-                        'date'       => $date,
-                        'time'       => $schedule->time,
-                        'datetime'   => $date . 'T' . $schedule->time,
-                        'instructor' => $schedule->instructor,
-                        'status'     => ClassStatusEnum::SCHEDULED,
-                    ];
-                }
-            }
-        }
-
-        return $classes;
+        $this->dispatch('$refresh');
     }
 
-    #[On('registration-updated')]
-    public function refr()
+    public function editClass($id)
     {
+        $this->dispatch('edit-class', id:$id)->to(UpdateClass::class);
     }
 
     public function render(): View | Closure | string
     {
         return view('livewire.registration.registration-show', [
             'scheduled' => $this->registration->classes()->whereLike('datetime', '%' . $this->search_scheduled . '%')->where('status', ClassStatusEnum::SCHEDULED)->paginate(8, pageName: 'scheduled'),
-            'classes'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->paginate(pageName: 'executed'),
-            'absenses'  => $this->registration->classes()->where('status', ClassStatusEnum::ABSENSE)->paginate(pageName: 'absensed'),
+            'classes'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(pageName: 'executed'),
+            'absenses'  => $this->registration->classes()->whereNotIn('status', [ClassStatusEnum::PRESENCE, ClassStatusEnum::SCHEDULED])->paginate(pageName: 'absensed'),
             'markups'   => ClassMakeup::with(['origin'])->where('status', 'active')->where('student_id', $this->registration->student_id)->get(),
         ]);
     }

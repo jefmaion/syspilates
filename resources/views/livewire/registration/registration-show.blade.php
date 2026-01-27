@@ -37,6 +37,9 @@
 
     <x-page.page-body>
 
+        <livewire:registration.update-class />
+        <livewire:calendar.form-register-class />
+
 
         <div class="row">
             <div class="col-3 d-flex flex-column">
@@ -84,59 +87,59 @@
 
                     <table class="table">
 
-                            <tbody>
-                                <tr>
-                                    <td scope="row"><strong>Status:</strong></td>
-                                    <td class="text-end">
-                                        <x-page.status color="{{ $registration->status->color() }}">{{
-                                            $registration->status->label()
-                                            }}
-                                        </x-page.status>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><strong>Plano:</strong> </td>
-                                    <td class="text-end">{{$registration->planDescription }}</td>
-                                </tr>
+                        <tbody>
+                            <tr>
+                                <td scope="row"><strong>Status:</strong></td>
+                                <td class="text-end">
+                                    <x-page.status color="{{ $registration->status->color() }}">{{
+                                        $registration->status->label()
+                                        }}
+                                    </x-page.status>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td scope="row"><strong>Plano:</strong> </td>
+                                <td class="text-end">{{$registration->planDescription }}</td>
+                            </tr>
 
-                                <tr>
-                                    <td scope="row"><strong>Modalidade:</strong> </td>
-                                    <td class="text-end">{{$registration->modality->name }}</td>
-                                </tr>
+                            <tr>
+                                <td scope="row"><strong>Modalidade:</strong> </td>
+                                <td class="text-end">{{$registration->modality->name }}</td>
+                            </tr>
 
-                                <tr>
-                                    <td scope="row"><strong>Período:</strong></td>
-                                    <td class="text-end">{{ $registration->start->format('d/m/y') }} à {{
-                                        $registration->end->format('d/m/y') }}</td>
-                                </tr>
+                            <tr>
+                                <td scope="row"><strong>Período:</strong></td>
+                                <td class="text-end">{{ $registration->start->format('d/m/y') }} à {{
+                                    $registration->end->format('d/m/y') }}</td>
+                            </tr>
 
-                                <tr>
-                                    <td scope="row"><strong>Vencimento:</strong></td>
-                                    <td class="text-end">Dia {{ $registration->deadline }}</td>
-                                </tr>
+                            <tr>
+                                <td scope="row"><strong>Vencimento:</strong></td>
+                                <td class="text-end">Dia {{ $registration->deadline }}</td>
+                            </tr>
 
-                                <tr>
-                                    <td scope="row"><strong>Aulas:</strong></td>
-                                    <td class="text-end">
-                                        @foreach($registration->schedule as $sch)
-                                        <div>{{ $sch->weekday->short() }} às {{ $sch->time }}</div>
-                                        @endforeach
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td scope="row"><strong>Aulas:</strong></td>
+                                <td class="text-end">
+                                    @foreach($registration->schedule as $sch)
+                                    <div>{{ $sch->weekday->short() }} às {{ $sch->time }}</div>
+                                    @endforeach
+                                </td>
+                            </tr>
 
 
 
-                                {{-- <tr>
-                                    <td scope="row"><strong>Início:</strong> 20/01/2025</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><strong>Vencimento:</strong> 10</td>
-                                </tr>
-                                <tr>
-                                    <td scope="row"><strong>Status:</strong> </td> --}}
-                                </tr>
-                            </tbody>
-                        </table>
+                            {{-- <tr>
+                                <td scope="row"><strong>Início:</strong> 20/01/2025</td>
+                            </tr>
+                            <tr>
+                                <td scope="row"><strong>Vencimento:</strong> 10</td>
+                            </tr>
+                            <tr>
+                                <td scope="row"><strong>Status:</strong> </td> --}}
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -182,8 +185,11 @@
                         </li>
                         <li class="nav-item" role="presentation"><a href="#tab-top-3" class="nav-link"
                                 data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Faltas</a></li>
-                        <li class="nav-item" role="presentation"><a href="#tab-top-4" class="nav-link"
-                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Tab 4</a></li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#tab-top-4" class="nav-link " data-bs-toggle="tab" aria-selected="false"
+                                tabindex="-1" role="tab">
+                                Reposições</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <!-- Content of card #1 -->
@@ -200,6 +206,7 @@
                                         <th>Tipo</th>
                                         <th scope="col">Instrutor</th>
                                         <th>Status</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -226,6 +233,28 @@
                                             </x-page.status>
 
                                         </td>
+                                        <td class="text-center">
+                                            <div class="btn-actions">
+                                                <a class="btn btn-action" href="#"
+                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
+                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-1">
+                                                        <path
+                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                        </path>
+                                                        <path
+                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                        </path>
+                                                        <path d="M16 5l3 3"></path>
+                                                    </svg>
+                                                </a>
+
+
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -242,8 +271,10 @@
                                     <tr>
                                         <th scope="col">Dia</th>
                                         <th scope="col">Horário</th>
+                                        <th>Tipo</th>
                                         <th scope="col">Instrutor</th>
                                         <th>Status</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -252,6 +283,9 @@
                                     <tr class="">
                                         <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
                                         <td>{{ $class->datetime->format('H:i') }}</td>
+                                        <td>
+                                            {{ $class->type->label() }}
+                                        </td>
                                         <td>
                                             <x-page.user-avatar size="xs" :user="$class->instructor->user">
                                                 <span class="small">
@@ -266,6 +300,27 @@
                                             </x-page.status>
 
                                         </td>
+                                        <td>
+                                            <div class="btn-actions">
+
+                                                <a class="btn btn-action" href="#"
+                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
+                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-1">
+                                                        <path
+                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                        </path>
+                                                        <path
+                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                        </path>
+                                                        <path d="M16 5l3 3"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -276,23 +331,92 @@
                         <div id="tab-top-3" class="card tab-pane" role="tabpanel">
                             <div class="card-body">
                                 <div class="card-title">Content of tab #3</div>
-                                <p class="text-secondary">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-                                    distinctio dolorem expedita, fugiat hic magni
-                                    molestiae molestias odit.
-                                </p>
+
                             </div>
+                            <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dia</th>
+                                        <th scope="col">Horário</th>
+                                        <th>Tipo</th>
+                                        <th scope="col">Instrutor</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($absenses as $date => $class)
+
+                                    <tr class="">
+                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
+                                        <td>{{ $class->datetime->format('H:i') }}</td>
+                                        <td>
+                                            {{ $class->type->label() }}
+                                        </td>
+                                        <td>
+                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
+                                                <span class="small">
+                                                    {{ $class->instructor->user->shortName }}
+                                                </span>
+                                            </x-page.user-avatar>
+                                        </td>
+                                        <td>
+                                            <x-page.status color="{{ $class->status->color() }}">{{
+                                                $class->status->label()
+                                                }}
+                                            </x-page.status>
+
+                                        </td>
+                                        <td>
+                                            <div class="btn-actions">
+
+                                                <a class="btn btn-action" href="#"
+                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
+                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-1">
+                                                        <path
+                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                        </path>
+                                                        <path
+                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                        </path>
+                                                        <path d="M16 5l3 3"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-table.table>
+                            {{$classes->links()}}
                         </div>
                         <!-- Content of card #4 -->
                         <div id="tab-top-4" class="card tab-pane" role="tabpanel">
                             <div class="card-body">
                                 <div class="card-title">Content of tab #4</div>
-                                <p class="text-secondary">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-                                    distinctio dolorem expedita, fugiat hic magni
-                                    molestiae molestias odit.
-                                </p>
                             </div>
+                            <table class="table font-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Falta</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($markups as $mk)
+                                    <tr>
+                                        <td>{{ $mk->origin->datetime->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $mk->origin->status->label() }}</td>
+                                        <td>{{ $mk->expires_at->format('d/m/Y') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -412,7 +536,7 @@
             </div>
 
             <div class="col-3 d-flex flex-column">
-                <div class="card mb-3">
+                {{-- <div class="card mb-3">
                     <div class="card-header card-header-lisght">
                         <h3 class="card-title">Reposições em aberto</h3>
                     </div>
@@ -437,7 +561,7 @@
                         </tbody>
                     </table>
 
-                </div>
+                </div> --}}
 
                 <div class="card  flex-fill">
                     <div class="card-header card-header-lisght">
@@ -456,6 +580,8 @@
                                         <h4>{{ $class->instructor->user->shortName }} <span> escreveu:</span></h4>
                                         <p class="text-secondary">{{ $class->evolution }}
                                         </p>
+                                        <a href="#"
+                                            wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">Editar</a>
                                     </div>
                                 </div>
                             </li>
