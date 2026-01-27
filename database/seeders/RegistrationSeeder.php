@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Database\Seeders;
 
+use App\Actions\CreateMarkupClass;
 use App\Actions\CreateRegistration;
+use App\Enums\ClassStatusEnum;
 use App\Enums\PlanEnum;
 use App\Models\Instructor;
 use App\Models\Modality;
@@ -25,10 +27,18 @@ class RegistrationSeeder extends Seeder
 
         $times = new SelectTime();
 
-        $plans = [];
+        $plans  = [];
+        $status = [];
 
         foreach (PlanEnum::cases() as $item) {
             $plans[] = $item->value;
+        }
+
+        foreach (ClassStatusEnum::cases() as $item) {
+            if ($item->value == 'scheduled') {
+                continue;
+            }
+            $status[] = $item->value;
         }
 
         for ($x = 1; $x <= 50; $x++) {
@@ -38,15 +48,25 @@ class RegistrationSeeder extends Seeder
 
             $schedule = [];
 
+            $exists = [];
+
             for ($i = 0; $i <= $classPerWeek; $i++) {
+                $wd = rand(1, 6);
+
+                while (in_array($wd, $exists)) {
+                    $wd = rand(1, 6);
+                }
+
                 $schedule[] = [
-                    'weekday'       => rand(0, 6),
+                    'weekday'       => $wd,
                     'time'          => fake()->randomElements(array_keys($times->times))[0],
                     'instructor_id' => Instructor::inRandomOrder()->first()->id,
                 ];
+
+                $exists[] = $wd;
             }
 
-            CreateRegistration::run([
+            $registration = CreateRegistration::run([
                 'student_id'     => Student::inRandomOrder()->first()->id,
                 'modality_id'    => Modality::inRandomOrder()->first()->id,
                 'duration'       => $duration,
@@ -58,6 +78,23 @@ class RegistrationSeeder extends Seeder
                 'status'         => 'active',
                 'schedule'       => $schedule,
             ]);
+
+            foreach ($registration->classes()->where('datetime', '<=', now())->orderBy('datetime', 'asc')->get() as $class) {
+                $newStatus = $status[rand(0, (count($status) - 1))];
+
+                if ($newStatus == 'scheduled') {
+                    continue;
+                }
+
+                $class->update([
+                    'status'    => $newStatus,
+                    'evolution' => fake()->text(),
+                ]);
+
+                if (in_array($newStatus, ['canceled', 'justified'])) {
+                    CreateMarkupClass::run($class);
+                }
+            }
         }
     }
 }

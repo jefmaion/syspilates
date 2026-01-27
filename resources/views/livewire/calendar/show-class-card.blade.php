@@ -1,7 +1,7 @@
 <x-modal.modal class="blur" id="modal-show-card" size="modal-lg">
 
     @if($class)
-    {{-- <div class="modal-status bg-{{ $class->status->color() }}"></div> --}}
+    <div class="modal-status bg-{{ $class->status->color() }}"></div>
     <div class="modal-header">
         <h5 class="modal-title align-items-center" id="modalTitleId">
             <x-icons.calendar /> {{ ($eventDatetime) ? ucfirst($eventDatetime->translatedFormat('l, d \d\e F \d\e Y -

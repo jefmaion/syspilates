@@ -104,7 +104,7 @@ class CalendarPage extends Component
             $badge   = null;
             $bgColor = 'bg-' . $class->status->color();
 
-            if($class->registration->status == RegistrationStatusEnum::CANCELED) {
+            if ($class->registration->status == RegistrationStatusEnum::CANCELED) {
                 $bgColor .= '-lt';
             }
 

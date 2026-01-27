@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Enums\PlanEnum;
+use App\Enums\RegistrationComputedStatusEnum;
 use App\Enums\RegistrationStatusEnum;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -31,6 +32,46 @@ class Registration extends BaseModel
     public function scopeJustActives(Builder $query)
     {
         return $query->whereIn('status', ['scheduled', 'active']);
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function registrarionStatus(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                if ($this->status === RegistrationStatusEnum::CANCELED) {
+                    return RegistrationStatusEnum::CANCELED;
+                }
+
+                if (! $this->end) {
+                    return RegistrationStatusEnum::ACTIVE;
+                }
+
+                $days = now()->startOfDay()->diffInDays(Carbon::parse($this->end)->startOfDay(), false);
+
+                if ($days < 0) {
+                    return RegistrationComputedStatusEnum::EXPIRED;
+                }
+
+                if ($days <= 7) {
+                    // return 'Vence em ' . $days . ' dias';
+                    return RegistrationComputedStatusEnum::EXPIRING;
+                }
+
+                return RegistrationComputedStatusEnum::WORKING;
+            }
+        );
+    }
+
+    protected function daysToExpire(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return now()->startOfDay()->diffInDays(Carbon::parse($this->end)->startOfDay(), false);
+            }
+        );
     }
 
     /**
@@ -88,7 +129,7 @@ class Registration extends BaseModel
 
     public function schedule()
     {
-        return $this->hasMany(RegistrationSchedules::class);
+        return $this->hasMany(RegistrationSchedules::class)->orderBy('weekday');
     }
 
     public function classes()

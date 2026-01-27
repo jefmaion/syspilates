@@ -30,6 +30,7 @@ class CreateExperimentalClass extends Component
     public $class;
 
     public $date;
+
     public $time;
 
     public $update = false;
@@ -38,8 +39,8 @@ class CreateExperimentalClass extends Component
     public function show($datetime)
     {
         $this->datetime = Carbon::parse($datetime);
-        $this->date = $this->datetime->format('Y-m-d');
-        $this->time = $this->datetime->format('H:i:s');
+        $this->date     = $this->datetime->format('Y-m-d');
+        $this->time     = $this->datetime->format('H:i:s');
 
         $this->dispatch('show-modal', modal:'modal-experimental');
     }
@@ -49,7 +50,7 @@ class CreateExperimentalClass extends Component
     {
         $this->class = ExperimentalClass::find($id);
 
-        $this->datetime      = Carbon::parse($this->class->datetime);
+        $this->datetime = Carbon::parse($this->class->datetime);
 
         $this->date = $this->datetime->format('Y-m-d');
         $this->time = $this->datetime->format('H:i:s');
@@ -69,7 +70,7 @@ class CreateExperimentalClass extends Component
     public function update()
     {
         $this->class->update([
-            'datetime' => Carbon::parse($this->date. ' '.$this->time),
+            'datetime'      => Carbon::parse($this->date . ' ' . $this->time),
             'name'          => $this->name,
             'phone'         => $this->phone,
             'modality_id'   => $this->modality_id,

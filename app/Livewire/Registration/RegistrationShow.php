@@ -7,6 +7,7 @@ namespace App\Livewire\Registration;
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
 use App\Livewire\Forms\RegistrationForm;
+use App\Models\ClassMakeup;
 use App\Models\Registration;
 use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
@@ -46,7 +47,6 @@ class RegistrationShow extends Component
         $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);
-
     }
 
     public function changeClassDays()
@@ -54,7 +54,6 @@ class RegistrationShow extends Component
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
         $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
-
 
         $period = CarbonPeriod::create(now()->addDay(1), $this->registration->end);
 
@@ -114,9 +113,10 @@ class RegistrationShow extends Component
     public function render(): View | Closure | string
     {
         return view('livewire.registration.registration-show', [
-            'scheduled' => $this->registration->classes()->whereLike('datetime', '%'.$this->search_scheduled.'%')->where('status', ClassStatusEnum::SCHEDULED)->paginate(5, pageName: 'scheduled'),
-            'classes'   => $this->registration->classes()->where('status',  ClassStatusEnum::PRESENCE)->paginate(pageName: 'executed'),
-            'absenses'   => $this->registration->classes()->where('status',  ClassStatusEnum::ABSENSE)->paginate(pageName: 'absensed'),
+            'scheduled' => $this->registration->classes()->whereLike('datetime', '%' . $this->search_scheduled . '%')->where('status', ClassStatusEnum::SCHEDULED)->paginate(8, pageName: 'scheduled'),
+            'classes'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->paginate(pageName: 'executed'),
+            'absenses'  => $this->registration->classes()->where('status', ClassStatusEnum::ABSENSE)->paginate(pageName: 'absensed'),
+            'markups'   => ClassMakeup::with(['origin'])->where('status', 'active')->where('student_id', $this->registration->student_id)->get(),
         ]);
     }
 }

@@ -69,7 +69,6 @@ class CreateMakeupClass extends Component
 
     public function saveMakeup()
     {
-        // dd($this->makeupInstructorId, $this->makeupStudentId, $this->makeupId, $this->slotDatetime);
         $makeup = ClassMakeup::with('origin')->find($this->makeupId);
 
         $origin = Classes::find($makeup->origin_class_id);

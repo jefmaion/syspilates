@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Calendar;
 
+use App\Actions\CreateMarkupClass;
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\ClassMakeup;
@@ -81,7 +82,7 @@ class FormRegisterClass extends Component
         ]);
 
         if ($this->canMakeup) {
-            $this->makeMakeup($this->class);
+            CreateMarkupClass::run($this->class);
         }
 
         $this->dispatch('hide-modal', modal: 'modal-register-class');

@@ -13,6 +13,10 @@ class ClassMakeup extends BaseModel
 
     public $guarded = ['id'];
 
+    public $casts = [
+        'expires_at' => 'datetime',
+    ];
+
     public function origin()
     {
         return $this->belongsTo(Classes::class, "origin_class_id", "id");
