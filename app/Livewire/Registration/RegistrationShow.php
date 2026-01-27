@@ -32,6 +32,8 @@ class RegistrationShow extends Component
 
     public $tab;
 
+    public $search_scheduled;
+
     public $cancel_comments;
 
     public function tabs(string $tab): void
@@ -44,15 +46,17 @@ class RegistrationShow extends Component
         $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);
-        $this->generateClasses();
+
     }
 
     public function changeClassDays()
     {
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
+        $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
 
-        $period = CarbonPeriod::create(now(), $this->registration->end);
+
+        $period = CarbonPeriod::create(now()->addDay(1), $this->registration->end);
 
         foreach ($period as $date) {
             foreach ($this->registration->schedule as $schedule) {
@@ -110,8 +114,9 @@ class RegistrationShow extends Component
     public function render(): View | Closure | string
     {
         return view('livewire.registration.registration-show', [
-            'scheduled' => $this->paginate($this->generateClasses(), $this->pages),
-            'classes'   => $this->registration->classes,
+            'scheduled' => $this->registration->classes()->whereLike('datetime', '%'.$this->search_scheduled.'%')->where('status', ClassStatusEnum::SCHEDULED)->paginate(5, pageName: 'scheduled'),
+            'classes'   => $this->registration->classes()->where('status',  ClassStatusEnum::PRESENCE)->paginate(pageName: 'executed'),
+            'absenses'   => $this->registration->classes()->where('status',  ClassStatusEnum::ABSENSE)->paginate(pageName: 'absensed'),
         ]);
     }
 }

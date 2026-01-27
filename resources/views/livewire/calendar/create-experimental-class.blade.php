@@ -8,24 +8,22 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="d-flex aslign-items-center">
-                    <span class="avatar rounded-csircle avatar-lg me-2 ">
-                        <x-icons.calendar />
-                    </span>
-                    <div class="flex-fill">
-                        <h3 class="font-weight-medium mb-1">
-                            <strong>{{ ($datetime) ? ucfirst($datetime->translatedFormat('l, d \d\e F \d\e Y')) : '';
-                                }}</strong>
-                        </h3>
-                        <div class="text-secondary">{{ $datetime?->format('H:i') }} hrs</div>
 
-                    </div>
-                </div>
-            </div>
             <div class="modal-body">
 
                 <div class="row">
+
+
+                    <div class="col-6 mb-3">
+                        <label class="form-label required">Dia</label>
+                        <x-form.input-text type="date" name="date" wire:model="date" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label class="form-label required">Horario</label>
+                        <x-form.select-time type="time" name="time" wire:model='time' />
+                    </div>
+
                     <div class="col-12 mb-3">
                         <label class="form-label required">Nome</label>
                         <x-form.input-text name="name" wire:model="name" />

@@ -73,21 +73,21 @@
                     {{ \Carbon\Carbon::parse($slotDatetime)->format('d/m/Y H:i') }}
                 </h6>
 
-                <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-experimental-class', { datetime: '{{ $slotDatetime }}' })" wire:click.prevent="$set('showSlotMenu', false)">
-                    Agendar aula
+                <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-experimental-class', { datetime: '{{ $slotDatetime }}' })" wire:click="$set('showSlotMenu', false)">
+                    Agendar Aula Experimental
                 </a>
 
-                <a href="#" class="dropdown-item" wire:click="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })" wire:click.prevent="$set('showSlotMenu', false)">
-                    Agendar reposição
+                <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })" wire:click="$set('showSlotMenu', false)">
+                    Agendar Reposição
                 </a>
 
-                <div class="dropdown-divider"></div>
 
-                <a href="#" class="dropdown-item text-muted" wire:click.prevent="$set('showSlotMenu', false)">
+
+                {{-- <a href="#" class="dropdown-item text-muted" wire:click.prevent="$set('showSlotMenu', false)">
                     ✖ Cancelar
-                </a>
+                </a> --}}
             </div>
-            
+
         @endif
 
 

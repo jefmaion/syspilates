@@ -50,7 +50,7 @@ enum ClassStatusEnum: string
         $array = [];
 
         foreach (self::cases() as $case) {
-            if (in_array($case, $except)) {
+            if (in_array($case, array_merge($except, [self::SCHEDULED]))) {
                 continue;
             }
 

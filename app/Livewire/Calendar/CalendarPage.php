@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Livewire\Calendar;
 
 use App\Enums\ClassTypesEnum;
+use App\Enums\RegistrationStatusEnum;
 use App\Models\Classes;
 use App\Models\ExperimentalClass;
 use App\Models\Student;
@@ -63,7 +64,7 @@ class CalendarPage extends Component
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-        $class = Classes::with('student.user')->whereBetween('scheduled_datetime', [$start, $end])->whereHas('registration', function ($q) {
+        $class = Classes::with(['student.user', 'registration'])->whereBetween('scheduled_datetime', [$start, $end])->whereHas('registration', function ($q) {
             return $q->justActives();
         });
 
@@ -102,6 +103,10 @@ class CalendarPage extends Component
         foreach ($classes as $class) {
             $badge   = null;
             $bgColor = 'bg-' . $class->status->color();
+
+            if($class->registration->status == RegistrationStatusEnum::CANCELED) {
+                $bgColor .= '-lt';
+            }
 
             if ($class->type !== ClassTypesEnum::REGULAR) {
                 $badge = '<span class="badge bg-orange text-orange-fg">' . $class->type->nick() . '</span> ';

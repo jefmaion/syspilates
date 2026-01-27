@@ -6,6 +6,8 @@ namespace App\Livewire\Calendar;
 
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
+use App\Models\ClassMakeup;
+use App\Traits\PaginationTrait;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
@@ -14,6 +16,9 @@ use Livewire\Component;
 
 class ShowClassCard extends Component
 {
+
+    use PaginationTrait;
+
     public $eventId;
 
     public $eventType;
@@ -73,18 +78,26 @@ class ShowClassCard extends Component
         $this->class        = Classes::with(['student.user', 'modality', 'instructor.user', 'registration.classes'])->find($this->eventId);
         $this->registration = $this->class->registration;
 
+
+
         $this->data = (object) [
             'objective'  => $this->class->student->objective ?? null,
-            'history'    => $this->registration?->classes()->where('status', '!=', ClassStatusEnum::SCHEDULED)->get(),
             'instructor' => $this->class->instructor->user,
             'student'    => $this->class?->student->user,
             'modality'   => $this->class->modality->name,
             'status'     => $this->class->status,
+            'makeup' => ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $this->class->student_id)->where('expires_at', '>=', now())->count(),
         ];
+    }
+
+    protected function history() {
+        return $this->registration?->classes()->where('status', '!=', ClassStatusEnum::SCHEDULED)->orderBy('datetime', 'desc')->paginate(3);
     }
 
     public function render(): View | Closure | string
     {
-        return view('livewire.calendar.show-class-card');
+        return view('livewire.calendar.show-class-card', [
+            'history_classes' => $this->history()
+        ]);
     }
 }

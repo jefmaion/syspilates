@@ -117,7 +117,7 @@
                                     <td scope="row"><strong>Aulas:</strong></td>
                                     <td class="text-end">
                                         @foreach($registration->schedule as $sch)
-                                        <div>{{ $sch->weekday }} às {{ $sch->time }}</div>
+                                        <div>{{ $sch->weekday->label() }} às {{ $sch->time }}</div>
                                         @endforeach
                                     </td>
                                 </tr>
@@ -201,7 +201,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="tabs-home-8" role="tabpanel">
                                 <div>
-                                    <x-table.table>
+                                    <x-table.table search_fieldname="search_scheduled">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Dia</th>
@@ -214,18 +214,18 @@
                                             @foreach($scheduled as $date => $class)
 
                                             <tr class="">
-                                                <td scope="row">{{ $class['date']->format('d/m/Y') }}</td>
-                                                <td>{{ $class['time'] }}</td>
+                                                <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
+                                                <td>{{ $class->datetime->format('H:i') }}</td>
                                                 <td>
-                                                    <x-page.user-avatar size="xs" :user="$class['instructor']->user">
+                                                    <x-page.user-avatar size="xs" :user="$class->instructor->user">
                                                         <span class="small">
-                                                            {{ $class['instructor']->user->shortName }}
+                                                            {{ $class->instructor->user->shortName }}
                                                         </span>
                                                     </x-page.user-avatar>
                                                 </td>
                                                 <td>
-                                                    <x-page.status color="{{ $class['status']->color() }}">{{
-                                                        $class['status']->label()
+                                                    <x-page.status color="{{ $class->status->color() }}">{{
+                                                        $class->status->label()
                                                         }}
                                                     </x-page.status>
 
@@ -234,7 +234,7 @@
                                             @endforeach
                                         </tbody>
                                     </x-table.table>
-                                    {{ $scheduled->links() }}
+                                    {{$scheduled->links()}}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tabs-profile-8" role="tabpanel">

@@ -29,6 +29,11 @@
         <div class="mt-3">
             {{ $class->comments }}
         </div>
+        @if(!empty($class->instructor_comments))
+        <div class="mt-3">
+            <strong>Comentários do Professor: </strong>{{ $class->instructor_comments }}
+        </div>
+        @endif
     </div>
 
     <div class="modal-footer border-0 bg-transparent">

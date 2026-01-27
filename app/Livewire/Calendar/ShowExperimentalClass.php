@@ -40,7 +40,6 @@ class ShowExperimentalClass extends Component
     public function edit()
     {
         $this->dispatch('edit-experimental-class', id:$this->class->id)->to(CreateExperimentalClass::class);
-        ;
     }
 
     public function removeClass()
