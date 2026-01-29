@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="" class="form-label">Status</label>
-                        <x-form.select-class-status name="status" wire:model.live='status' />
+                        <x-form.select-class-status name="status" :except="$exceptOptions" wire:model.live='status' />
                     </div>
 
                     <div class="mb-3">
@@ -35,8 +35,8 @@
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                         Fechar
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <x-page.spinner>
+                    <button type="button" class="btn btn-primary" wire:click='submit'>
+                        <x-page.spinner target="submit">
                             <span class="d-flex align-items-center">
                                 <x-icons.success class="me-2" /> <span>Salvar</span>
                             </span>

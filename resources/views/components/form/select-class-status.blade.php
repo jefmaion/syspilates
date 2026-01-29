@@ -1,4 +1,4 @@
-@props(['except'=> null])
+{{-- @props(['except'=> null]) --}}
 
 <x-form.select {{ $attributes }}>
     <option value=""></option>

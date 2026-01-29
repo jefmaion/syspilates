@@ -53,7 +53,7 @@
         <livewire:calendar.full-calendar :endpoint="route('events')" wire:ignore.self wire:key='calendar' id="calendar" :config="$calendarConfig" />
 
         <livewire:calendar.show-class-card wire:key='{{ $currentId }}' />
-        <livewire:calendar.form-register-class wire:key='form-{{ $currentId }}' />
+        <livewire:calendar.form-register-class wire:key='form-{{ $currentId }}' :except="['scheduled']" />
 
         <livewire:calendar.create-makeup-class />
 

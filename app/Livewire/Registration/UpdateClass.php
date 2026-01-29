@@ -9,6 +9,7 @@ use App\Models\Classes;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UpdateClass extends Component
@@ -29,12 +30,14 @@ class UpdateClass extends Component
 
     public $evolution;
 
+    #[On('update-class')]
     public function show($id)
     {
         $this->class = Classes::find($id);
 
-        $this->date          = $this->class->datetime->format('Y-m-d');
-        $this->time          = $this->class->datetime->format('H:i:s');
+        $this->date = $this->class->datetime->format('Y-m-d');
+        $this->time = $this->class->datetime->format('H:i:s');
+
         $this->instructor_id = $this->class->instructor_id;
         $this->status        = $this->class->status;
         $this->evolution     = $this->class->evolution;

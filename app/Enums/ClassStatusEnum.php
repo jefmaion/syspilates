@@ -37,12 +37,25 @@ enum ClassStatusEnum: string
     public function icon(): string
     {
         return match ($this) {
-            self::SCHEDULED => '',
-            self::PRESENCE  => '',
-            self::ABSENSE   => '',
-            self::JUSTIFIED => '',
-            self::CANCELED  => '',
+            self::SCHEDULED => 'icons.clock',
+            self::PRESENCE  => 'icons.success',
+            self::ABSENSE   => 'icons.times',
+            self::JUSTIFIED => 'icons.exclamation',
+            self::CANCELED  => 'icons.times',
         };
+    }
+
+    public static function filter($value)
+    {
+        $filtered = array_filter(self::cases(), function ($item) use ($value) {
+            return ($item->label() == $value) ? $item->value : null;
+        });
+
+        if ($filtered) {
+            return array_shift($filtered)->value;
+        }
+
+        return null;
     }
 
     public static function toSelectArray($except = []): array
@@ -50,7 +63,7 @@ enum ClassStatusEnum: string
         $array = [];
 
         foreach (self::cases() as $case) {
-            if (in_array($case, array_merge($except, [self::SCHEDULED]))) {
+            if (in_array($case, $except)) {
                 continue;
             }
 

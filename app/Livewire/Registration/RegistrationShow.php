@@ -17,11 +17,14 @@ use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class RegistrationShow extends Component
 {
     use PaginationCollectionTrait;
-    use PaginationTrait;
+    // use PaginationTrait;
+
+    use WithPagination;
 
     public Registration $registration;
 
@@ -36,6 +39,28 @@ class RegistrationShow extends Component
     public $search_scheduled;
 
     public $cancel_comments;
+
+    public $searchClass = null;
+
+    public array $filter = [];
+
+    public $_sortBy = 'id';
+
+    public $sortDirection = 'asc';
+
+    public function sortBy($field)
+    {
+        if ($this->_sortBy === $field) {
+            // alterna asc/desc
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            // muda a coluna e volta para asc
+            $this->_sortBy       = $field;
+            $this->sortDirection = 'asc';
+        }
+
+        $this->resetPage();
+    }
 
     public function tabs(string $tab): void
     {
@@ -81,30 +106,6 @@ class RegistrationShow extends Component
         return $this->dispatch('$refresh');
     }
 
-    // public function generateClasses()
-    // {
-    //     $this->registration->load('schedule.instructor.user');
-    //     $period = CarbonPeriod::create($this->registration->start, $this->registration->end);
-
-    //     $classes = [];
-
-    //     foreach ($period as $date) {
-    //         foreach ($this->registration->schedule as $schedule) {
-    //             if ($date->dayOfWeek === $schedule->weekday->value) {
-    //                 $classes[$date->format('Y-m-d')] = [
-    //                     'date'       => $date,
-    //                     'time'       => $schedule->time,
-    //                     'datetime'   => $date . 'T' . $schedule->time,
-    //                     'instructor' => $schedule->instructor,
-    //                     'status'     => ClassStatusEnum::SCHEDULED,
-    //                 ];
-    //             }
-    //         }
-    //     }
-
-    //     return $classes;
-    // }
-
     #[On('refresh-registration')]
     #[On('class-saved')]
     public function refresh()
@@ -119,11 +120,36 @@ class RegistrationShow extends Component
 
     public function render(): View | Closure | string
     {
+        $classes = $this->registration->classes();
+
+        foreach ($this->filter as $field => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
+            if ($field == 'weekday') {
+                $classes->whereRaw('DAYOFWEEK(datetime) = ?', [$value]);
+
+                continue;
+            }
+
+            if ($field == 'time') {
+                $classes->whereRaw('DAYOFWEEK(datetime) = ?', [$value]);
+
+                continue;
+            }
+
+            $classes->where($field, $value);
+        }
+
         return view('livewire.registration.registration-show', [
-            'scheduled' => $this->registration->classes()->whereLike('datetime', '%' . $this->search_scheduled . '%')->where('status', ClassStatusEnum::SCHEDULED)->paginate(8, pageName: 'scheduled'),
-            'classes'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(pageName: 'executed'),
-            'absenses'  => $this->registration->classes()->whereNotIn('status', [ClassStatusEnum::PRESENCE, ClassStatusEnum::SCHEDULED])->paginate(pageName: 'absensed'),
-            'markups'   => ClassMakeup::with(['origin'])->where('status', 'active')->where('student_id', $this->registration->student_id)->get(),
+            'countClasses' => $this->registration->classes->count(),
+            'classes'      => $classes->orderBy($this->_sortBy, $this->sortDirection)->paginate(8, pageName:'classes'),
+            // 'markups' => ClassMakeup::with(['origin.instructor.user'])->where('status', 'active')->where('registration_id', $this->registration->id)->get(),
+            'markups'    => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName:'Oopa'),
+            'evolutions' => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(10, pageName:'evolutions'),
+            'presences'  => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
+            'absenses'   => $this->registration->classes()->whereIn('status', [ClassStatusEnum::JUSTIFIED, ClassStatusEnum::ABSENSE, ClassStatusEnum::CANCELED])->count(),
         ]);
     }
 }

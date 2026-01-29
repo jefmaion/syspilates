@@ -18,12 +18,10 @@
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                         Fechar
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        <span wire:loading.remove>Salvar</span>
-                        <span wire:loading>
-                            <span class="spinner-border spinner-border-sm"></span>
-                            Salvando...
-                        </span>
+                    <button type="button" class="btn btn-primary" wire:click='{{ ($edit) ? 'update' : 'store' }}'>
+                        <x-page.spinner target="{{ ($edit) ? 'update' : 'store' }}">
+                            <x-icons.success /> Salvar
+                        </x-page.spinner>
                     </button>
                 </div>
             </div>
@@ -35,7 +33,7 @@
         @include('livewire.instructor.instructor-form-fields')
         <button type="submit" class="btn btn-primary">
             <span wire:loading.remove>Salvar</span>
-            <span wire:loading>
+            <span wire:loading wire:target="{{ ($edit) ? 'update' : 'store' }}">
                 <span class="spinner-border spinner-border-sm"></span>
                 Salvando...
             </span>

@@ -26,8 +26,10 @@ class StudentForm extends Component
     #[On('create-student')]
     public function create(): void
     {
-        $this->reset();
+        $this->user->reset();
+        $this->form->reset();
         $this->resetValidation();
+
         $this->dispatch('show-modal', modal:'modal-form-student');
     }
 

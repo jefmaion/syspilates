@@ -22,17 +22,8 @@ return [
             'route' => 'calendar',
             'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
         ],
-        'Aulas' => [
-            'route' => '',
-            'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
-        ],
 
         'Cadastros' => 'nav-header',
-
-        'Matrículas' => [
-            'route' => 'registration',
-            'icon'  => file_get_contents(resource_path('views/components/icons/registration.blade.php')),
-        ],
 
         'Alunos' => [
             'route' => 'student',
@@ -42,6 +33,11 @@ return [
         'Professores' => [
             'route' => 'instructor',
             'icon'  => file_get_contents(resource_path('views/components/icons/instructor.blade.php')),
+        ],
+
+        'Matrículas' => [
+            'route' => 'registration',
+            'icon'  => file_get_contents(resource_path('views/components/icons/registration.blade.php')),
         ],
 
         'Modalidades' => [

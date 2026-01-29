@@ -13,12 +13,12 @@
             </h2>
             <x-slot name="actions">
                 <div class="btn-list">
-                    <a href="#" wire:click='$dispatch("create-student")'
+                    <a href="#" wire:click.prevent='$dispatch("create-student")'
                         class="btn btn-primary btn-5 d-none d-sm-inline-block">
 
                         <x-icons.plus class="icon icon-1" /> Novo
                     </a>
-                    <a wire:click='$dispatch("create-student")' class="btn btn-primary btn-6 d-sm-none btn-icon"
+                    <a wire:click.prevent='$dispatch("create-student")' class="btn btn-primary btn-6 d-sm-none btn-icon"
                         aria-label="Novo">
                         <x-icons.plus class="icon icon-1" />
                     </a>

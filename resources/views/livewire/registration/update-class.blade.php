@@ -2,7 +2,7 @@
     <div class="modal-status bg-primary"></div>
     <div class="modal-header">
         <h5 class="modal-title align-items-center" id="modalTitleId">
-            Editar Aulas
+            Editar Aula
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -24,27 +24,17 @@
                 <x-form.select-instructor name="instructor_id" wire:model='instructor_id' />
             </div>
 
-            <div class="col-12 mb-3">
+            {{-- <div class="col-12 mb-3">
                 <label for="" class="form-label">Status</label>
                 <x-form.select-class-status name="status" wire:model.live='status' />
-            </div>
+            </div> --}}
 
-            @if($isScheduled)
-                <div class="col-12 mb-3">
-                    <label class="form-label">Evolução</label>
-                    <textarea class="form-control {{ ($errors->has('evolution') ? ' is-invalid' : '') }}" rows="5" name="evolution" wire:model="evolution"></textarea>
-                    @error('evolution')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-            @endif
-
-            {{-- @if(in_array($status, $makeupConditions))
             <div class="col-12 mb-3">
-                <label class="form-check">
-                    <input class="form-check-input" wire:model='canMakeup' type="checkbox" checked>
-                    <span class="form-check-label">Permitir reposição</span>
-                </label>
+                <label class="form-label">Evolução</label>
+                <x-form.textarea rows="5" name="evolution" wire:model="evolution"  />
             </div>
-            @endif --}}
+
+
 
         </div>
     </div>
@@ -52,7 +42,6 @@
         <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
             Fechar
         </button>
-
         <button type="button" class="btn btn-primary" wire:click='save()'>
             <span wire:loading.remove>Salvar</span>
             <span wire:loading>

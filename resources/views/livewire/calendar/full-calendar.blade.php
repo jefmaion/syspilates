@@ -14,12 +14,12 @@
     @script
         <script>
 
-            let calendarInstance;
+            let calendarInstance_{{ $id }};
 
             document.addEventListener("livewire:navigated", function () {
 
-                if (calendarInstance) {
-                    calendarInstance.refetchEvents();
+                if (calendarInstance_{{ $id }}) {
+                    calendarInstance_{{ $id }}.refetchEvents();
                     return;
                 }
 
@@ -30,7 +30,7 @@
 
                 var isMobile = window.innerWidth < 768; // você pode ajustar o breakpoint
 
-                var calendarInstance = new FullCalendar.Calendar(calendarEl, {
+                var calendarInstance_{{ $id }} = new FullCalendar.Calendar(calendarEl, {
                     initialView: isMobile ? "timeGridDay" : "timeGridWeek",
                     timeZone: "America/Sao_Paulo",
                     displayEventTime: false,
@@ -40,7 +40,7 @@
                         right: "dayGridMonth,timeGridWeek,timeGridDay"
                     },
                     allDaySlot: false,
-                    slotMinTime: "06:00:00",
+                    slotMinTime: "07:00:00",
                     slotMaxTime: "21:00:00",
                     slotDuration: "01:00:00",
                     slotLabelInterval: "01:00",
@@ -60,7 +60,9 @@
                         hour12: false
                     },
                     events: {
+                        @if($endpoint)
                         url: '{{ $endpoint }}',
+                        @endif
                         extraParams: function(){
                             let params = {};
                             document.querySelectorAll('.filters').forEach(function(select) {
@@ -123,7 +125,7 @@
                     }
                 });
 
-                calendarInstance.render();
+                calendarInstance_{{ $id }}.render();
 
                 window.addEventListener('eventDeleted', function (event) {
                     // Get the deleted event's ID (which was passed as 'uuid' in the PHP code above)
@@ -141,19 +143,20 @@
                 // quando qualquer select mudar, refaz a busca
                 document.querySelectorAll('.filters').forEach(function(select) {
                     select.addEventListener('change', function() {
-                        calendarInstance.refetchEvents();
-                        setTimeout(() => calendarInstance.updateSize(), 50);
+                        calendarInstance_{{ $id }}.refetchEvents();
+                        setTimeout(() => calendarInstance_{{ $id }}.updateSize(), 50);
                     });
                 });
 
                 window.addEventListener('refresh-calendar', () => {
-                    calendarInstance.refetchEvents();
-                    calendarInstance.updateSize();
+                    calendarInstance_{{ $id }}.refetchEvents();
+                    calendarInstance_{{ $id }}.updateSize();
                 });
 
                 window.addEventListener('resize-calendar', () => {
-                    setTimeout(() => calendarInstance.updateSize(), 50);
+                    setTimeout(() => calendarInstance_{{ $id }}.updateSize(), 50);
                 });
             });
         </script>
     @endscript
+</div>

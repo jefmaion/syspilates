@@ -44,8 +44,7 @@
 <div class="row ">
     <div class="col-md-3 col-lg-3 col-xl-3 mb-3">
         <label class="form-label">CEP</label>
-        <input type="number" class="form-control @error('user.zipcode') is-invalid @enderror" wire:model="user.zipcode"
-            wire:blur="getAddress" />
+        <input type="number" class="form-control @error('user.zipcode') is-invalid @enderror" wire:model="user.zipcode" wire:blur.lazy="getAddress" />
     </div>
 
     <div class="col-md-7 col-lg-9 col-xl-7 mb-3">

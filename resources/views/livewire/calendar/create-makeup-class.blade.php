@@ -59,8 +59,8 @@
                     Fechar
                 </button>
 
-                <button type="submit" class="btn btn-primary">
-                    <x-page.spinner>
+                <button type="button" class="btn btn-primary" wire:click='saveMakeup'>
+                    <x-page.spinner target="saveMakeup">
                         <span class="d-flex align-items-center">
                             <x-icons.success class="me-2" /> <span>Salvar</span>
                         </span>

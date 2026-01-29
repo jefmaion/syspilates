@@ -48,6 +48,10 @@ class FormRegisterClass extends Component
 
     public $evolution;
 
+    public $exceptOptions = [
+        ClassStatusEnum::SCHEDULED,
+    ];
+
     public $makeupConditions = [
         ClassStatusEnum::CANCELED->value,
         ClassStatusEnum::JUSTIFIED->value,

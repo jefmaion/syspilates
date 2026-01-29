@@ -9,7 +9,6 @@
             Detalhes da Matrícula
         </h2>
         <x-slot:actions>
-
             <a class="btn btn-outline-secondary" wire:click="$dispatch('cancel-registration')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -33,12 +32,34 @@
         </x-slot:actions>
     </x-page.page-header>
 
+
     <livewire:registration.actions.cancel-registration :registration="$registration" />
 
     <x-page.page-body>
 
+        {{-- <div class="alert alert-warning alert-dismissible" role="alert">
+            <div class="alert-icon">
+                <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon alert-icon icon-2">
+                    <path d="M12 9v4"></path>
+                    <path
+                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                    </path>
+                    <path d="M12 16h.01"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="alert-heading">Some information is missing!</h4>
+                <div class="alert-description">This is a custom alert box with a description.</div>
+            </div>
+            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+        </div> --}}
+
         <livewire:registration.update-class />
         <livewire:calendar.form-register-class />
+
 
 
         <div class="row">
@@ -80,70 +101,344 @@
 
                 </div>
 
-                <div class="card">
+                {{-- <div class="card flex-fill">
                     <div class="card-header card-header-lisght">
                         <h3 class="card-title">Matrícula Atual</h3>
                     </div>
 
-                    <table class="table">
+                    <div class="card-body">
 
-                        <tbody>
-                            <tr>
-                                <td scope="row"><strong>Status:</strong></td>
-                                <td class="text-end">
-                                    <x-page.status color="{{ $registration->status->color() }}">{{
-                                        $registration->status->label()
-                                        }}
-                                    </x-page.status>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td scope="row"><strong>Plano:</strong> </td>
-                                <td class="text-end">{{$registration->planDescription }}</td>
-                            </tr>
+  
 
-                            <tr>
-                                <td scope="row"><strong>Modalidade:</strong> </td>
-                                <td class="text-end">{{$registration->modality->name }}</td>
-                            </tr>
+                        <table class="table">
 
-                            <tr>
-                                <td scope="row"><strong>Período:</strong></td>
-                                <td class="text-end">{{ $registration->start->format('d/m/y') }} à {{
-                                    $registration->end->format('d/m/y') }}</td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>Última aula:</td>
+                                    <td><strong>12/12/2024</strong></td>
+                                </tr>
 
-                            <tr>
-                                <td scope="row"><strong>Vencimento:</strong></td>
-                                <td class="text-end">Dia {{ $registration->deadline }}</td>
-                            </tr>
+                                <tr>
+                                    <td>Próxima aula:</td>
+                                    <td><strong>12/12/2024</strong></td>
+                                </tr>
 
-                            <tr>
-                                <td scope="row"><strong>Aulas:</strong></td>
-                                <td class="text-end">
-                                    @foreach($registration->schedule as $sch)
-                                    <div>{{ $sch->weekday->short() }} às {{ $sch->time }}</div>
-                                    @endforeach
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Ultima Evolução:</td>
+                                    <td><strong>12/12/2024</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> --}}
+                <div class="card mb-3 flesx-fill">
+                            <div class="card-header">
+                                <h3 class="card-title">Plano</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Status: <x-page.badge color="{{ $registration->status->color() }}">{{
+                                        $registration->status->label() }}</x-page.badge>
+                                </p>
+                                <p>Período: <strong>{{$registration->planDescription }}</strong></p>
+                                <p>Modalidade: <strong>{{$registration->modality->name }}</strong></p>
+                            </div>
+                        </div>
 
-
-
-                            {{-- <tr>
-                                <td scope="row"><strong>Início:</strong> 20/01/2025</td>
-                            </tr>
-                            <tr>
-                                <td scope="row"><strong>Vencimento:</strong> 10</td>
-                            </tr>
-                            <tr>
-                                <td scope="row"><strong>Status:</strong> </td> --}}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        <div class="card flexs-fill">
+                            <div class="card-header">
+                                <h3 class="card-title">Mensalidade</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Status: <x-page.badge>Em Dia</x-page.badge>
+                                </p>
+                                <p>Próximo Vencimento: <strong>{{ date('d/m/Y') }}</strong></p>
+                            </div>
+                        </div>
             </div>
 
-            <div class="col-6 d-flex flex-column">
+            <div class="col d-flex flex-column">
+
+                {{-- <div class="row mb-3">
+
+                   
+
+
+                    <div class="col d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <h3 class="card-title">Aulas</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Aulas: <strong>{{ $countClasses }}</strong></p>
+                                <p>Presença: <strong>{{ $presences }}</strong></p>
+                                <p>Faltas: <strong>{{ $absenses }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+                </div> --}}
+
+                <div class="row">
+                    <div class="col-8 d-flex">
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a href="#tab-scheduled" class="nav-link active" data-bs-toggle="tab"
+                                            aria-selected="false" role="tab" tabindex="-1">Aulas</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="#tab-makeup" class="nav-link" data-bs-toggle="tab" aria-selected="true"
+                                            role="tab">
+
+                                            Reposições</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a href="#tab-evolution" class="nav-link" data-bs-toggle="tab"
+                                            aria-selected="true" role="tab">Evoluções</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade  active show flex-fill" id="tab-scheduled"
+                                        role="tabpanel">
+                                        <div>
+                                            <x-table.table :search="false" class="mb-3 tablse-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Dia
+                                                        </th>
+                                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">
+                                                            Horário</th>
+                                                        <th style="cursor:pointer" wire:click="sortBy('type')">Tipo</th>
+                                                        <th style="cursor:pointer" wire:click="sortBy('instructor_id')">
+                                                            Instrutor</th>
+                                                        <th style="cursor:pointer" wire:click="sortBy('status')">Status
+                                                        </th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($classes as $date => $class)
+
+                                                    <tr class="">
+                                                        <td scope="row">
+                                                            {{ $class->datetime->format('d/m/Y') }} • {{
+                                                            ucfirst($class->datetime->isoFormat('ddd')) }}
+                                                        </td>
+                                                        <td>{{ $class->datetime->format('H:i') }}</td>
+                                                        <td>
+                                                            {{ $class->type->label() }}
+                                                        </td>
+                                                        <td>
+                                                            <x-page.user-avatar size="xs"
+                                                                :user="$class->instructor->user">
+                                                                <span class="small">
+                                                                    {{ $class->instructor->user->shortName }}
+                                                                </span>
+                                                            </x-page.user-avatar>
+                                                        </td>
+
+                                                        <td>
+                                                            <x-page.badge icon="{{ $class->status->icon() }}"
+                                                                color="{{ $class->status->color() }}">
+
+
+                                                                {{
+                                                                $class->status->label()
+                                                                }}
+                                                            </x-page.badge>
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="btn-actions">
+                                                                <a class="btn btn-action text-center" href="#"
+                                                                    wire:click="editClass({{ $class->id }})">
+                                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-1">
+                                                                        <path
+                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                                        </path>
+                                                                        <path d="M16 5l3 3"></path>
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </x-table.table>
+                                            {{$classes->links()}}
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="tab-makeup" role="tabpanel">
+                                        @if($markups->isEmpty())
+                                        <p class="m-3">Nenhuma reposição encontrada.</p>
+                                        @else
+                                        <div>
+                                            <x-table.table :search="false">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Dia</th>
+                                                        <th scope="col">Horário</th>
+                                                        <th scope="col">Instrutor</th>
+                                                        <th>Tipo da Falta</th>
+                                                        <th>Expira em:</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($markups as $date => $class)
+
+                                                    <tr class="">
+                                                        <td scope="row">{{ $class->origin->datetime->format('d/m/y') }}
+                                                            • {{
+                                                            ucfirst($class->origin->datetime->translatedFormat('l')) }}
+                                                        </td>
+                                                        <td>{{ $class->origin->datetime->format('H:i') }}</td>
+                                                        <td>
+                                                            <x-page.user-avatar size="xs"
+                                                                :user="$class->origin->instructor->user">
+                                                                <span class="small">
+                                                                    {{ $class->origin->instructor->user->shortName }}
+                                                                </span>
+                                                            </x-page.user-avatar>
+                                                        </td>
+                                                        <td>
+                                                            {{ $class->origin->status->label() }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $class->expires_at->format('d/m/y') }}
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            <div class="btn-actions">
+                                                                <a class="btn btn-action" href="#"
+                                                                    wire:click="editClass({{ $class->id }})">
+                                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-1">
+                                                                        <path
+                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                                        </path>
+                                                                        <path d="M16 5l3 3"></path>
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </x-table.table>
+                                            {{$markups->links()}}
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="tab-pane fade" id="tab-evolution" role="tabpanel">
+                                        @if($markups->isEmpty())
+                                        <p class="m-3">Nenhuma evolução encontrada.</p>
+                                        @else
+                                        <div>
+                                            <ul class="timeline">
+                                                @foreach($evolutions as $evol)
+                                                <li class="timeline-event">
+                                                    <div class="timeline-event-icon bg-x-lt p-4">
+                                                        <div class="p-4">{{ $evol->datetime->format('d/m') }}</div>
+                                                    </div>
+                                                    <div class="card timeline-event-card">
+                                                        <div class="card-body">
+                                                            <div class="text-secondary float-end">10 hrs ago</div>
+                                                            <p class="text-secondary">{{ $evol->evolution }}</p>
+                                                            <p>Por <strong>{{ $evol->instructor->user->shortName
+                                                                    }}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                @endforeach
+
+                                            </ul>
+
+                                            {{ $evolutions->links() }}
+
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex flex-column">
+                        <div class="card flsex-fill mb-3">
+                            <div class="card-header">
+                                <h3 class="card-title">Aulas</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>Aulas: <strong>{{ $countClasses }}</strong></p>
+                                <p>Presença: <strong>{{ $presences }}</strong></p>
+                                <p>Faltas: <strong>{{ $absenses }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="card flex-fill">
+                            <div class="card-header">
+                                <p class="card-title">Reposições Em Aberto</p>
+                            </div>
+                            <div class="card-body">
+                                @if($markups->isEmpty())
+                                <p class="m-3">Nenhuma reposição encontrada.</p>
+                                @else
+
+
+
+                                <x-table.table :search="false" class="mb-3">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Falta</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($markups as $date => $class)
+                                        <tr>
+                                            <td>{{ $class->origin->datetime->format('d/m/y') }} • {{
+                                                ucfirst($class->origin->datetime->isoFormat('ddd')) }}</td>
+                                            <td>
+                                                <x-page.badge>Ativo</x-page.badge>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </x-table.table>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                {{--
                 <div class="card mb-3">
                     <div class="card-header card-header-lisght">
                         <h3 class="card-title">Financeiro</h3>
@@ -173,620 +468,12 @@
                         </tbody>
                     </table>
 
-                </div>
-
-                <div class="card-tabs flex-fill">
-                    <!-- Cards navigation -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation"><a href="#tab-top-1" class="nav-link active"
-                                data-bs-toggle="tab" aria-selected="true" role="tab">Próximas Aulas</a></li>
-                        <li class="nav-item" role="presentation"><a href="#tab-top-2" class="nav-link"
-                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Aulas Realizadas</a>
-                        </li>
-                        <li class="nav-item" role="presentation"><a href="#tab-top-3" class="nav-link"
-                                data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">Faltas</a></li>
-                        <li class="nav-item" role="presentation">
-                            <a href="#tab-top-4" class="nav-link " data-bs-toggle="tab" aria-selected="false"
-                                tabindex="-1" role="tab">
-                                Reposições</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <!-- Content of card #1 -->
-                        <div id="tab-top-1" class="card tab-pane active show" role="tabpanel">
-                            <div class="card-body">
-                                <div class="card-title">Content of tab #1</div>
-
-                            </div>
-                            <x-table.table :search="false">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dia</th>
-                                        <th scope="col">Horário</th>
-                                        <th>Tipo</th>
-                                        <th scope="col">Instrutor</th>
-                                        <th>Status</th>
-                                        <th>Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($scheduled as $date => $class)
-
-                                    <tr class="">
-                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
-                                        <td>{{ $class->datetime->format('H:i') }}</td>
-                                        <td>
-                                            {{ $class->type->label() }}
-                                        </td>
-                                        <td>
-                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
-                                                <span class="small">
-                                                    {{ $class->instructor->user->shortName }}
-                                                </span>
-                                            </x-page.user-avatar>
-                                        </td>
-
-                                        <td>
-                                            <x-page.status color="{{ $class->status->color() }}">{{
-                                                $class->status->label()
-                                                }}
-                                            </x-page.status>
-
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="btn-actions">
-                                                <a class="btn btn-action" href="#"
-                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
-                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-1">
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                        </path>
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                        </path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                </a>
-
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </x-table.table>
-                            {{$scheduled->links()}}
-                        </div>
-                        <!-- Content of card #2 -->
-                        <div id="tab-top-2" class="card tab-pane" role="tabpanel">
-                            <div class="card-body">
-                                <div class="card-title">Content of tab #2</div>
-                            </div>
-                            <x-table.table :search="false">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dia</th>
-                                        <th scope="col">Horário</th>
-                                        <th>Tipo</th>
-                                        <th scope="col">Instrutor</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($classes as $date => $class)
-
-                                    <tr class="">
-                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
-                                        <td>{{ $class->datetime->format('H:i') }}</td>
-                                        <td>
-                                            {{ $class->type->label() }}
-                                        </td>
-                                        <td>
-                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
-                                                <span class="small">
-                                                    {{ $class->instructor->user->shortName }}
-                                                </span>
-                                            </x-page.user-avatar>
-                                        </td>
-                                        <td>
-                                            <x-page.status color="{{ $class->status->color() }}">{{
-                                                $class->status->label()
-                                                }}
-                                            </x-page.status>
-
-                                        </td>
-                                        <td>
-                                            <div class="btn-actions">
-
-                                                <a class="btn btn-action" href="#"
-                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
-                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-1">
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                        </path>
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                        </path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </x-table.table>
-                            {{$classes->links()}}
-                        </div>
-                        <!-- Content of card #3 -->
-                        <div id="tab-top-3" class="card tab-pane" role="tabpanel">
-                            <div class="card-body">
-                                <div class="card-title">Content of tab #3</div>
-
-                            </div>
-                            <x-table.table :search="false">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dia</th>
-                                        <th scope="col">Horário</th>
-                                        <th>Tipo</th>
-                                        <th scope="col">Instrutor</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($absenses as $date => $class)
-
-                                    <tr class="">
-                                        <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
-                                        <td>{{ $class->datetime->format('H:i') }}</td>
-                                        <td>
-                                            {{ $class->type->label() }}
-                                        </td>
-                                        <td>
-                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
-                                                <span class="small">
-                                                    {{ $class->instructor->user->shortName }}
-                                                </span>
-                                            </x-page.user-avatar>
-                                        </td>
-                                        <td>
-                                            <x-page.status color="{{ $class->status->color() }}">{{
-                                                $class->status->label()
-                                                }}
-                                            </x-page.status>
-
-                                        </td>
-                                        <td>
-                                            <div class="btn-actions">
-
-                                                <a class="btn btn-action" href="#"
-                                                    wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">
-                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon icon-1">
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                        </path>
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                        </path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </x-table.table>
-                            {{$classes->links()}}
-                        </div>
-                        <!-- Content of card #4 -->
-                        <div id="tab-top-4" class="card tab-pane" role="tabpanel">
-                            <div class="card-body">
-                                <div class="card-title">Content of tab #4</div>
-                            </div>
-                            <table class="table font-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Falta</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($markups as $mk)
-                                    <tr>
-                                        <td>{{ $mk->origin->datetime->format('d/m/Y H:i') }}</td>
-                                        <td>{{ $mk->origin->status->label() }}</td>
-                                        <td>{{ $mk->expires_at->format('d/m/Y') }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- <div class="card flex-fill">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a href="#tabs-home-8" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
-                                    role="tab">Próximas Aulas</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="#tabs-profile-8" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                                    role="tab" tabindex="-1">Aulas Realizadas</a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a href="#tabs-activity-8" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                                    role="tab" tabindex="-1">Faltas</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade active show" id="tabs-home-8" role="tabpanel">
-                                <div>
-                                    <x-table.table :search="false">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Dia</th>
-                                                <th scope="col">Horário</th>
-                                                <th>Tipo</th>
-                                                <th scope="col">Instrutor</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($scheduled as $date => $class)
-
-                                            <tr class="">
-                                                <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
-                                                <td>{{ $class->datetime->format('H:i') }}</td>
-                                                <td>
-                                                    {{ $class->type->label() }}
-                                                </td>
-                                                <td>
-                                                    <x-page.user-avatar size="xs" :user="$class->instructor->user">
-                                                        <span class="small">
-                                                            {{ $class->instructor->user->shortName }}
-                                                        </span>
-                                                    </x-page.user-avatar>
-                                                </td>
-
-                                                <td>
-                                                    <x-page.status color="{{ $class->status->color() }}">{{
-                                                        $class->status->label()
-                                                        }}
-                                                    </x-page.status>
-
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </x-table.table>
-                                    {{$scheduled->links()}}
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="tabs-profile-8" role="tabpanel">
-                                <h4>Profile tab</h4>
-                                <div>
-                                    <x-table.table :search="false">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Dia</th>
-                                                <th scope="col">Horário</th>
-                                                <th scope="col">Instrutor</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($classes as $date => $class)
-
-                                            <tr class="">
-                                                <td scope="row">{{ $class->datetime->format('d/m/Y') }}</td>
-                                                <td>{{ $class->datetime->format('H:i') }}</td>
-                                                <td>
-                                                    <x-page.user-avatar size="xs" :user="$class->instructor->user">
-                                                        <span class="small">
-                                                            {{ $class->instructor->user->shortName }}
-                                                        </span>
-                                                    </x-page.user-avatar>
-                                                </td>
-                                                <td>
-                                                    <x-page.status color="{{ $class->status->color() }}">{{
-                                                        $class->status->label()
-                                                        }}
-                                                    </x-page.status>
-
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </x-table.table>
-                                    {{$classes->links()}}
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="tabs-activity-8" role="tabpanel">
-                                <h4>Activity tab</h4>
-                                <div>
-                                    Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet,
-                                    facilisi
-                                    sit mauris accumsan nibh habitant senectus
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-            </div>
-
-            <div class="col-3 d-flex flex-column">
-                {{-- <div class="card mb-3">
-                    <div class="card-header card-header-lisght">
-                        <h3 class="card-title">Reposições em aberto</h3>
-                    </div>
-
-
-                    <table class="table font-sm">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Falta</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($markups as $mk)
-                            <tr>
-                                <td>{{ $mk->origin->datetime->format('d/m/Y H:i') }}</td>
-                                <td>{{ $mk->origin->status->label() }}</td>
-                                <td>{{ $mk->expires_at->format('d/m/Y') }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
                 </div> --}}
 
-                <div class="card  flex-fill">
-                    <div class="card-header card-header-lisght">
-                        <h3 class="card-title">Evoluções</h3>
-                    </div>
-                    <div class="card-body">
-                        <ul class="timeline">
-                            @foreach($classes as $date => $class)
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon bgs-x-lt text-center p-4">
-                                    <span><strong>{{ $class->datetime->format('d/m') }}</strong></span>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">10 hrs ago</div>
-                                        <h4>{{ $class->instructor->user->shortName }} <span> escreveu:</span></h4>
-                                        <p class="text-secondary">{{ $class->evolution }}
-                                        </p>
-                                        <a href="#"
-                                            wire:click="$dispatch('show-form-register', { id: '{{ $class->id }}'})">Editar</a>
-                                    </div>
-                                </div>
-                            </li>
-                            @endforeach
-                            {{-- <li class="timeline-event">
-                                <div class="timeline-event-icon">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/briefcase -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path
-                                            d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                                        <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
-                                        <path d="M12 12l0 .01" />
-                                        <path d="M3 13a20 20 0 0 0 18 0" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">2 hrs ago</div>
-                                        <h4>+3 New Products were added!</h4>
-                                        <p class="text-secondary">Congratulations!</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/check -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M5 12l5 5l10 -10" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">1 day ago</div>
-                                        <h4>Database backup completed!</h4>
-                                        <p class="text-secondary">Download the <a href="#">latest backup</a>.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon bg-facebook-lt">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path
-                                            d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">1 day ago</div>
-                                        <h4>+290 Page Likes</h4>
-                                        <p class="text-secondary">This is great, keep it up!</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/user-plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                        <path d="M16 19h6" />
-                                        <path d="M19 16v6" />
-                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">2 days ago</div>
-                                        <h4>+3 Friend Requests</h4>
-                                        <div class="avatar-list mt-3">
 
-                                            <span class="avatar avatar-2"
-                                                style="background-image: url(../../../static/avatars/000m.jpg)"><span
-                                                    class="badge bg-success"></span>
-
-                                            </span>
-
-
-                                            <span class="avatar avatar-2"
-                                                style="background-image: url(../../../static/avatars/052f.jpg)"><span
-                                                    class="badge bg-success"></span>
-
-                                            </span>
-
-
-                                            <span class="avatar avatar-2"
-                                                style="background-image: url(../../../static/avatars/002m.jpg)"><span
-                                                    class="badge bg-success"></span>
-
-                                            </span>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/photo -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M15 8h.01" />
-                                        <path
-                                            d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" />
-                                        <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
-                                        <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">3 days ago</div>
-                                        <h4>+3 New photos</h4>
-                                        <div class="mt-3">
-                                            <div class="row g-2">
-                                                <div class="col-4">
-                                                    <!-- Photo -->
-
-
-
-
-
-
-
-
-
-                                                    <img src="../../../static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg"
-                                                        class="rounded"
-                                                        alt="Blue sofa with pillows in a designer living room interior" />
-
-
-
-                                                </div>
-                                                <div class="col-4">
-                                                    <!-- Photo -->
-
-
-
-
-
-
-
-
-
-                                                    <img src="../../../static/photos/home-office-desk-with-macbook-iphone-calendar-watch-and-organizer.jpg"
-                                                        class="rounded"
-                                                        alt="Home office desk with Macbook, iPhone, calendar, watch & organizer" />
-
-
-
-                                                </div>
-                                                <div class="col-4">
-                                                    <!-- Photo -->
-
-
-
-
-
-
-
-
-
-                                                    <img src="../../../static/photos/young-woman-working-in-a-cafe.jpg"
-                                                        class="rounded" alt="Young woman working in a cafe" />
-
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-event">
-                                <div class="timeline-event-icon">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/settings -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path
-                                            d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                    </svg>
-                                </div>
-                                <div class="card timeline-event-card">
-                                    <div class="card-body">
-                                        <div class="text-secondary float-end">2 weeks ago</div>
-                                        <h4>System updated to v2.02</h4>
-                                        <p class="text-secondary">Check the complete changelog at the <a
-                                                href="#">activity
-                                                page</a>.</p>
-                                    </div>
-                                </div>
-                            </li> --}}
-                        </ul>
-                    </div>
-                </div>
             </div>
+
+
         </div>
 
 

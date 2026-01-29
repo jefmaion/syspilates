@@ -94,6 +94,28 @@ class UserForm extends Form
         return $this->user->update($this->all());
     }
 
+    public function resetForm()
+    {
+        $this->user = null;
+
+        $this->name       = '';
+        $this->nickname   = '';
+        $this->avatar     = '';
+        $this->birthdate  = '';
+        $this->gender     = '';
+        $this->cpf        = '';
+        $this->phone1     = '';
+        $this->phone2     = '';
+        $this->zipcode    = '';
+        $this->address    = '';
+        $this->district   = '';
+        $this->number     = '';
+        $this->city       = '';
+        $this->state      = '';
+        $this->complement = '';
+        $this->email      = '';
+    }
+
     public function populate(?User $user): void
     {
         $this->user = $user;

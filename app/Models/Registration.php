@@ -147,6 +147,11 @@ class Registration extends BaseModel
         return $this->hasMany(RegistrationPlan::class);
     }
 
+    public function makeups()
+    {
+        return $this->hasMany(ClassMakeup::class);
+    }
+
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
