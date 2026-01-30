@@ -137,23 +137,44 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card-body">
+                <div class="csard-body">
                     <div class="tab-content">
-                        <div class="tab-pane {{ $tab === 'tab-class-history' ? 'active show' : '' }} "
-                            id="tab-class-history" role="tabpanel">
-                            <h4>Home tab</h4>
+                        <div class="tab-pane {{ $tab === 'tab-class-history' ? 'active show' : '' }} " id="tab-class-history" role="tabpanel">
 
-
-
+                            <div class="card-body">
+                                <h4>Home tab</h4>
+                            </div>
+                            <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Dia</th>
+                                        <th>Hora</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                @foreach($classes as $class)
+                                <tr>
+                                    <td>{{ $class->datetime->format('d/m/y') }}</td>
+                                    <td>{{ ucfirst($class->datetime->isoFormat('dddd')) }}</td>
+                                    <td>{{ $class->datetime->format('H:i') }}</td>
+                                    <td>{{ $class->type->label() }}</td>
+                                    <td><x-page.badge color="{{ $class->status->color() }}">{{ $class->status->label() }}</x-page.badge></td>
+                                </tr>
+                                @endforeach
+                            </x-table.table>
+                            <div class="card-body">{{ $classes->links() }}</div>
                         </div>
                         <div class="tab-pane {{ $tab === 'tab-instructor-modality' ? 'active show' : '' }}"
                             id="tab-instructor-modality" role="tabpanel">
                             <div>
 
-                                <a href="#" wire:click="$dispatch('attach-modality')" wire:ignore.self
-                                    class="btn btn-primary   my-3">
+                                <div class="card-body">
+                                    <a href="#" wire:click="$dispatch('attach-modality')" wire:ignore.self class="btn btn-primary   my-3">
                                     Adicionar modalidade
                                 </a>
+                                </div>
 
 
                                 <x-table.table :search="false">

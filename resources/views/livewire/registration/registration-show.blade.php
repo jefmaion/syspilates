@@ -124,6 +124,17 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="card">
+                                                <div class="card-status-start bg-primary"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">AGENDADAS</div>
+                                                    </div>
+                                                    <div class="h1">{{ $scheduleds }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card">
                                                 <div class="card-status-start bg-success"></div>
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center">
@@ -155,17 +166,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="card">
-                                                <div class="card-status-start bg-primary"></div>
-                                                <div class="card-body">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="subheader">AGENDADAS</div>
-                                                    </div>
-                                                    <div class="h1">{{ $scheduleds }}</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 @include('livewire.registration.parts.class-table')

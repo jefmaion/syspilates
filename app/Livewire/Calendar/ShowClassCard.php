@@ -89,7 +89,7 @@ class ShowClassCard extends Component
 
     protected function history()
     {
-        return $this->registration?->classes()->where('status', '!=', ClassStatusEnum::SCHEDULED)->orderBy('datetime', 'desc')->paginate(3);
+        return $this->registration?->classes()->where('status', '!=', ClassStatusEnum::SCHEDULED)->orderBy('datetime', 'desc')->paginate(2);
     }
 
     public function render(): View | Closure | string

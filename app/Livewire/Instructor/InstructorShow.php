@@ -4,13 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Instructor;
 
+use App\Enums\ClassStatusEnum;
+use App\Models\Classes;
 use App\Models\Instructor;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class InstructorShow extends Component
 {
+
+    use WithPagination;
+
     public Instructor $instructor;
 
     public string $tab = 'tab-instructor-modality';
@@ -46,6 +52,8 @@ class InstructorShow extends Component
 
     public function render(): View
     {
-        return view('livewire.instructor.instructor-show');
+        return view('livewire.instructor.instructor-show', [
+            'classes' => Classes::where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10)
+        ]);
     }
 }
