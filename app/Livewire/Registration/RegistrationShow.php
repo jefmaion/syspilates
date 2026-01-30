@@ -7,7 +7,6 @@ namespace App\Livewire\Registration;
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
 use App\Livewire\Forms\RegistrationForm;
-use App\Models\ClassMakeup;
 use App\Models\Registration;
 use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
@@ -145,11 +144,12 @@ class RegistrationShow extends Component
         return view('livewire.registration.registration-show', [
             'countClasses' => $this->registration->classes->count(),
             'classes'      => $classes->orderBy($this->_sortBy, $this->sortDirection)->paginate(8, pageName:'classes'),
-            // 'markups' => ClassMakeup::with(['origin.instructor.user'])->where('status', 'active')->where('registration_id', $this->registration->id)->get(),
-            'markups'    => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName:'Oopa'),
-            'evolutions' => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(10, pageName:'evolutions'),
-            'presences'  => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
-            'absenses'   => $this->registration->classes()->whereIn('status', [ClassStatusEnum::JUSTIFIED, ClassStatusEnum::ABSENSE, ClassStatusEnum::CANCELED])->count(),
+            'markups'      => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName:'makeup'),
+            'evolutions'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(6, pageName:'evolutions'),
+            'presences'    => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
+            'scheduleds'   => $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->count(),
+            'countMakeups' => $this->registration->classes()->where('type', ClassTypesEnum::MAKEUP)->count(),
+            'absenses'     => $this->registration->classes()->whereIn('status', [ClassStatusEnum::JUSTIFIED, ClassStatusEnum::ABSENSE, ClassStatusEnum::CANCELED])->count(),
         ]);
     }
 }

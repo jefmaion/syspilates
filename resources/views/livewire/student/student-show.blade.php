@@ -85,12 +85,6 @@
                             </div>
                         </div>
                     </div>
-
-                <livewire:avatar-uploader :currentAvatar="$student->user->avatar" />
-
-
-
-
                 </div>
             </div>
 
@@ -102,7 +96,7 @@
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
                                 role="tab">
-                                Histórrico de Aulas
+                                Histórico de Aulas
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -124,6 +118,48 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
+                            <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Dia</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Horário</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('type')">Tipo</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('instructor_id')">Instrutor</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('status')">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($classes as $date => $class)
+                                    <tr>
+                                        <td scope="row">
+                                            {{ $class->datetime->format('d/m/y') }} / 
+                                            {{ ucfirst($class->datetime->isoFormat('ddd')) }}
+                                        </td>
+                                        <td>
+                                            {{ $class->datetime->format('H:i') }}
+                                        </td>
+                                        <td>
+                                            {{ $class->type->label() }}
+                                        </td>
+                                        <td>
+                                            <x-page.user-avatar size="xs" :user="$class->instructor->user">
+                                                <span class="small">
+                                                    {{ $class->instructor->user->shortName }}
+                                                </span>
+                                            </x-page.user-avatar>
+                                        </td>
+                                        <td>
+                                            <x-page.badge icon="{{ $class->status->icon() }}" color="{{ $class->status->color() }}">
+                                                {{ $class->status->label() }}
+                                            </x-page.badge>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-table.table>
+                            <div class="mx-3">
+                                {{$classes->links()}}
+                            </div>
                         </div>
                         <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
                             <livewire:student.student-form :modal="false" :student="$student" />

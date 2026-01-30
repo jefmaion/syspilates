@@ -32,47 +32,25 @@
         </x-slot:actions>
     </x-page.page-header>
 
-
     <livewire:registration.actions.cancel-registration :registration="$registration" />
 
     <x-page.page-body>
 
-        {{-- <div class="alert alert-warning alert-dismissible" role="alert">
-            <div class="alert-icon">
-                <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon alert-icon icon-2">
-                    <path d="M12 9v4"></path>
-                    <path
-                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                    </path>
-                    <path d="M12 16h.01"></path>
-                </svg>
-            </div>
-            <div>
-                <h4 class="alert-heading">Some information is missing!</h4>
-                <div class="alert-description">This is a custom alert box with a description.</div>
-            </div>
-            <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-        </div> --}}
-
         <livewire:registration.update-class />
         <livewire:calendar.form-register-class />
 
+        <div class="row ">
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex flex-column">
 
-
-        <div class="row">
-            <div class="col-3 d-flex flex-column">
                 <div class="card mb-3">
-                    <div class="card-header card-header-lisght">
+                    <div class="card-header">
                         <h3 class="card-title">Informações</h3>
                     </div>
                     <div>
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <span class="avatar avatar-xl rounded-circle me-2">{{
-                                    $registration->student->user->initials }}</span>
+                                <span
+                                    class="avatar avatar-lg rounded-circle me-2">{{$registration->student->user->initials}}</span>
                                 <div class="flex-fill align-items-top">
                                     <h3 class=""><strong>{{ $registration->student->user->name }}</strong></h3>
                                     <div class="text-secondary">
@@ -94,391 +72,188 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="card-body">
                             <a href="{{ route('registration') }}" wire:navigate class="btn btn-link">Voltar</a>
                         </div>
                     </div>
 
                 </div>
 
-                {{-- <div class="card flex-fill">
-                    <div class="card-header card-header-lisght">
-                        <h3 class="card-title">Matrícula Atual</h3>
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <h3 class="card-title">Plano</h3>
                     </div>
-
                     <div class="card-body">
-
-  
-
-                        <table class="table">
-
-                            <tbody>
-                                <tr>
-                                    <td>Última aula:</td>
-                                    <td><strong>12/12/2024</strong></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Próxima aula:</td>
-                                    <td><strong>12/12/2024</strong></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Ultima Evolução:</td>
-                                    <td><strong>12/12/2024</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div> --}}
-                <div class="card mb-3 flesx-fill">
-                            <div class="card-header">
-                                <h3 class="card-title">Plano</h3>
-                            </div>
-                            <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
                                 <p>Status: <x-page.badge color="{{ $registration->status->color() }}">{{
                                         $registration->status->label() }}</x-page.badge>
                                 </p>
                                 <p>Período: <strong>{{$registration->planDescription }}</strong></p>
                                 <p>Modalidade: <strong>{{$registration->modality->name }}</strong></p>
                             </div>
-                        </div>
-
-                        <div class="card flexs-fill">
-                            <div class="card-header">
-                                <h3 class="card-title">Mensalidade</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Status: <x-page.badge>Em Dia</x-page.badge>
-                                </p>
-                                <p>Próximo Vencimento: <strong>{{ date('d/m/Y') }}</strong></p>
-                            </div>
-                        </div>
-            </div>
-
-            <div class="col d-flex flex-column">
-
-                {{-- <div class="row mb-3">
-
-                   
-
-
-                    <div class="col d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <h3 class="card-title">Aulas</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Aulas: <strong>{{ $countClasses }}</strong></p>
-                                <p>Presença: <strong>{{ $presences }}</strong></p>
-                                <p>Faltas: <strong>{{ $absenses }}</strong></p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                   
-                </div> --}}
-
-                <div class="row">
-                    <div class="col-8 d-flex">
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <a href="#tab-scheduled" class="nav-link active" data-bs-toggle="tab"
-                                            aria-selected="false" role="tab" tabindex="-1">Aulas</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a href="#tab-makeup" class="nav-link" data-bs-toggle="tab" aria-selected="true"
-                                            role="tab">
-
-                                            Reposições</a>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a href="#tab-evolution" class="nav-link" data-bs-toggle="tab"
-                                            aria-selected="true" role="tab">Evoluções</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane fade  active show flex-fill" id="tab-scheduled"
-                                        role="tabpanel">
-                                        <div>
-                                            <x-table.table :search="false" class="mb-3 tablse-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Dia
-                                                        </th>
-                                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">
-                                                            Horário</th>
-                                                        <th style="cursor:pointer" wire:click="sortBy('type')">Tipo</th>
-                                                        <th style="cursor:pointer" wire:click="sortBy('instructor_id')">
-                                                            Instrutor</th>
-                                                        <th style="cursor:pointer" wire:click="sortBy('status')">Status
-                                                        </th>
-                                                        <th>Ações</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($classes as $date => $class)
-
-                                                    <tr class="">
-                                                        <td scope="row">
-                                                            {{ $class->datetime->format('d/m/Y') }} • {{
-                                                            ucfirst($class->datetime->isoFormat('ddd')) }}
-                                                        </td>
-                                                        <td>{{ $class->datetime->format('H:i') }}</td>
-                                                        <td>
-                                                            {{ $class->type->label() }}
-                                                        </td>
-                                                        <td>
-                                                            <x-page.user-avatar size="xs"
-                                                                :user="$class->instructor->user">
-                                                                <span class="small">
-                                                                    {{ $class->instructor->user->shortName }}
-                                                                </span>
-                                                            </x-page.user-avatar>
-                                                        </td>
-
-                                                        <td>
-                                                            <x-page.badge icon="{{ $class->status->icon() }}"
-                                                                color="{{ $class->status->color() }}">
-
-
-                                                                {{
-                                                                $class->status->label()
-                                                                }}
-                                                            </x-page.badge>
-
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <div class="btn-actions">
-                                                                <a class="btn btn-action text-center" href="#"
-                                                                    wire:click="editClass({{ $class->id }})">
-                                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-1">
-                                                                        <path
-                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                                        </path>
-                                                                        <path d="M16 5l3 3"></path>
-                                                                    </svg>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </x-table.table>
-                                            {{$classes->links()}}
-                                        </div>
-                                    </div>
-
-                                    <div class="tab-pane fade" id="tab-makeup" role="tabpanel">
-                                        @if($markups->isEmpty())
-                                        <p class="m-3">Nenhuma reposição encontrada.</p>
-                                        @else
-                                        <div>
-                                            <x-table.table :search="false">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Dia</th>
-                                                        <th scope="col">Horário</th>
-                                                        <th scope="col">Instrutor</th>
-                                                        <th>Tipo da Falta</th>
-                                                        <th>Expira em:</th>
-                                                        <th>Ações</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($markups as $date => $class)
-
-                                                    <tr class="">
-                                                        <td scope="row">{{ $class->origin->datetime->format('d/m/y') }}
-                                                            • {{
-                                                            ucfirst($class->origin->datetime->translatedFormat('l')) }}
-                                                        </td>
-                                                        <td>{{ $class->origin->datetime->format('H:i') }}</td>
-                                                        <td>
-                                                            <x-page.user-avatar size="xs"
-                                                                :user="$class->origin->instructor->user">
-                                                                <span class="small">
-                                                                    {{ $class->origin->instructor->user->shortName }}
-                                                                </span>
-                                                            </x-page.user-avatar>
-                                                        </td>
-                                                        <td>
-                                                            {{ $class->origin->status->label() }}
-                                                        </td>
-
-                                                        <td>
-                                                            {{ $class->expires_at->format('d/m/y') }}
-                                                        </td>
-
-                                                        <td class="text-center">
-                                                            <div class="btn-actions">
-                                                                <a class="btn btn-action" href="#"
-                                                                    wire:click="editClass({{ $class->id }})">
-                                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="icon icon-1">
-                                                                        <path
-                                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                                        </path>
-                                                                        <path
-                                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                                        </path>
-                                                                        <path d="M16 5l3 3"></path>
-                                                                    </svg>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </x-table.table>
-                                            {{$markups->links()}}
-                                        </div>
-                                        @endif
-                                    </div>
-
-                                    <div class="tab-pane fade" id="tab-evolution" role="tabpanel">
-                                        @if($markups->isEmpty())
-                                        <p class="m-3">Nenhuma evolução encontrada.</p>
-                                        @else
-                                        <div>
-                                            <ul class="timeline">
-                                                @foreach($evolutions as $evol)
-                                                <li class="timeline-event">
-                                                    <div class="timeline-event-icon bg-x-lt p-4">
-                                                        <div class="p-4">{{ $evol->datetime->format('d/m') }}</div>
-                                                    </div>
-                                                    <div class="card timeline-event-card">
-                                                        <div class="card-body">
-                                                            <div class="text-secondary float-end">10 hrs ago</div>
-                                                            <p class="text-secondary">{{ $evol->evolution }}</p>
-                                                            <p>Por <strong>{{ $evol->instructor->user->shortName
-                                                                    }}</strong></p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                @endforeach
-
-                                            </ul>
-
-                                            {{ $evolutions->links() }}
-
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col d-flex flex-column">
-                        <div class="card flsex-fill mb-3">
-                            <div class="card-header">
-                                <h3 class="card-title">Aulas</h3>
-                            </div>
-                            <div class="card-body">
-                                <p>Aulas: <strong>{{ $countClasses }}</strong></p>
-                                <p>Presença: <strong>{{ $presences }}</strong></p>
-                                <p>Faltas: <strong>{{ $absenses }}</strong></p>
-                            </div>
-                        </div>
-                        <div class="card flex-fill">
-                            <div class="card-header">
-                                <p class="card-title">Reposições Em Aberto</p>
-                            </div>
-                            <div class="card-body">
-                                @if($markups->isEmpty())
-                                <p class="m-3">Nenhuma reposição encontrada.</p>
-                                @else
-
-
-
-                                <x-table.table :search="false" class="mb-3">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Falta</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($markups as $date => $class)
-                                        <tr>
-                                            <td>{{ $class->origin->datetime->format('d/m/y') }} • {{
-                                                ucfirst($class->origin->datetime->isoFormat('ddd')) }}</td>
-                                            <td>
-                                                <x-page.badge>Ativo</x-page.badge>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </x-table.table>
-                                @endif
-
+                            <div class="col-12">
+                                <p>Início: <strong>{{ $registration->start->format('d/m/Y') }}</strong></p>
+                                <p>Fim: <strong>{{ $registration->end->format('d/m/Y') }}</strong></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
 
-
-
-                {{--
-                <div class="card mb-3">
-                    <div class="card-header card-header-lisght">
-                        <h3 class="card-title">Financeiro</h3>
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-scheduled" class="nav-link active" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Aulas</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-makeup" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">Reposições</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-evolution" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">Evoluções</a>
+                            </li>
+                        </ul>
                     </div>
-
-                    <div class="card-body">
-
-                        <p><strong>Próximo Vencimento:</strong> 10/04/2026</p>
-
+                    <div class="scard-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade  active show" id="tab-scheduled" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card">
+                                                <div class="card-status-start bg-success"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">PRESENÇAS</div>
+                                                    </div>
+                                                    <div class="h1">{{ $presences }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card">
+                                                <div class="card-status-start bg-danger"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">FALTAS</div>
+                                                    </div>
+                                                    <div class="h1">{{ $absenses }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card">
+                                                <div class="card-status-start bg-warning"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">REPOSIÇÕES</div>
+                                                    </div>
+                                                    <div class="h1">{{ $countMakeups }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card">
+                                                <div class="card-status-start bg-primary"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">AGENDADAS</div>
+                                                    </div>
+                                                    <div class="h1">{{ $scheduleds }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @include('livewire.registration.parts.class-table')
+                            </div>
+                            <div class="tab-pane fade" id="tab-makeup" role="tabpanel">
+                                <div class="card-body">
+                                    <p><strong>Reposições à agendar</strong></p>
+                                </div>
+                                @if($markups->isEmpty())
+                                    <div class="card-body"><p class="m-3">Nenhuma reposição encontrada.</p></div>
+                                @else
+                                    @include('livewire.registration.parts.makeup-table')
+                                @endif
+                            </div>
+                            <div class="tab-pane fade" id="tab-evolution" role="tabpanel">
+                                <div class="card-body">
+                                    <p><strong>Linha do tempo</strong></p>
+                                    @if($markups->isEmpty())
+                                        <p class="m-3">Nenhuma evolução encontrada.</p>
+                                    @else
+                                        @include('livewire.registration.parts.evolution-timeline')
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Descrição</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>01/10/2025</td>
-                                <td>Mensalidade 1</td>
-                                <td>
-                                    <span class="badge bg-green-lt">Agendado</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div> --}}
-
+                </div>
 
             </div>
 
+            <div class="col d-flex flex-column">
 
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Mensalidade</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Status: <x-page.badge>Em Dia</x-page.badge>
+                        </p>
+                        <p>Próximo Vencimento: <strong>{{ date('d/m/Y') }}</strong></p>
+                    </div>
+                </div>
+
+                <div class="card flex-fill">
+                    <div class="card-header">
+                        <p class="card-title">Reposições Em Aberto</p>
+                    </div>
+                    <div class="card-body">
+                        @if($markups->isEmpty())
+                        <p class="m-3">Nenhuma reposição encontrada.</p>
+                        @else
+                        <x-table.table :search="false" class="mb-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Falta</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($markups as $date => $class)
+                                <tr>
+                                    <td>{{ $class->origin->datetime->format('d/m/y') }} / {{
+                                        ucfirst($class->origin->datetime->isoFormat('ddd')) }}
+                                    </td>
+                                    <td class="text-right">
+                                        
+                                        @if($class->status == 'active')
+                                            <x-page.badge color="success">Ativo</x-page.badge>
+                                        @endif
+
+                                        @if($class->status == 'next_to_expire')
+                                            <x-page.badge color="warning"> Expira em {{ $class->daysToExpire }} dia(s)</x-page.badge>
+                                        @endif
+
+                                        @if($class->status == 'expired')
+                                            <x-page.badge color="secondary">Expirado</x-page.badge>
+                                        @endif
+
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </x-table.table>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-
-
 
         <x-modal.modal size="modal-lg" id="modal-classes">
             <form wire:submit="changeClassDays">
@@ -535,11 +310,5 @@
             </form>
         </x-modal.modal>
     </x-page.page-body>
-
-
-
-
-
-
 
 </div>

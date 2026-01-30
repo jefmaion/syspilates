@@ -32,7 +32,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: false);
+        $this->redirect(route('calendar', absolute: false), navigate: false);
     }
 }; ?>
 <div>
