@@ -33,7 +33,7 @@
             </div>
             <div class="card-body">
 
-                <x-table.table :search="false" class="fs-4 table-sm">
+                <x-table.table :search="false" class="fs-4 table-ssm">
                     <thead>
                         <tr>
                             <th scope="col" wsidth="50%">Aluno</th>
