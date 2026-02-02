@@ -51,7 +51,7 @@
                             <div class="d-flex align-items-center">
                                 <x-page.avatar class="rounded-circle" size="lg" :user="$registration->student->user" />
                                 <div class="flex-fill align-items-top">
-                                    <h3 class=""><strong>{{ $registration->student->user->name }}</strong></h3>
+                                    <h3 class=""><strong><a href="{{ route('student.show', $registration->student) }}">{{ $registration->student->user->name }}</a></strong></h3>
                                     <div class="text-secondary">
                                         <a href="#" class="text-reset">lmiona@livejournal.com</a>
                                     </div>

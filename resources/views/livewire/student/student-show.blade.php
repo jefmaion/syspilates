@@ -173,8 +173,35 @@
                         <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
                             <h4>Activity tab</h4>
                             <div>
-                                Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi
-                                sit mauris accumsan nibh habitant senectus
+                                <x-table.table :search="false">
+                                <thead>
+                                    <tr>
+                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Vencto</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Descrição</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Valor</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('modality.name')">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($transactions as $k => $item)
+                                    <tr>
+                                        <td scope="row">
+                                           {{ $item->date }}
+                                        </td>
+                                        <td>
+                                            {{ $item->description }}
+                                        </td>
+                                        <td>
+                                            {{ $item->amount }}
+                                        </td>
+                                        <td>
+                                            {{ $item->status }}
+                                        </td>
+                                        
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </x-table.table>
                             </div>
                         </div>
                     </div>
