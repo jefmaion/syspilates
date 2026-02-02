@@ -16,7 +16,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Evolução/Comentários</label>
-                        <textarea class="form-control {{ ($errors->has('evolution') ? ' is-invalid' : '') }}" rows="5"
+                        <textarea class="form-control {{ ($errors->has('evolution') ? ' is-invalid' : '') }}" rows="10"
                             name="evolution" wire:model="evolution"></textarea>
                         @error('evolution')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>

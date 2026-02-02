@@ -17,9 +17,7 @@
 
 
         <div class="d-flex">
-            <span
-                class="avatar rounded-csircle avatar-lg me-2  {{ ($data?->student?->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
-                $data?->student?->initials }}</span>
+            <x-page.avatar size="xl" :user="$data?->student" />
             <div class="flex-fill">
                 <div class="d-flex justify-content-between">
                     <h2 class="font-weight-medium mb-2"><strong>
@@ -48,7 +46,7 @@
                     <x-icons.modality /> {{ $data?->modality }} |
                     <x-icons.time /> {{ ($eventDatetime) ? $eventDatetime->format('H\h') : '' }} |
                     <x-icons.phone /> {{ $data?->student->phone1 ?? null }} |
-                    <x-icons.instructor />{{ $data?->instructor->shortName ?? null }}
+                    <x-page.avatar size="xs" :user="$data?->instructor" /> {{ $data?->instructor->shortName ?? null }}
                 </div>
                 <div>
 
@@ -116,7 +114,7 @@
 
                         <div class="mb-3">{{ $_class->evolution }}</div>
                         <div class="text-muted"><small>
-                                <x-icons.instructor /> <strong>{{ $_class->instructor?->user?->shortName ?? null
+                                <x-page.avatar size="xs" :user="$_class->instructor?->user" /> <strong>{{ $_class->instructor?->user?->shortName ?? null
                                     }}</strong> em <strong>{{$_class->created_at->format('d/m/y \à\s H:i:s')}}</strong>
                             </small>
                         </div>

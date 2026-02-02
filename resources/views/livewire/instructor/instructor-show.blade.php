@@ -16,12 +16,11 @@
     <x-page.page-show>
 
         <x-slot:left>
+            <livewire:avatar-uploader :user="$instructor->user" />
             <div class="card d-flex flex-fill">
                 <div>
                     <div class="card-body p-4 text-center">
-                        <span class="avatar avatar-xl mb-3">
-                            {{ $instructor->user->initials }}
-                        </span>
+                        <a href="#" wire:click="$dispatch('show-upload-avatar')"><x-page.avatar size="xl" :user="$instructor->user" /></a>
                         <h3 class="m-0 mb-1"><a href="#">{{ $instructor->user->name }}</a></h3>
                         <div class="text-secondary">{{ $instructor->profession }}</div>
                         <div class="text-secondary">{{$instructor->document}}</div>

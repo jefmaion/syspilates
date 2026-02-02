@@ -50,7 +50,7 @@
                             <td>
 
                                 <div class="d-flex align-items-center">
-                                    <span class="avatar avatar-sm me-2  {{ ($item->student->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{ $item->student->user->initials }}</span>
+                                    <x-page.avatar :user="$item->student->user" />
                                     <a href="{{ route('registration.show', $item) }}" wire:navigate>{{ $item->student->user->name }}</a>
                                 </div>
 
@@ -70,7 +70,7 @@
                                 {{-- <x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status> --}}
                                 </td>
                             <td>
-                                    {{-- {{ $item->nextClass->date->format('d/m/Y') }} --}}
+                                   {{ $item->nextClass->datetime->format('d/m/y H:i') }}
                                 </td>
                             <td><div>{{ $item->start->format('d/m/y') }}</div> <div>{{ $item->end->format('d/m/y') }}</div></td>
                         </tr>

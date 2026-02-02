@@ -12,6 +12,10 @@ class CreateModality extends Component
 {
     public ModalityForm $form;
 
+    public function mount()
+    {
+    }
+
     public function save(): void
     {
         $this->form->store();
@@ -21,6 +25,8 @@ class CreateModality extends Component
 
     public function render(): View
     {
+        $this->form->reset();
+
         return view('livewire.modality.create-modality');
     }
 }

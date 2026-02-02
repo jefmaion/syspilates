@@ -45,12 +45,17 @@
                     @foreach($students as $item)
                     <tr class="align-middle">
                         <td scope="row" class="align-middle">
-                            <div class="d-flex align-items-center">
+
+                            <x-page.user-avatar :user="$item->user">
+                                <a href="{{ route('student.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
+                            </x-page.user-avatar>
+
+                            {{-- <div class="d-flex align-items-center">
                                 <span
                                     class="avatar avatar-sm me-2  {{ ($item->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
                                     $item->user->initials }}</span>
                                 <a href="{{ route('student.show', $item) }}" wire:navigate>{{ $item->user->name }}</a>
-                            </div>
+                            </div> --}}
                         </td>
                         <td class="d-flex">
                             <div class="flex-fill">

@@ -18,9 +18,11 @@
             <div class="card flex-fill mb-3">
                 <div>
                     <div class="card-body p-4 text-center">
-                        <span class="avatar avatar-xl mb-3">
-                            {{ $student->user->initials }}
-                        </span>
+                        <a href="#" wire:click="$dispatch('show-upload-avatar')">
+                            <x-page.avatar size="xl" :user="$student->user" />
+                                
+                            </a>
+
                         <h3 class="m-0 mb-1"><a href="#">{{ $student->user->name }}</a></h3>
                         <div class="text-secondary">UI Designer</div>
                         <div class="mt-3">
@@ -44,7 +46,7 @@
                             </tr>
 
 
-
+                            <livewire:avatar-uploader :user="$student->user" />
 
 
                         </table>
@@ -123,6 +125,7 @@
                                     <tr>
                                         <th style="cursor:pointer" wire:click="sortBy('datetime')">Dia</th>
                                         <th style="cursor:pointer" wire:click="sortBy('datetime')">Horário</th>
+                                        <th style="cursor:pointer" wire:click="sortBy('modality.name')">Modalidade</th>
                                         <th style="cursor:pointer" wire:click="sortBy('type')">Tipo</th>
                                         <th style="cursor:pointer" wire:click="sortBy('instructor_id')">Instrutor</th>
                                         <th style="cursor:pointer" wire:click="sortBy('status')">Status</th>
@@ -137,6 +140,9 @@
                                         </td>
                                         <td>
                                             {{ $class->datetime->format('H:i') }}
+                                        </td>
+                                        <td>
+                                            {{ $class->modality->name }}
                                         </td>
                                         <td>
                                             {{ $class->type->label() }}

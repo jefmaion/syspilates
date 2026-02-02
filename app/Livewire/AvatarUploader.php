@@ -4,57 +4,34 @@ declare(strict_types = 1);
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class AvatarUploader extends Component
 {
-    use WithFileUploads;
-
-    public $photo;
-
     public $croppedImage;
 
-    public $currentAvatar;
+    public User $user;
 
-    public function mount($currentAvatar = null)
+    #[On('show-upload-avatar')]
+    public function open()
     {
-        $this->currentAvatar = $currentAvatar;
+        $this->dispatch('show-modal', modal:'modal-upload-avatar');
     }
 
-    protected function rules()
+    public function save()
     {
-        return [
-            'photo' => 'required|image|max:2048',
-        ];
-    }
-
-    public function updatedPhoto()
-    {
-        $this->validate();
-
-        // abre teu modal Tabler via evento global
-        $this->dispatch('show-modal', modal: 'avatarCropModal');
-    }
-
-    public function saveCropped()
-    {
-        if (! $this->croppedImage) {
-            return;
+        if ($this->croppedImage) {
+            $image     = preg_replace('#^data:image/\w+;base64,#i', '', $this->croppedImage);
+            $imageName = 'avatars/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode($image));
+            $this->user->update(['avatar' => $imageName]);
         }
 
-        $image = str_replace('data:image/jpeg;base64,', '', $this->croppedImage);
-        $image = base64_decode($image);
-
-        $path = 'avatars/' . uniqid() . '.jpg';
-
-        Storage::disk('public')->put($path, $image);
-
-        // aqui depois você liga no User
-        $this->currentAvatar = $path;
-
-        $this->reset(['photo', 'croppedImage']);
+        $this->dispatch('hide-modal', modal:'modal-upload-avatar');
+        $this->dispatch('upload-avatar-finished');
     }
 
     public function render()

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\ClassStatusEnum;
+use App\Enums\ClassTypesEnum;
 use App\Enums\PlanEnum;
 use App\Enums\RegistrationComputedStatusEnum;
 use App\Enums\RegistrationStatusEnum;
@@ -82,6 +84,30 @@ class Registration extends BaseModel
         return Attribute::make(
             get: function ($value, $attributes) {
                 return $this->duration->label() . ' (' . $this->schedule()->count() . 'x)';
+            }
+        );
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function classPerWeek(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->schedule()->count();
+            }
+        );
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function nextClass(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->classes()->where('type', ClassTypesEnum::REGULAR)->where('status', ClassStatusEnum::SCHEDULED)->where('datetime', '>', now())->first();
             }
         );
     }

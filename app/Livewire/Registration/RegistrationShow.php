@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Registration;
 
+use App\Actions\GenerateRegistrationClasses;
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
 use App\Livewire\Forms\RegistrationForm;
@@ -75,28 +76,37 @@ class RegistrationShow extends Component
 
     public function changeClassDays()
     {
+        $nextClass = $this->registration->nextClass;
+
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
-        $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
+        $this->registration->classes()->whereDate('datetime', '>=', $nextClass->datetime)->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
 
-        $period = CarbonPeriod::create(now()->addDay(1), $this->registration->end);
+        GenerateRegistrationClasses::run($this->registration, $nextClass->datetime, $this->registration->end);
 
-        foreach ($period as $date) {
-            foreach ($this->registration->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday->value) {
-                    $this->registration->classes()->create([
-                        'student_id'               => $this->registration->student_id,
-                        'modality_id'              => $this->registration->modality_id,
-                        'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
-                        'instructor_id'            => $schedule->instructor_id,
-                        'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
-                        'type'                     => ClassTypesEnum::REGULAR,
-                        'registration_schedule_id' => $schedule->id,
-                        'status'                   => ClassStatusEnum::SCHEDULED,
-                    ]);
-                }
-            }
-        }
+        // $period = CarbonPeriod::create($nextClass->datetime, $this->registration->end);
+
+        // $countClasses = 0;
+
+        // foreach ($period as $date) {
+        //     foreach ($this->registration->schedule as $schedule) {
+        //         if ($date->dayOfWeek === $schedule->weekday->value) {
+        //             $this->registration->classes()->create([
+        //                 'student_id'               => $this->registration->student_id,
+        //                 'modality_id'              => $this->registration->modality_id,
+        //                 'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
+        //                 'instructor_id'            => $schedule->instructor_id,
+        //                 'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
+        //                 'type'                     => ClassTypesEnum::REGULAR,
+        //                 'registration_schedule_id' => $schedule->id,
+        //                 'status'                   => ClassStatusEnum::SCHEDULED,
+        //             ]);
+        //             $countClasses++;
+        //         }
+        //     }
+        // }
+
+        // $this->registration->update(['class_value' => $this->registration->value / $countClasses]);
 
         $this->dispatch('hide-modal', modal:'modal-classes');
 

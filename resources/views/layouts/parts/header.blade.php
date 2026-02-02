@@ -6,12 +6,12 @@
 <link href="{{ asset('template/dist/css/tabler.css') }}" rel="stylesheet" />
 <link href="{{ asset('template/dist/css/tabler-themes.css?1744816591') }}" rel="stylesheet" />
 <link href="{{ asset('template/preview/css/demo.css?1744816591') }}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 <style>
     @import url("https://rsms.me/inter/inter.css");
 </style>
 <style>
-  @import url("https://rsms.me/inter/inter.css");
-
   @media (min-width: 992px) {
 
     :host,

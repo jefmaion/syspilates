@@ -1,8 +1,9 @@
 <div>
     <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-        <span class="avatar avatar-sm">
+        <x-page.avatar size="sm" :user="auth()->user()" />
+        {{-- <span class="avatar avatar-sm">
             {{ auth()->user()->initials }}
-        </span>
+        </span> --}}
         <div class="d-none d-xl-block ps-2">
             <div>{{ auth()->user()->shortName }}</div>
             <div class="mt-1 small text-secondary">{{ auth()->user()->email }}</div>

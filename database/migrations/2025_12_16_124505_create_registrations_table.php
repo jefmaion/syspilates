@@ -24,6 +24,7 @@ return new class () extends Migration
             $table->date('start');
             $table->date('end');
             $table->decimal('value');
+            $table->decimal('class_value')->nullable();
             $table->integer('deadline');
             $table->enum('status', RegistrationStatusEnum::cases());
             $table->datetime('cancel_date')->nullable();

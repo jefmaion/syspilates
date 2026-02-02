@@ -14,7 +14,6 @@ use Livewire\WithPagination;
 
 class InstructorShow extends Component
 {
-
     use WithPagination;
 
     public Instructor $instructor;
@@ -25,8 +24,14 @@ class InstructorShow extends Component
 
     public function mount(Instructor $instructor): void
     {
-        $this->instructor = $instructor;
+        $this->instructor = $instructor->load('user');
         $this->active     = $this->instructor->user->active;
+    }
+
+    #[On('upload-avatar-finished')]
+    public function refresh()
+    {
+        $this->dispatch('$refresh');
     }
 
     public function tabs(string $tab): void
@@ -53,7 +58,7 @@ class InstructorShow extends Component
     public function render(): View
     {
         return view('livewire.instructor.instructor-show', [
-            'classes' => Classes::where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10)
+            'classes' => Classes::where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10),
         ]);
     }
 }

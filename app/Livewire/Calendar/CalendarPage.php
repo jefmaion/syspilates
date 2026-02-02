@@ -132,23 +132,37 @@ class CalendarPage extends Component
 
         foreach ($experimentals as $exp) {
             $badge    = ' <span class="badge bg-orange text-orange-fg">' . ClassTypesEnum::EXPERIMENTAL->nick() . '</span> ';
-            $events[] = [
-                'id'        => 'exp-' . $exp->id,
-                'start'     => $exp->datetime->format('Y-m-d H:i:s'),
-                'title'     => $exp->name . $badge,
-                'className' => $eventClass . 'bg-purple',
-                'textColor' => 'white',
-
-                'event_id'      => $exp->id,
-                'type'          => ClassTypesEnum::EXPERIMENTAL,
-                'instructor_id' => $exp->instructor_id,
-                'datetime'      => $exp->datetime->format('Y-m-d H:i:s'),
-                'move'          => true,
-                '_type'         => ClassTypesEnum::EXPERIMENTAL->value,
-            ];
+            $events[] = $this->parseEvent(
+                'exp-' . $exp->id,
+                $exp->datetime->format('Y-m-d H:i:s'),
+                $exp->name . $badge,
+                $exp->id,
+                ClassTypesEnum::EXPERIMENTAL,
+                $exp->instructor_id,
+                $exp->datetime->format('Y-m-d H:i:s'),
+                true,
+                $eventClass
+            );
         }
 
         return response()->json($events);
+    }
+
+    private function parseEvent($id, $start, $title, $eventId, $type, $instructorId, $datetime, $move, $eventClass = '')
+    {
+        return [
+            'id'        => $id,
+            'start'     => $start,
+            'title'     => $title,
+            'className' => $eventClass . 'bg-purple',
+            'textColor' => 'white',
+
+            'event_id'      => $eventId,
+            'type'          => $type,
+            'instructor_id' => $instructorId,
+            'datetime'      => $datetime,
+            'move'          => $move,
+        ];
     }
 
     #[On('calendar-show-event')]

@@ -49,8 +49,7 @@
                     <div>
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <span
-                                    class="avatar avatar-lg rounded-circle me-2">{{$registration->student->user->initials}}</span>
+                                <x-page.avatar class="rounded-circle" size="lg" :user="$registration->student->user" />
                                 <div class="flex-fill align-items-top">
                                     <h3 class=""><strong>{{ $registration->student->user->name }}</strong></h3>
                                     <div class="text-secondary">
@@ -275,19 +274,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for($i=0; $i<=$form->class_per_week;$i++)
+                                @for($i=0; $i<$form->class_per_week;$i++)
                                     <tr class="">
                                         <td scope="row">
-                                            <x-form.select-weekday name="form.schedule.{{ $i }}.weekday"
-                                                wire:model='form.schedule.{{ $i }}.weekday' />
+                                            <x-form.select-weekday name="form.schedule.{{ $i }}.weekday" wire:model='form.schedule.{{ $i }}.weekday' />
                                         </td>
                                         <td>
-                                            <x-form.select-time type="time" name="form.schedule.{{ $i }}.time"
-                                                wire:model='form.schedule.{{ $i }}.time' />
+                                            <x-form.select-time type="time" name="form.schedule.{{ $i }}.time" wire:model='form.schedule.{{ $i }}.time' />
                                         </td>
                                         <td>
-                                            <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id"
-                                                wire:model='form.schedule.{{ $i }}.instructor_id' />
+                                            <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id" wire:model='form.schedule.{{ $i }}.instructor_id' />
                                         </td>
                                     </tr>
                                     @endfor
