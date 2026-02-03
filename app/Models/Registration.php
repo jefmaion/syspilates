@@ -112,6 +112,30 @@ class Registration extends BaseModel
         );
     }
 
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function nextTransaction(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->transactions()->where('status', 'scheduled')->where('date', '>', now())->first();
+            }
+        );
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function hasUnpaidTransactions(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->transactions()->where('status', 'scheduled')->where('date', '<', now())->count();
+            }
+        );
+    }
+
     public function getScheduleClasses($start = null, $end = null)
     {
         $start = $start ?? $this->start;
@@ -171,6 +195,11 @@ class Registration extends BaseModel
     public function plans()
     {
         return $this->hasMany(RegistrationPlan::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     public function makeups()

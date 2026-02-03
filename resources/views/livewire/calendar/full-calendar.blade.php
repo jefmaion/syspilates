@@ -46,7 +46,7 @@
                     slotLabelInterval: "01:00",
                     slotEventOverlap: false,
                     eventOverlap: true,
-                    eventMaxStack: 10,
+                    eventMaxStack: 5,
                     hiddenDays: [0],
                     eventOrder: "title",
                     nowIndicator: true,

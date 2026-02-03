@@ -17,3 +17,10 @@ if (! function_exists('lw_alert')) {
         $component->dispatch('show-alert', message: $message, type:$type);
     }
 }
+
+if (! function_exists('currency')) {
+    function currency(float $value, $default = null)
+    {
+        return 'R$ ' . number_format($value ?? $default, 2, ",", ".");
+    }
+}

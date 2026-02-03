@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Livewire\Calendar;
 
+use App\Enums\TransactionTypeEnum;
 use App\Models\ExperimentalClass;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
@@ -102,6 +104,16 @@ class CreateExperimentalClass extends Component
                 'instructor_id' => $this->instructor_id,
                 'value'         => $this->value,
                 'comments'      => $this->comments,
+            ]);
+
+            Transaction::create([
+                'amount'         => $this->value,
+                'type'           => TransactionTypeEnum::CREDIT,
+                'status'         => 'scheduled',
+                'reference_id'   => $this->class->id,
+                'description'    => 'Aula Exp. ' . $this->class->modality->name,
+                'date'           => $this->datetime,
+                'reference_type' => 'experimental',
             ]);
         } else {
             $this->update();

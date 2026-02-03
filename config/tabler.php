@@ -9,7 +9,7 @@ return [
         'theme'         => 'light',  /** light, dark */
         'theme-base'    => 'stone',  /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',  /** sans-serif, serif, monospace, comic */
-        'theme-primary' => 'azure',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal, cyan    */
+        'theme-primary' => 'blue',  /** blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal, cyan    */
         'theme-radius'  => '1',  /** 0, 0.5, 1, 1.5, 2 */
     ],
 
@@ -43,6 +43,13 @@ return [
         'Modalidades' => [
             'route' => 'modality',
             'icon'  => file_get_contents(resource_path('views/components/icons/list.blade.php')),
+        ],
+
+        'Financeiro' => 'nav-header',
+
+        'Lançamentos' => [
+            'route' => 'transaction',
+            'icon'  => file_get_contents(resource_path('views/components/icons/users.blade.php')),
         ],
 
     ],

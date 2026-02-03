@@ -67,12 +67,12 @@ class CreateMakeupClass extends Component
 
         $this->loadData();
 
-        $data = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
+        $data = ClassMakeup::with('origin.modality')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
 
         $this->makeupClasses = [];
 
         foreach ($data as $item) {
-            $this->makeupClasses[$item->id] = $item->origin->datetime->format('d/m/Y H:i') . ' - ' . ucfirst($item->origin->datetime->translatedFormat('l')) . ' - ' . $item->origin->status->label();
+            $this->makeupClasses[$item->id] = $item->origin->datetime->format('d/m/y H\h') . ' - ' . ucfirst($item->origin->datetime->isoFormat('ddd')) . ' - ' . ucfirst($item->origin->modality->name) . ' - ' . $item->origin->status->label();
         }
 
         // $this->makeupClasses = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();

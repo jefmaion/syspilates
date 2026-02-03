@@ -1,6 +1,6 @@
 @props(['search' => true, 'search_fieldname' => 'search'])
 
-<div class="table-responsive mb-2">
+<div class="table-responsive msb-2">
     @if($search)
     <x-table.table-search search_fieldname="{{$search_fieldname}}" class="mb-4" />
     @endif

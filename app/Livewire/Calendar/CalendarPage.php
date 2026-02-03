@@ -68,7 +68,7 @@ class CalendarPage extends Component
             return $q->justActives();
         });
 
-        $experimental = ExperimentalClass::whereBetween('datetime', [$start, $end]);
+        $experimental = ExperimentalClass::with('modality')->whereBetween('datetime', [$start, $end]);
 
         if (request()->filled('modality_id')) {
             $class->where('modality_id', request()->get('modality_id'));
@@ -109,16 +109,15 @@ class CalendarPage extends Component
             }
 
             if ($class->type !== ClassTypesEnum::REGULAR) {
-                $badge = '<span class="badge bg-orange text-orange-fg">' . $class->type->nick() . '</span> ';
+                $badge = '<span class="badge bg-dark text-dark-fg">' . $class->type->nick() . '</span> ';
             }
 
             $events[] = [
-                'id'        => 'class-' . $class->id,
-                'start'     => $class->datetime->format('Y-m-d H:i:s'),
-                'title'     => $class->student->user->shortName . ' ' . $badge,
-                'className' => $eventClass . $bgColor,
-                'textColor' => 'white',
-
+                'id'                 => 'class-' . $class->id,
+                'start'              => $class->datetime->format('Y-m-d H:i:s'),
+                'title'              => $badge . ' ' . ($class->student->user->nickname ?? $class->student->user->shortName),
+                'className'          => $eventClass . $bgColor,
+                'textColor'          => 'white',
                 'event_id'           => $class->id,
                 'type'               => $class->type,
                 'instructor_id'      => $class->instructor_id,
@@ -131,11 +130,10 @@ class CalendarPage extends Component
         $events = array_values($events);
 
         foreach ($experimentals as $exp) {
-            $badge    = ' <span class="badge bg-orange text-orange-fg">' . ClassTypesEnum::EXPERIMENTAL->nick() . '</span> ';
             $events[] = $this->parseEvent(
                 'exp-' . $exp->id,
                 $exp->datetime->format('Y-m-d H:i:s'),
-                $exp->name . $badge,
+                $exp->name . ' (' . $exp->modality->acronym . ')',
                 $exp->id,
                 ClassTypesEnum::EXPERIMENTAL,
                 $exp->instructor_id,

@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use App\Enums\PaymentMethodEnum;
+use App\Enums\TransactionTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,11 +21,14 @@ return new class () extends Migration
             $table->foreignId('registration_id')->nullable()->index();
             $table->foreignId('student_id')->nullable()->index();
             $table->date('date');
-            $table->date('paid_at')->nullable();
+            $table->datetime('paid_at')->nullable();
             $table->string('description');
             $table->decimal('amount');
+            $table->decimal('paid_amount')->nullable();
             $table->string('method')->nullable();
             $table->string('status');
+            $table->enum('type', TransactionTypeEnum::cases());
+            $table->enum('payment_method', PaymentMethodEnum::cases());
             $table->string('reference_type')->nullable();
             $table->integer('reference_id')->nullable();
         });

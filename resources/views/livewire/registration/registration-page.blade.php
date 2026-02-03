@@ -40,6 +40,7 @@
                             <th>Modalidade</th>
                             <th>Plano</th>
                             <th>Status</th>
+                            <th>Mensalidade</th>
                             <th>Próx.Aula</th>
                             <th>Vigência</th>
                         </tr>
@@ -66,13 +67,25 @@
                                 <x-page.status color="{{ $item->registrarionStatus->color() }}">
                                     {{ $item->registrarionStatus->label() }}
                                 </x-page.status>
-          
-                                {{-- <x-page.status color="{{ $item->status->color() }}">{{ $item->status->label() }}</x-page.status> --}}
+    
+                            </td>
+                            <td>
+                                @if ($item->hasUnpaidTransactions)
+                                    <x-page.badge color="danger">
+                                        Pendente
+                                    </x-page.badge>
+                                @else
+                                    <x-page.badge >
+                                        Em dia
+                                    </x-page.badge>
+                                @endif
+    
+                            </td>
+                            <td>
+                                   {{ $item->nextClass?->datetime->format('d/m/y H\h') }}
                                 </td>
                             <td>
-                                   {{ $item->nextClass->datetime->format('d/m/y H:i') }}
-                                </td>
-                            <td><div>{{ $item->start->format('d/m/y') }}</div> <div>{{ $item->end->format('d/m/y') }}</div></td>
+                                <div>{{ $item->start->format('d/m/y') }} - {{ $item->end->format('d/m/y') }}</div></td>
                         </tr>
                         @endforeach
                     </tbody>

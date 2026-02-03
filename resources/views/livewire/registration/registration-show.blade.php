@@ -38,6 +38,22 @@
 
         <livewire:registration.update-class />
         <livewire:calendar.form-register-class />
+        <livewire:transaction.register-transaction />
+
+
+        @if ($registration->hasUnpaidTransactions)
+        <div class="alert alert-warning " role="alert">
+            <div class="alert-icon">
+            <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-tada icon alert-icon icon-2">
+                <path d="M12 9v4"></path>
+                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
+                <path d="M12 16h.01"></path>
+            </svg>
+            </div>
+             Existem mensalidades em aberto!
+        </div>
+        @endif
 
         <div class="row ">
             <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex flex-column">
@@ -106,19 +122,22 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-scheduled" class="nav-link active" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Aulas</a>
+                                <a href="#tab-scheduled" wire:click.prevent="tabs('tab-scheduled')" class="nav-link {{ $tab === 'tab-scheduled' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Aulas</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-makeup" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">Reposições</a>
+                                <a href="#tab-makeup"  wire:click.prevent="tabs('tab-makeup')" class="nav-link {{ $tab === 'tab-makeup' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Reposições</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-evolution" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">Evoluções</a>
+                                <a href="#tab-evolution" wire:click.prevent="tabs('tab-evolution')" class="nav-link {{ $tab === 'tab-evolution' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Evoluções</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a href="#tab-transactions" wire:click.prevent="tabs('tab-transactions')" class="nav-link {{ $tab === 'tab-transactions' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Mensalidades</a>
                             </li>
                         </ul>
                     </div>
                     <div class="scard-body">
                         <div class="tab-content">
-                            <div class="tab-pane fade  active show" id="tab-scheduled" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-scheduled' ? 'active show' : '' }} " id="tab-scheduled" role="tabpanel">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
@@ -170,7 +189,7 @@
                                 </div>
                                 @include('livewire.registration.parts.class-table')
                             </div>
-                            <div class="tab-pane fade" id="tab-makeup" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-makeup' ? 'active show' : '' }}" id="tab-makeup" role="tabpanel">
                                 <div class="card-body">
                                     <p><strong>Reposições à agendar</strong></p>
                                 </div>
@@ -180,13 +199,23 @@
                                     @include('livewire.registration.parts.makeup-table')
                                 @endif
                             </div>
-                            <div class="tab-pane fade" id="tab-evolution" role="tabpanel">
-                                <div class="card-body">
+                            <div class="tab-pane fade {{ $tab === 'tab-evolution' ? 'active show' : '' }}" id="tab-evolution" role="tabpanel">
+                            <div class="card-body">
                                     <p><strong>Linha do tempo</strong></p>
                                     @if($markups->isEmpty())
                                         <p class="m-3">Nenhuma evolução encontrada.</p>
                                     @else
                                         @include('livewire.registration.parts.evolution-timeline')
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="tab-pane fade {{ $tab === 'tab-transactions' ? 'active show' : '' }}" id="tab-transactions" role="tabpanel">
+                                <div class="card-body">
+                                    <p><strong>Linha do tempo</strong></p>
+                                    @if($transactions->isEmpty())
+                                        <p class="m-3">Nenhuma evolução encontrada.</p>
+                                    @else
+                                        @include('livewire.registration.parts.transactions-table')
                                     @endif
                                 </div>
                             </div>
@@ -203,9 +232,15 @@
                         <h3 class="card-title">Mensalidade</h3>
                     </div>
                     <div class="card-body">
-                        <p>Status: <x-page.badge>Em Dia</x-page.badge>
+                        <p>Status: 
+                            @if($registration->hasUnpaidTransactions)
+                                <x-page.badge color="danger">Pendente</x-page.badge>
+                            @else
+                                <x-page.badge>Em Dia</x-page.badge>
+                            @endif
+                            
                         </p>
-                        <p>Próximo Vencimento: <strong>{{ date('d/m/Y') }}</strong></p>
+                        <p>Próximo Vencimento: <strong>{{ $registration->nextTransaction?->date->format('d/m/y') ?? '-' }}</strong></p>
                     </div>
                 </div>
 

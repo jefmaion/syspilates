@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Actions;
 
+use App\Enums\PaymentMethodEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Registration;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -21,7 +23,7 @@ class CreateRegistration
 
         $registration = GenerateRegistrationClasses::run($registration, $registration->start, $registration->end);
 
-        $duration = $registration->duration->value / 30;
+        $duration = (int) ($registration->duration->value / 30);
 
         $date = Carbon::parse(date('Y-m-') . $registration->deadline);
 
@@ -31,8 +33,11 @@ class CreateRegistration
                 'student_id'      => $registration->student_id,
                 'date'            => $date->format('Y-m-d'),
                 'amount'          => $registration->value,
+                'paid_amount'     => $registration->value,
                 'status'          => 'scheduled',
-                'description'     => 'Mensalidade (' . $i . '/' . $duration . ')',
+                'type'            => TransactionTypeEnum::CREDIT,
+                'payment_method'  => PaymentMethodEnum::DEBIT,
+                'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
             ]);
 
             $date->addMonth(1);

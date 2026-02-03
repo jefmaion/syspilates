@@ -74,10 +74,12 @@
                 </h6>
 
                 <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-experimental-class', { datetime: '{{ $slotDatetime }}' })" wire:click="$set('showSlotMenu', false)">
+                    <x-icons.calendar class="dropdown-item-icon" />
                     Agendar Aula Experimental
                 </a>
 
                 <a href="#" class="dropdown-item" wire:click.prevent="$dispatch('create-makeup-class', { datetime: '{{ $slotDatetime }}' })" wire:click="$set('showSlotMenu', false)">
+                    <x-icons.calendar class="dropdown-item-icon" />
                     Agendar Reposição
                 </a>
 

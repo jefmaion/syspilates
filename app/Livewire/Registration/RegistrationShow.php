@@ -34,7 +34,7 @@ class RegistrationShow extends Component
 
     public $schedule = [];
 
-    public $tab;
+    public $tab = 'tab-scheduled';
 
     public $search_scheduled;
 
@@ -117,6 +117,7 @@ class RegistrationShow extends Component
 
     #[On('refresh-registration')]
     #[On('class-saved')]
+    #[On('transaction-registered')]
     public function refresh()
     {
         $this->dispatch('$refresh');
@@ -160,6 +161,7 @@ class RegistrationShow extends Component
             'scheduleds'   => $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->count(),
             'countMakeups' => $this->registration->classes()->where('type', ClassTypesEnum::MAKEUP)->count(),
             'absenses'     => $this->registration->classes()->whereIn('status', [ClassStatusEnum::JUSTIFIED, ClassStatusEnum::ABSENSE, ClassStatusEnum::CANCELED])->count(),
+            'transactions' => $this->registration->transactions,
         ]);
     }
 }

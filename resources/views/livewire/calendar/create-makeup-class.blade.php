@@ -4,7 +4,7 @@
 
     <form wire:submit="saveMakeup">
         <div class="modal-content">
-            <div class="modal-header border-0">
+            <div class="modal-header">
                 <h5 class="modal-title align-items-center" id="modalTitleId">
                     <x-icons.calendar /> Agendar Reposição
                 </h5>
