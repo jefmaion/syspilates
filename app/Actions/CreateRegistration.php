@@ -34,9 +34,9 @@ class CreateRegistration
                 'date'            => $date->format('Y-m-d'),
                 'amount'          => $registration->value,
                 'paid_amount'     => $registration->value,
-                'status'          => 'scheduled',
                 'type'            => TransactionTypeEnum::CREDIT,
                 'payment_method'  => PaymentMethodEnum::DEBIT,
+                'category_id'     => 1,
                 'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
             ]);
 

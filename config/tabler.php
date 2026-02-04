@@ -52,6 +52,11 @@ return [
             'icon'  => file_get_contents(resource_path('views/components/icons/users.blade.php')),
         ],
 
+        'Livro Caixa' => [
+            'route' => 'cashbook',
+            'icon'  => file_get_contents(resource_path('views/components/icons/users.blade.php')),
+        ],
+
     ],
 
 ];

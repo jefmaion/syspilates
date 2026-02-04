@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             InstructorSeeder::class,
             RegistrationSeeder::class,
             RegistrationPlanSeeder::class,
+            CategorySeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

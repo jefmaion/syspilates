@@ -7,6 +7,7 @@ namespace App\Livewire\Transaction;
 use App\Models\Transaction;
 use Closure;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,17 +19,72 @@ class TransactionPage extends Component
 
     public $end;
 
+    public $status;
+
+    public $transaction;
+
+    public $search;
+
+    public $filter = [];
+
+    #[On('transaction-created')]
     public function mount()
     {
-        $this->start = now()->startOfMonth()->format('Y-m-d');
-        $this->end   = now()->endOfMonth()->format('Y-m-d');
+        $this->start = now()->startOfWeek()->format('Y-m-d');
+        $this->end   = now()->endOfWeek()->format('Y-m-d');
         $this->resetPage();
+    }
+
+    public function deleteTransaction($id)
+    {
+        $this->transaction = Transaction::find($id);
+        $this->dispatch('show-modal', modal:'modal-delete');
+    }
+
+    public function delete()
+    {
+        $this->transaction->delete();
+        $this->transaction = null;
+
+        $this->dispatch('hide-modal', modal:'modal-delete');
+        $this->dispatch('$refresh');
     }
 
     public function render(): View | Closure | string
     {
+        $sums = Transaction::whereBetween('date', [$this->start, $this->end]);
+
+        $box = [
+            ['label' => 'A RECEBER', 'icon' => 'primary', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('open')->sum('amount')],
+            ['label' => 'PAGO', 'icon' => 'success', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount')],
+            ['label' => 'HOJE', 'icon' => 'warning', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')],
+            ['label' => 'PRÓXIMOS RECEBIMENTOS', 'icon' => 'orange', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->sum('amount')],
+            ['label' => 'ATRASADOS', 'icon' => 'danger', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->sum('amount')],
+        ];
+
+        $transactions = Transaction::with(['student.user', 'category'])->whereBetween('date', [$this->start, $this->end])->orderBy('created_at', 'desc');
+
+        foreach ($this->filter as $key => $value) {
+            if ($key == 'status') {
+                $transactions->when($value, fn ($q) => $q->current($value));
+
+                continue;
+            }
+
+            $transactions->whereLike($key, '%' . $value . '%');
+        }
+
+        // if (! empty($this->filter['student_id'])) {
+        //     $transactions->where('student_id', $this->filter['student_id']);
+        // }
+
+        // if ($this->search) {
+        //     $transactions->whereLike('description', '%' . $this->search . '%');
+        // }
+
         return view('livewire.transaction.transaction-page', [
-            'transactions' => Transaction::with('student.user')->whereBetween('date', [$this->start, $this->end])->orderBy('created_at', 'desc')->paginate(10),
+            'transactions' => $transactions->paginate(10),
+            'box'          => $box,
         ]);
     }
 }

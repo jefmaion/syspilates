@@ -26,7 +26,8 @@ return new class () extends Migration
             $table->decimal('amount');
             $table->decimal('paid_amount')->nullable();
             $table->string('method')->nullable();
-            $table->string('status');
+            $table->text('comments')->nullable();
+            $table->boolean('payed')->default(0);
             $table->enum('type', TransactionTypeEnum::cases());
             $table->enum('payment_method', PaymentMethodEnum::cases());
             $table->string('reference_type')->nullable();

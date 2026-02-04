@@ -17,6 +17,7 @@ use App\Livewire\Registration\RegistrationShow;
 use App\Livewire\Student\StudentForm;
 use App\Livewire\Student\StudentPage;
 use App\Livewire\Student\StudentShow;
+use App\Livewire\Transaction\CashBook;
 use App\Livewire\Transaction\TransactionPage;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
 
     Route::get('transaction', TransactionPage::class)->name('transaction');
+    Route::get('cashbook', CashBook::class)->name('cashbook');
 
     Route::get('calendar', CalendarPage::class)->name('calendar');
     Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');

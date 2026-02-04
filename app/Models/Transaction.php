@@ -113,16 +113,16 @@ class Transaction extends BaseModel
             get: function ($value, $attributes) {
                 $return = [];
 
-                if ($this->status == 'payed') {
+                if ($this->payed) {
                     return (object) ['label' => 'Pago', 'color' => 'teal'];
-                }
-
-                if ($this->date->isPast()) {
-                    return (object) ['label' => 'Atrasado', 'color' => 'danger'];
                 }
 
                 if ($this->date->isToday()) {
                     return (object) ['label' => 'Vence Hoje', 'color' => 'warning'];
+                }
+
+                if ($this->date->isPast()) {
+                    return (object) ['label' => 'Atrasado', 'color' => 'danger'];
                 }
 
                 if ($this->date->diffInDays(Carbon::today(), true) <= 3) {
@@ -134,8 +134,27 @@ class Transaction extends BaseModel
         );
     }
 
+    public function scopeCurrent($q, $filter)
+    {
+        return match ($filter) {
+            'open'  => $q->where('payed', false)->whereDate('date', '>', today()->addDays(3)),
+            'payed' => $q->where('payed', true),
+            'today' => $q->where('payed', false)->whereDate('date', today()),
+            'soon'  => $q->where('payed', false)->whereBetween('date', [today()->addDay(), today()->addDays(3)]),
+            'late'  => $q->where('payed', false)->whereDate('date', '<', today()),
+            default => $q
+        };
+
+        return $q;
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
