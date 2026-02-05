@@ -16,6 +16,13 @@ return [
     /** Sidebar menu items */
     'sidebar-menu' => [
 
+        // 'Admin' => 'nav-header',
+
+        // 'Clientes' => [
+        //     'route' => 'admin.tenants',
+        //     'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
+        // ],
+
         'Aulas ' => 'nav-header',
 
         'Calendário' => [
