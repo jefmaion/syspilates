@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use App\Livewire\Calendar\CalendarPage;
+use App\Livewire\Calendar\TodayClass;
 use App\Livewire\Dashboard;
 use App\Livewire\Instructor\InstructorForm;
 use App\Livewire\Instructor\InstructorPage;
@@ -64,6 +65,7 @@ Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
             Route::get('cashbook', CashBook::class)->name('cashbook');
 
             Route::get('calendar', CalendarPage::class)->name('calendar');
+            Route::get('today', TodayClass::class)->name('today');
             Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
 
             Route::get('profile', Profile::class)->name('profile');

@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Actions\CalculateComission;
 use App\Actions\CreateMarkupClass;
 use App\Actions\CreateRegistration;
 use App\Enums\ClassStatusEnum;
@@ -41,7 +42,7 @@ class RegistrationSeeder extends Seeder
             $status[] = $item->value;
         }
 
-        for ($x = 1; $x <= 50; $x++) {
+        for ($x = 1; $x <= 150; $x++) {
             $date         = fake()->dateTimeBetween('-1 months');
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);
@@ -90,6 +91,10 @@ class RegistrationSeeder extends Seeder
                     'status'    => $newStatus,
                     'evolution' => fake()->text(),
                 ]);
+
+                if ($newStatus == ClassStatusEnum::PRESENCE->value) {
+                    CalculateComission::run($class);
+                }
 
                 if (in_array($newStatus, ['canceled', 'justified'])) {
                     CreateMarkupClass::run($class);

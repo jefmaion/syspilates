@@ -1,13 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
+use App\Actions\CalculateComission;
 use App\Actions\CreateMarkupClass;
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\ClassMakeup;
+use App\Models\InstructorComission;
+use App\Models\InstructorModality;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -88,6 +91,11 @@ class FormRegisterClass extends Component
         if ($this->canMakeup) {
             CreateMarkupClass::run($this->class);
         }
+
+        if ($this->status == ClassStatusEnum::PRESENCE->value) {
+            CalculateComission::run($this->class);
+        }
+
 
         $this->dispatch('hide-modal', modal: 'modal-register-class');
         $this->dispatch('class-saved', id: $this->class->id, type: $this->class->type);

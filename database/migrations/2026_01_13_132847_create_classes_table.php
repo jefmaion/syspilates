@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
@@ -8,7 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
@@ -27,6 +27,7 @@ return new class () extends Migration
             $table->dateTime('datetime')->nullable();
             $table->enum('type', ClassTypesEnum::cases());
             $table->enum('status', ClassStatusEnum::cases());
+            $table->decimal('value')->nullable();
             $table->boolean('is_makeup')->default(false);
             $table->integer('original_class_id')->nullable();
             $table->integer('makeup_class_id')->nullable();

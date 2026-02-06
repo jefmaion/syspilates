@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class MigrateApp extends Command
 {
@@ -24,6 +25,10 @@ class MigrateApp extends Command
     public function handle()
     {
         $command = $this->option('fresh') ? 'migrate:fresh' : 'migrate';
+
+
+
+
         $this->call($command, ['--path' => 'database/migrations/app', '--seed' => $this->option('seed'), ]);
     }
 }

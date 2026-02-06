@@ -1,4 +1,4 @@
-<x-modal.modal class="blur" id="modal-create-transaction" size="modsal-lg">
+<x-modal.modal class="blur" id="modal-create-transaction" size="modal-lg">
     <form wire:submit="save">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,7 +7,7 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          
+
             <div class="modal-body">
 
                 <div class="row">
@@ -62,9 +62,9 @@
                     </div>
 
 
-                  
 
-                    
+
+
                 </div>
             </div>
 

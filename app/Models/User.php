@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -119,17 +119,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                // usa o shortName já calculado
-                $shortName = $this->short_name; // camelCase vira snake_case no acesso
-
-                $parts    = explode(' ', $shortName);
-                $initials = '';
-
-                foreach ($parts as $p) {
-                    $initials .= strtoupper(substr($p, 0, 1));
-                }
-
-                return $initials;
+                return initials($this->short_name);
             }
         );
     }

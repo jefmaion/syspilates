@@ -30,6 +30,11 @@ return [
             'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
         ],
 
+        'Aulas do Dia' => [
+            'route' => 'today',
+            'icon'  => file_get_contents(resource_path('views/components/icons/calendar.blade.php')),
+        ],
+
         'Cadastros' => 'nav-header',
 
         'Alunos' => [
