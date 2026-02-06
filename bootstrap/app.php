@@ -16,9 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(EnsureUserIsActive::class);
-        $middleware->alias([
-            'resolve.subdomain' => ResolveSubdomain::class,
-        ]);
+        $middleware->prependToGroup('web', ResolveSubdomain::class);
+        $middleware->alias(['resolve.subdomain' => ResolveSubdomain::class,]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

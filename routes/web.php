@@ -30,25 +30,16 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+
 /*
 |--------------------------------------------------------------------------
 | TENANT → {tenant}.lvh.me
 |--------------------------------------------------------------------------
 */
-Route::domain('{tenant}.lvh.me')
-    ->middleware(['web', 'resolve.subdomain'])
-    ->group(function () {
-        // Raiz do tenant
-        Route::get('/', function ($tenant) {
-            if (auth()->check()) {
-                return redirect()->route('dashboard', ['tenant' => $tenant]);
-            }
+Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
 
-            return redirect()->route('login');
-        });
 
-        // Rotas protegidas
-        Route::middleware('auth')->group(function () {
             Route::get('dashboard', Dashboard::class)->name('dashboard');
 
             Route::get('modality', ModalityPage::class)->name('modality');
@@ -76,7 +67,7 @@ Route::domain('{tenant}.lvh.me')
             Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
 
             Route::get('profile', Profile::class)->name('profile');
-        });
+
     });
 
 /*

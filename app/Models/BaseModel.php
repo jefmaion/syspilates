@@ -11,7 +11,7 @@ class BaseModel extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
 
-    protected $connection = 'tenant';
+    // protected $connection = 'tenant';
 
     public $casts = [
         'created_at' => 'datetime',

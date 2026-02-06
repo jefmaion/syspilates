@@ -70,8 +70,8 @@ new #[Layout('layouts.guest')] class extends Component
                     <span class="spinner-border spinner-border-sm"></span>
                     Registrando...
                 </span>
-                
-                
+
+
                 </button>
         </div>
 
