@@ -19,10 +19,17 @@ if (! function_exists('lw_alert')) {
 }
 
 if (! function_exists('currency')) {
-    function currency(float $value, $default = 0)
+    function currency(float $value, $default = 0, $prepend = "R$ ")
     {
 
-        return 'R$ ' . number_format($value ?? $default, 2, ",", ".");
+        return $prepend . number_format($value ?? $default, 2, ",", ".");
+    }
+}
+
+if (! function_exists('brlToUsd')) {
+    function brlToUsd($value)
+    {
+        return str_replace(",", ".", str_replace(".", "", $value));
     }
 }
 

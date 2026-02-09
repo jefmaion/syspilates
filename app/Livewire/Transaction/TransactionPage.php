@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Transaction;
 
@@ -38,7 +38,7 @@ class TransactionPage extends Component
     public function deleteTransaction($id)
     {
         $this->transaction = Transaction::find($id);
-        $this->dispatch('show-modal', modal:'modal-delete');
+        $this->dispatch('show-modal', modal: 'modal-delete');
     }
 
     public function delete()
@@ -46,7 +46,7 @@ class TransactionPage extends Component
         $this->transaction->delete();
         $this->transaction = null;
 
-        $this->dispatch('hide-modal', modal:'modal-delete');
+        $this->dispatch('hide-modal', modal: 'modal-delete');
         $this->dispatch('$refresh');
     }
 
@@ -55,18 +55,18 @@ class TransactionPage extends Component
         $sums = Transaction::whereBetween('date', [$this->start, $this->end]);
 
         $box = [
-            ['label' => 'A RECEBER', 'icon' => 'primary', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('open')->sum('amount')],
-            ['label' => 'PAGO', 'icon' => 'success', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount')],
-            ['label' => 'HOJE', 'icon' => 'warning', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')],
-            ['label' => 'PRÓXIMOS RECEBIMENTOS', 'icon' => 'orange', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->sum('amount')],
-            ['label' => 'ATRASADOS', 'icon' => 'danger', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->sum('amount')],
+            // ['label' => 'Receitas', 'icon' => 'primary', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('open')->sum('amount')],
+            // ['label' => 'Despesas', 'icon' => 'success', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount')],
+            // ['label' => 'HOJE', 'icon' => 'warning', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')],
+            // ['label' => 'PRÓXIMOS RECEBIMENTOS', 'icon' => 'orange', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->sum('amount')],
+            // ['label' => 'ATRASADOS', 'icon' => 'danger', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->sum('amount')],
         ];
 
         $transactions = Transaction::with(['student.user', 'category'])->whereBetween('date', [$this->start, $this->end])->orderBy('created_at', 'desc');
 
         foreach ($this->filter as $key => $value) {
             if ($key == 'status') {
-                $transactions->when($value, fn ($q) => $q->current($value));
+                $transactions->when($value, fn($q) => $q->current($value));
 
                 continue;
             }
@@ -78,13 +78,15 @@ class TransactionPage extends Component
         //     $transactions->where('student_id', $this->filter['student_id']);
         // }
 
-        // if ($this->search) {
-        //     $transactions->whereLike('description', '%' . $this->search . '%');
-        // }
+        if ($this->search) {
+            $transactions->whereLike('description', '%' . $this->search . '%');
+        }
 
         return view('livewire.transaction.transaction-page', [
             'transactions' => $transactions->paginate(10),
             'box'          => $box,
+            'credits' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount'),
+            'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')
         ]);
     }
 }

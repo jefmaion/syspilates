@@ -1,91 +1,192 @@
 <div>
-    @section('title') Lançamentos @endsection
+    @section('title')
+        Lançamentos
+    @endsection
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
-            Livro Caixa
+            Livro Caixa - {{ $monthName }}
         </h2>
         <x-slot name="actions">
-            <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">Novo</a>
+            <x-form.select wire:model.live='month'>
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </x-form.select>
         </x-slot>
     </x-page.page-header>
 
     <x-page.page-body>
 
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                    @foreach($transactions as $k => $val)
-                    <li class="nav-item" role="presentation">
-                        <a href="#tabs-home-{{ $k }}" class="nav-link" data-bs-toggle="tab" aria-selected="true"
-                            role="tab">{{ $k }}</a>
-                    </li>
-                    @endforeach
-                    {{-- <li class="nav-item" role="presentation">
-                        <a href="#tabs-profile-8" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                            tabindex="-1" role="tab">Profile</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a href="#tabs-activity-8" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                            tabindex="-1" role="tab">Activity</a>
-                    </li> --}}
-                </ul>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card card-sm">
+                    <div class="card-status-top bg-primary"></div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M18 11l-6 -6"></path>
+                                        <path d="M6 11l6 -6"></path>
+                                    </svg></span>
+                            </div>
+                            <div class="col">
+                                <div class="text-secondary">Saldo Anterior</div>
+                                <div class="font-weight-medium h2">
+                                    {{ currency($sald) }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="tab-content">
-                    @foreach($transactions as $k => $val)
-                    <div class="tab-pane fade" id="tabs-home-{{ $k }}" role="tabpanel">
-                        <h4>Receitas: <strong>{{ currency($val['c']) }}</strong> | Despesas: <strong>{{ currency($val['d']) }}</strong></h4>
+            <div class="col">
+                <div class="card card-sm">
+                    <div class="card-status-top bg-green"></div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M18 11l-6 -6"></path>
+                                        <path d="M6 11l6 -6"></path>
+                                    </svg></span>
+                            </div>
+                            <div class="col">
+                                <div class="text-secondary">Entradas</div>
+                                <div class="font-weight-medium h2">
+                                    {{ currency($credit) }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card-sm">
+                    <div class="card-status-top bg-danger"></div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M18 11l-6 -6"></path>
+                                        <path d="M6 11l6 -6"></path>
+                                    </svg></span>
+                            </div>
+                            <div class="col">
+                                <div class="text-secondary">Saídas</div>
+                                <div class="font-weight-medium h2">
+                                    {{ currency($debit) }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col">
+                <div class="col">
+                    <div class="card card-sm">
+                        <div class="card-status-top bg-primary"></div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path d="M12 5l0 14"></path>
+                                            <path d="M18 11l-6 -6"></path>
+                                            <path d="M6 11l6 -6"></path>
+                                        </svg></span>
+                                </div>
+                                <div class="col">
+                                    <div class="text-secondary">Saldo Final</div>
+                                    <div class="font-weight-medium h2">
+                                        {{ currency($amount) }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <x-form.select-category wire:model.live='category_id' />
+                            </div>
+                            <div class="col">
+                                <x-form.input-text wire:model.live="search" placeholder="Pesquisar..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <x-table.table :search="false">
                             <thead>
                                 <tr>
                                     <th>Data</th>
                                     <th>Descrição</th>
-                                    <th>Categoria</th>
-                                    <th>Entrada</th>
-                                    <th>Saída</th>
+                                    <th class="text-center">Entrada</th>
+                                    <th class="text-center">Saída</th>
+                                    <th class="text-center">Saldo</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                @foreach($val['data'] as $tran)
-                                <tr>
-                                    <td>{{ $tran->date->format('d/m/Y') }}</td>
-                                    <td>{{ $tran->description }}</td>
-                                    <td>{{ $tran->category->name }}</td>
-                                    <td>{{ $tran->type->value == 'C' ? currency($tran->amount) : '-' }}</td>
-                                    <td>{{ $tran->type->value == 'D' ? currency($tran->amount) : '-' }}</td>
-
-                                </tr>
+                                @foreach ($transactions as $tran)
+                                    <tr class="@if ($tran->payed == 0) text-secondary @endif">
+                                        <td>{{ $tran->date->format('d/m/y') }}</td>
+                                        <td>
+                                            <div><strong>{{ $tran->description }}</strong></div>
+                                            <div class="text-secondary">{{ $tran->category->name }}</div>
+                                        </td>
+                                        <td class="text-center text-teal">
+                                            <strongs>{{ $tran->type->value == 'C' ? currency($tran->amount) : '-' }}</strongs>
+                                        </td>
+                                        <td class="text-center text-danger">
+                                            <strongs>{{ $tran->type->value == 'D' ? currency($tran->amount) : '-' }}</strongs>
+                                        </td>
+                                        <td class="text-center {{ $tran->apos < 0 ? 'text-danger' : 'text-green' }}">
+                                            <strongs>{{ currency($tran->apos) }}</strongs>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td>Total</td>
-                                    <td>{{ currency($val['c']) }}</td>
-                                    <td>{{ currency($val['d']) }}</td>
-                                </tr>
-                            </tfoot>
-
                         </x-table.table>
-                    </div>
-                    @endforeach
-                    {{-- <div class="tab-pane fade" id="tabs-profile-8" role="tabpanel">
-                        <h4>Profile tab</h4>
-                        <div>
-                            Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc
-                            amet, pellentesque id egestas velit sed
+                        <div class="mt-3">
+                            {{ $transactions->links() }}
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tabs-activity-8" role="tabpanel">
-                        <h4>Activity tab</h4>
-                        <div>
-                            Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit
-                            mauris accumsan nibh habitant senectus
-                        </div>
-                    </div> --}}
                 </div>
             </div>
+
+
+
         </div>
 
 

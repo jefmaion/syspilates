@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -9,6 +9,7 @@ use App\Enums\TransactionTypeEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Transaction extends BaseModel
 {
@@ -146,6 +147,11 @@ class Transaction extends BaseModel
         };
 
         return $q;
+    }
+
+    public static function getAmountBefore($date)
+    {
+        return self::where('payed', 1)->where('date', '<', Carbon::parse($date))->sum(DB::raw("CASE WHEN type = 'C' THEN amount ELSE -amount END"));
     }
 
     public function student()

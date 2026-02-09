@@ -42,7 +42,7 @@ class RegistrationSeeder extends Seeder
             $status[] = $item->value;
         }
 
-        for ($x = 1; $x <= 150; $x++) {
+        for ($x = 1; $x <= 50; $x++) {
             $date         = fake()->dateTimeBetween('-1 months');
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);

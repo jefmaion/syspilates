@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Transaction;
 
@@ -21,35 +21,42 @@ class RegisterTransaction extends Component
 
     public $payment_method;
 
+    public $comments;
+
     public function save()
     {
         $this->validate([
             'payment_method' => ['required'],
+            'paid_amount' => ['required'],
+            'paid_at' => ['required']
         ]);
-
-        // dd('Salvando', $this->all());
 
         $this->transaction->update([
             'payment_method' => $this->payment_method,
             'paid_at'        => Carbon::parse($this->paid_at),
-            'paid_amount'    => $this->paid_amount,
+            'paid_amount'    => brlToUsd($this->paid_amount),
             'status'         => 'payed',
+            'comments' => $this->comments,
+            'payed' => 1,
         ]);
 
-        $this->dispatch('hide-modal', modal:'modal-register-transaction');
+        $this->dispatch('hide-modal', modal: 'modal-register-transaction');
         $this->dispatch('transaction-registered');
     }
 
     #[On('show-transaction')]
     public function show(Transaction $transaction)
     {
-        $this->transaction = $transaction;
 
-        $this->paid_amount    = $transaction->amountWithFee;
+        $this->reset();
+        $this->resetValidation();
+
+        $this->transaction = $transaction;
+        $this->paid_amount    = currency($transaction->amountWithFee, prepend: false);
         $this->paid_at        = date('Y-m-d');
         $this->payment_method = null;
 
-        $this->dispatch('show-modal', modal:'modal-register-transaction');
+        $this->dispatch('show-modal', modal: 'modal-register-transaction');
     }
 
     public function render(): View | Closure | string

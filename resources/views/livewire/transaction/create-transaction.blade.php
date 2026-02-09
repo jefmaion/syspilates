@@ -1,4 +1,4 @@
-<x-modal.modal class="blur" id="modal-create-transaction" size="modal-lg">
+<x-modal.modal class="blur" id="modal-create-transaction" sizse="modal-lg">
     <form wire:submit="save">
         <div class="modal-content">
             <div class="modal-header">
@@ -32,17 +32,17 @@
                         <x-form.input-text type="text" wire:model='description' name="description" />
                     </div>
 
-                    <div class="col-12 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label">Forma de Pagamento</label>
                         <x-form.select-payment-method wire:model='payment_method' name="payment_method" />
                     </div>
 
-                    <div class="col-12 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label">Categoria</label>
                         <x-form.select-category wire:model='category_id' name="category_id" />
                     </div>
 
-                    <div class="col-12 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label">Status</label>
                         <x-form.select wire:model='payed' name="payed">
                             <option value=""></option>
