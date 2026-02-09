@@ -50,6 +50,12 @@ class TransactionPage extends Component
         $this->dispatch('$refresh');
     }
 
+    protected function saldo()
+    {
+        return Transaction::getAmountBefore($this->start);
+    }
+
+
     public function render(): View | Closure | string
     {
         $sums = Transaction::whereBetween('date', [$this->start, $this->end]);
@@ -82,11 +88,18 @@ class TransactionPage extends Component
             $transactions->whereLike('description', '%' . $this->search . '%');
         }
 
+
+         $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount');
+         $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
+
         return view('livewire.transaction.transaction-page', [
             'transactions' => $transactions->paginate(10),
             'box'          => $box,
-            'credits' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount'),
-            'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')
+            'credit' => $credit,
+            'debit' => $debit,
+            'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount'),
+            'sald' => $this->saldo(),
+            'amount' => ($this->saldo() + $credit) - $debit
         ]);
     }
 }

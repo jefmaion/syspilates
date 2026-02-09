@@ -8,7 +8,8 @@
             Lançamentos - <span class="text-muted">{{ $start }} até {{ $end }}</span>
         </h2>
         <x-slot name="actions">
-            <a href="#" class="btn btn-primary" wire:click="$dispatch('calculate-comission')">Calcular Comissão de Professores</a>
+            <a href="#" class="btn btn-primary" wire:click="$dispatch('calculate-comission')">Calcular Comissão de
+                Professores</a>
             <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">Novo</a>
         </x-slot>
     </x-page.page-header>
@@ -20,7 +21,7 @@
         <livewire:transaction.create-transaction />
         <livewire:transaction.comission />
 
-        <div class="row">
+        {{-- <div class="row">
 
             <div class="col">
                 <div class="card flex-fill mb-3">
@@ -31,7 +32,7 @@
                             <div class="col">
                                 <div class="text-secondary">Saldo</div>
                                 <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($today) }}</span>
+                                    <span class="h2">{{ currency($sald) }}</span>
                                     <span class="float-end font-weight-medium text-green"></span>
                                 </div>
                             </div>
@@ -46,9 +47,9 @@
                         <div class="row align-items-center">
 
                             <div class="col">
-                                <div class="text-secondary">Receitas</div>
+                                <div class="text-secondary">Entradas</div>
                                 <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($today) }}</span>
+                                    <span class="h2">{{ currency($credit) }}</span>
                                     <span class="float-end font-weight-medium text-green"></span>
                                 </div>
                             </div>
@@ -66,7 +67,7 @@
                             <div class="col">
                                 <div class="text-secondary">Despesas</div>
                                 <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($today) }}</span>
+                                    <span class="h2">{{ currency($debit) }}</span>
                                     <span class="float-end font-weight-medium text-green"></span>
                                 </div>
                             </div>
@@ -82,9 +83,9 @@
                         <div class="row align-items-center">
 
                             <div class="col">
-                                <div class="text-secondary">À Receber</div>
+                                <div class="text-secondary">Saldo Atual</div>
                                 <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($today) }}</span>
+                                    <span class="h2">{{ currency($amount) }}</span>
                                     <span class="float-end font-weight-medium text-green"></span>
                                 </div>
                             </div>
@@ -110,66 +111,114 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row mb-3">
-            <div class="col">
+
+
+            <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="bg-warning-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M12 5l0 14"></path>
-                                        <path d="M18 11l-6 -6"></path>
-                                        <path d="M6 11l6 -6"></path>
-                                    </svg></span>
+                        <div class="card-title">Agendados</div>
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span
+                                            class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
+                                    </div>
+                                    <div class="col">
+                                        
+                                        <div class="text-secondary">Entradas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($credit) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col">
-                                <div class="text-secondary">À Receber HOJE</div>
-                                <div class="font-weight-medium">
-                                    $5,256.99
-                                    <span class="float-end font-weight-medium text-warning">+4%</span>
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span
+                                            class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
+                                    </div>
+                                    <div class="col">
+                                        
+                                        <div class="text-secondary">Saídas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($debit) }}
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col">
+           
+            <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <span class="bg-warning-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                <span
+                                    class="bg-warning-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
                                         <path d="M12 5l0 14"></path>
                                         <path d="M18 11l-6 -6"></path>
                                         <path d="M6 11l6 -6"></path>
                                     </svg></span>
                             </div>
                             <div class="col">
-                                <div class="text-secondary">À Pagar HOJE</div>
                                 <div class="font-weight-medium">
-                                    $5,256.99
-                                    <span class="float-end font-weight-medium text-warning">+4%</span>
-                                </div>
+                                    Vencendo Hoje
 
+                                </div>
+                                <hr class="my-2">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>Entradas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                    <div class="col">
+                                        <div>Saídas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col">
+            <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <span class="bg-orange-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                <span
+                                    class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
                                         <path d="M12 5l0 14"></path>
                                         <path d="M18 11l-6 -6"></path>
                                         <path d="M6 11l6 -6"></path>
@@ -177,23 +226,35 @@
                             </div>
                             <div class="col">
                                 <div class="font-weight-medium">
-                                    $5,256.99
-                                    <span class="float-end font-weight-medium text-orange">+4%</span>
+                                    Atrasados
+
                                 </div>
-                                <div class="text-secondary">Vencendo na semana</div>
+                                <hr class="my-2">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>Entradas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                    <div class="col">
+                                        <div>Saídas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col">
+            <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                <span
+                                    class="bg-orange-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
                                         <path d="M12 5l0 14"></path>
                                         <path d="M18 11l-6 -6"></path>
                                         <path d="M6 11l6 -6"></path>
@@ -201,10 +262,20 @@
                             </div>
                             <div class="col">
                                 <div class="font-weight-medium">
-                                    $5,256.99
-                                    <span class="float-end font-weight-medium text-danger">+4%</span>
+                                    Próximos Vencimentos
+
                                 </div>
-                                <div class="text-secondary">Atrasados</div>
+                                <hr class="my-2">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>Entradas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                    <div class="col">
+                                        <div>Saídas</div>
+                                        <span class="h2">R$ 234.90</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -249,7 +320,8 @@
                             </div>
 
                             <div class="col">
-                                <input type="text" wire:model.live="filter.description" class="form-control" placeholder="Pesquisar..." aria-label="Search invoice">
+                                <input type="text" wire:model.live="filter.description" class="form-control"
+                                    placeholder="Pesquisar..." aria-label="Search invoice">
                             </div>
 
 
@@ -277,7 +349,8 @@
                                             {{ $item->date->format('d/m/y') }}
                                         </td>
                                         <td>
-                                            <x-page.badge color="{{ $item->currentStatus->color }}">{{ $item->currentStatus->label }}</x-page.badge>
+                                            <x-page.badge
+                                                color="{{ $item->currentStatus->color }}">{{ $item->currentStatus->label }}</x-page.badge>
                                         </td>
                                         <td>
                                             {{ $item->description }}
@@ -293,15 +366,29 @@
                                             </x-page.status>
                                         </td>
                                         <td>
-                                            <span class="text-{{ $item->type->color() }}"><strong>{{ currency($item->amount) }}</strong></span>
+                                            <span
+                                                class="text-{{ $item->type->color() }}"><strong>{{ currency($item->amount) }}</strong></span>
                                         </td>
 
                                         <td>
+                                            <div class="btn-actions">
+                                                <a class="btn btn-action"
+                                                    wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})"><!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                    <x-icons.edit /></a>
+
+                                                <a class="btn btn-action"
+                                                    wire:click="deleteTransaction({{ $item->id }})"><!-- Download SVG icon from http://tabler.io/icons/icon/x -->
+                                                    <x-icons.trash /></a>
+                                            </div>
 
 
-                                            <div class="dropdown">
-                                                <a href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-dots">
+                                            {{-- <div class="dropdown">
+                                                <a href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-dots">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                         <path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                                         <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -310,29 +397,45 @@
                                                 </a>
                                                 <div class="dropdown-menu">
                                                     <span class="dropdown-header">Ações</span>
-                                                    <a class="dropdown-item" href="#" wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
+                                                    <a class="dropdown-item" href="#"
+                                                        wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
                                                         <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-item-icon icon-2">
-                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon dropdown-item-icon icon-2">
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                            </path>
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                            </path>
                                                             <path d="M16 5l3 3"></path>
                                                         </svg>
                                                         Editar
                                                     </a>
                                                     @if (empty($item->registration_id))
-                                                        <a class="dropdown-item" href="#" wire:click="deleteTransaction({{ $item->id }})">
-                                                            <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-item-icon icon-2">
-                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                                                <path d="M16 5l3 3"></path>
-                                                            </svg>
-                                                            Excluir
-                                                        </a>
+                                                    <a class="dropdown-item" href="#"
+                                                        wire:click="deleteTransaction({{ $item->id }})">
+                                                        <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon dropdown-item-icon icon-2">
+                                                            <path
+                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
+                                                            </path>
+                                                            <path
+                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                                            </path>
+                                                            <path d="M16 5l3 3"></path>
+                                                        </svg>
+                                                        Excluir
+                                                    </a>
                                                     @endif
                                                 </div>
 
-                                            </div>
+                                            </div> --}}
 
                                         </td>
                                     </tr>
