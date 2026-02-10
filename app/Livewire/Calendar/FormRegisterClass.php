@@ -69,7 +69,9 @@ class FormRegisterClass extends Component
         $this->class = Classes::find($id);
 
         if ($this->class) {
-            $this->status    = $this->class->status->value;
+            if ($this->class->status !== ClassStatusEnum::SCHEDULED) {
+                $this->status    = $this->class->status->value;
+            }
             $this->evolution = $this->class->evolution;
         };
 
@@ -79,9 +81,10 @@ class FormRegisterClass extends Component
     public function submit()
     {
         $this->validate([
-            'status'    => 'required',
+            'status'    => ['required'],
             'evolution' => ['nullable', 'string', 'required_if:status,presence,justified'],
         ]);
+
 
         $this->class->update([
             'status'    => $this->status,

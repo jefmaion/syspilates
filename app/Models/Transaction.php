@@ -104,6 +104,17 @@ class Transaction extends BaseModel
             }
         );
     }
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function amount(): Attribute
+    {
+        return Attribute::make(
+            set: function ($value) {
+                return brlToUsd($value);
+            }
+        );
+    }
 
     /**
      * @return Attribute<string, string>

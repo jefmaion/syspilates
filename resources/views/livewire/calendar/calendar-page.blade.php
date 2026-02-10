@@ -1,5 +1,7 @@
 <div>
-    @section('title') Calendário @endsection
+    @section('title')
+        Calendário
+    @endsection
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
@@ -7,12 +9,10 @@
         </h2>
         <x-slot name="actions">
             <div class="btn-list">
-                <a href="#" wire:click='$dispatch("create-instructor")'
-                    class="btn btn-primary btn-5 d-none d-sm-inline-block">
+                <a href="#" wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-5 d-none d-sm-inline-block">
                     <x-icons.plus class="icon icon-1" /> Novo
                 </a>
-                <a wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-6 d-sm-none btn-icon"
-                    aria-label="Novo">
+                <a wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-6 d-sm-none btn-icon" aria-label="Novo">
                     <x-icons.plus class="icon icon-1" />
                 </a>
             </div>
@@ -20,7 +20,7 @@
     </x-page.page-header>
 
     <x-page.page-body>
-        <div class="row flex-sfill">
+        <div class="row flex-sfill mb-3">
 
             <div class="col-auto">
                 <x-form.select-modality class="filters" name='modality_id' />
@@ -33,8 +33,8 @@
             <div class="col-auto">
                 <x-form.select name="type" class="filters">
                     <option value=""></option>
-                    @foreach(App\Enums\ClassTypesEnum::cases() as $item)
-                    <option value="{{$item->value}}">{{$item->label()}}</option>
+                    @foreach (App\Enums\ClassTypesEnum::cases() as $item)
+                        <option value="{{ $item->value }}">{{ $item->label() }}</option>
                     @endforeach
                 </x-form.select>
             </div>
@@ -43,9 +43,9 @@
             </div>
             <div class="col">
                 <x-form.select name="student" class="filters">
-                    <option value="">TODOS ({{count($students??[])}})</option>
-                    @foreach($students as $key => $name)
-                    <option value="{{$key}}">{{$name}}</option>
+                    <option value="">TODOS ({{ count($students ?? []) }})</option>
+                    @foreach ($students as $key => $name)
+                        <option value="{{ $key }}">{{ $name }}</option>
                     @endforeach
                 </x-form.select>
             </div>
@@ -59,7 +59,7 @@
 
         <livewire:calendar.show-experimental-class />
         <livewire:calendar.create-experimental-class />
-        <livewire:calendar.register-experimental-class  />
+        <livewire:calendar.register-experimental-class />
 
         @if ($showSlotMenu)
             <div class="dropdown-menu show shadow-lg" style="
@@ -89,7 +89,6 @@
                     ✖ Cancelar
                 </a> --}}
             </div>
-
         @endif
 
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Transaction;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -19,6 +20,8 @@ class TransactionPage extends Component
 
     public $end;
 
+    public $label;
+
     public $status;
 
     public $transaction;
@@ -32,6 +35,8 @@ class TransactionPage extends Component
     {
         $this->start = now()->startOfWeek()->format('Y-m-d');
         $this->end   = now()->endOfWeek()->format('Y-m-d');
+
+        $this->label = ['start' => Carbon::parse($this->start)->format('d/m/y'), 'end' => Carbon::parse($this->end)->format('d/m/y')];
         $this->resetPage();
     }
 
@@ -68,6 +73,36 @@ class TransactionPage extends Component
             // ['label' => 'ATRASADOS', 'icon' => 'danger', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->sum('amount')],
         ];
 
+        $box = [
+            'Agendados' => [
+                'color' => 'primary',
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 0)->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 0)->where('type', 'D')->sum('amount'),
+            ],
+            'Vencem Hoje' => [
+                'color' => 'warning',
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->where('type', 'D')->sum('amount'),
+            ],
+            'Atrasados' => [
+                'color' => 'danger',
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->where('type', 'D')->sum('amount'),
+            ],
+            'Próximos Venctos.' => [
+                'color' => 'info',
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->where('type', 'D')->sum('amount'),
+            ],
+            'Recebidos/Pagos' => [
+                'color' => 'green',
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'D')->sum('amount'),
+            ],
+        ];
+
+
+
         $transactions = Transaction::with(['student.user', 'category'])->whereBetween('date', [$this->start, $this->end])->orderBy('created_at', 'desc');
 
         foreach ($this->filter as $key => $value) {
@@ -80,17 +115,15 @@ class TransactionPage extends Component
             $transactions->whereLike($key, '%' . $value . '%');
         }
 
-        // if (! empty($this->filter['student_id'])) {
-        //     $transactions->where('student_id', $this->filter['student_id']);
-        // }
+
 
         if ($this->search) {
             $transactions->whereLike('description', '%' . $this->search . '%');
         }
 
 
-         $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount');
-         $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
+        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount');
+        $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
 
         return view('livewire.transaction.transaction-page', [
             'transactions' => $transactions->paginate(10),

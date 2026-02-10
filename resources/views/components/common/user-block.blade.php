@@ -5,14 +5,19 @@
     'size' => 'lg',
     'subtitle' => null,
     'sideTitle' => null,
+    'prepend' => null,
 ])
-<div class="row mb-3">
+<div class="row">
     <div class="col-auto pe-0">
         <x-common.avatar initials="{{ $initials }}" size="{{ $size }}" avatar="{{ $avatar }}" />
     </div>
     <div class="col">
+        @if ($prepend)
+            {{ $prepend }}
+        @endif
         <div class="d-flex align-items-center">
-            <h2 class="font-weight-medium mb-0 me-1">
+
+            <h2 class="font-weight-medium mb-2 me-1">
                 <strong>
                     {{ $title }}
                 </strong>

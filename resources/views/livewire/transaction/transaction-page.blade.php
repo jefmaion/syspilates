@@ -5,11 +5,11 @@
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
-            Lançamentos - <span class="text-muted">{{ $start }} até {{ $end }}</span>
+            Lançamentos - <span class="text-muted">{{ $label['start'] }} até {{ $label['end'] }}</span>
         </h2>
         <x-slot name="actions">
-            <a href="#" class="btn btn-primary" wire:click="$dispatch('calculate-comission')">Calcular Comissão de
-                Professores</a>
+            {{-- <a href="#" class="btn btn-primary" wire:click="$dispatch('calculate-comission')">Calcular Comissão de
+                Professores</a> --}}
             <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">Novo</a>
         </x-slot>
     </x-page.page-header>
@@ -21,122 +21,79 @@
         <livewire:transaction.create-transaction />
         <livewire:transaction.comission />
 
-        {{-- <div class="row">
-
-            <div class="col">
-                <div class="card flex-fill mb-3">
-                    <div class="card-status-top bg-primary"></div>
-                    <div class="card-body">
-                        <div class="row align-items-center">
-
-                            <div class="col">
-                                <div class="text-secondary">Saldo</div>
-                                <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($sald) }}</span>
-                                    <span class="float-end font-weight-medium text-green"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card flex-fill mb-3">
-                    <div class="card-status-top bg-green"></div>
-                    <div class="card-body">
-                        <div class="row align-items-center">
-
-                            <div class="col">
-                                <div class="text-secondary">Entradas</div>
-                                <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($credit) }}</span>
-                                    <span class="float-end font-weight-medium text-green"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card flex-fill mb-3">
-                    <div class="card-status-top bg-danger"></div>
-                    <div class="card-body">
-                        <div class="row align-items-center">
-
-                            <div class="col">
-                                <div class="text-secondary">Despesas</div>
-                                <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($debit) }}</span>
-                                    <span class="float-end font-weight-medium text-green"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card flex-fill mb-3">
-                    <div class="card-status-top bg-danger"></div>
-                    <div class="card-body">
-                        <div class="row align-items-center">
-
-                            <div class="col">
-                                <div class="text-secondary">Saldo Atual</div>
-                                <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($amount) }}</span>
-                                    <span class="float-end font-weight-medium text-green"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card flex-fill mb-3">
-                    <div class="card-status-top bg-danger"></div>
-                    <div class="card-body">
-                        <div class="row align-items-center">
-
-                            <div class="col">
-                                <div class="text-secondary">À pagar</div>
-                                <div class="font-weight-medium">
-                                    <span class="h2">{{ currency($today) }}</span>
-                                    <span class="float-end font-weight-medium text-green"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-
         <div class="row mb-3">
 
+            @foreach ($box as $title => $data)
+                <div class="col">
+                    <div class="card card-sm">
+                        <div class="card-status-top bg-{{ $data['color'] ?? 'primary' }}"></div>
+                        <div class="card-body">
+                            <div class="card-title">{{ $title }}</div>
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                    <path d="M12 5l0 14"></path>
+                                                    <path d="M18 11l-6 -6"></path>
+                                                    <path d="M6 11l6 -6"></path>
+                                                </svg></span>
+                                        </div>
+                                        <div class="col">
 
-            <div class="col-3">
+                                            <div class="text-secondary">Entradas</div>
+                                            <div class="font-weight-medium h4">
+                                                {{ currency($data['credit'], prepend: null) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                    <path d="M12 5l0 14"></path>
+                                                    <path d="M18 11l-6 -6"></path>
+                                                    <path d="M6 11l6 -6"></path>
+                                                </svg></span>
+                                        </div>
+                                        <div class="col">
+
+                                            <div class="text-secondary">Saídas</div>
+                                            <div class="font-weight-medium h4">
+                                                {{ currency($data['debit'], prepend: null) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+            {{-- <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
-                        <div class="card-title">Agendados</div>
+                        <div class="card-title">Vencem Hoje</div>
                         <hr class="my-2">
                         <div class="row">
                             <div class="col">
                                 <div class="row align-items-center">
                                     <div class="col-auto">
-                                        <span
-                                            class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                        <span class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
                                                 <path d="M12 5l0 14"></path>
                                                 <path d="M18 11l-6 -6"></path>
                                                 <path d="M6 11l6 -6"></path>
                                             </svg></span>
                                     </div>
                                     <div class="col">
-                                        
+
                                         <div class="text-secondary">Entradas</div>
                                         <div class="font-weight-medium h3">
                                             {{ currency($credit) }}
@@ -147,18 +104,15 @@
                             <div class="col">
                                 <div class="row align-items-center">
                                     <div class="col-auto">
-                                        <span
-                                            class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                        <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
                                                 <path d="M12 5l0 14"></path>
                                                 <path d="M18 11l-6 -6"></path>
                                                 <path d="M6 11l6 -6"></path>
                                             </svg></span>
                                     </div>
                                     <div class="col">
-                                        
+
                                         <div class="text-secondary">Saídas</div>
                                         <div class="font-weight-medium h3">
                                             {{ currency($debit) }}
@@ -172,115 +126,108 @@
                 </div>
             </div>
 
-           
             <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span
-                                    class="bg-warning-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M12 5l0 14"></path>
-                                        <path d="M18 11l-6 -6"></path>
-                                        <path d="M6 11l6 -6"></path>
-                                    </svg></span>
+                        <div class="card-title">Atrasados</div>
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
+                                    </div>
+                                    <div class="col">
+
+                                        <div class="text-secondary">Entradas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($credit) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
-                                    Vencendo Hoje
-
-                                </div>
-                                <hr class="my-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <div>Entradas</div>
-                                        <span class="h2">R$ 234.90</span>
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
                                     </div>
                                     <div class="col">
-                                        <div>Saídas</div>
-                                        <span class="h2">R$ 234.90</span>
+
+                                        <div class="text-secondary">Saídas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($debit) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-3">
                 <div class="card card-sm">
                     <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span
-                                    class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M12 5l0 14"></path>
-                                        <path d="M18 11l-6 -6"></path>
-                                        <path d="M6 11l6 -6"></path>
-                                    </svg></span>
+                        <div class="card-title">Próximos Vencimentos</div>
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-green-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
+                                    </div>
+                                    <div class="col">
+
+                                        <div class="text-secondary">Entradas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($credit) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col">
-                                <div class="font-weight-medium">
-                                    Atrasados
-
-                                </div>
-                                <hr class="my-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <div>Entradas</div>
-                                        <span class="h2">R$ 234.90</span>
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-danger-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M18 11l-6 -6"></path>
+                                                <path d="M6 11l6 -6"></path>
+                                            </svg></span>
                                     </div>
                                     <div class="col">
-                                        <div>Saídas</div>
-                                        <span class="h2">R$ 234.90</span>
+
+                                        <div class="text-secondary">Saídas</div>
+                                        <div class="font-weight-medium h3">
+                                            {{ currency($debit) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-3">
-                <div class="card card-sm">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span
-                                    class="bg-orange-lt avatar"><!-- Download SVG icon from http://tabler.io/icons/icon/arrow-up -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="icon icon-1">
-                                        <path d="M12 5l0 14"></path>
-                                        <path d="M18 11l-6 -6"></path>
-                                        <path d="M6 11l6 -6"></path>
-                                    </svg></span>
-                            </div>
-                            <div class="col">
-                                <div class="font-weight-medium">
-                                    Próximos Vencimentos
+            </div> --}}
 
-                                </div>
-                                <hr class="my-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <div>Entradas</div>
-                                        <span class="h2">R$ 234.90</span>
-                                    </div>
-                                    <div class="col">
-                                        <div>Saídas</div>
-                                        <span class="h2">R$ 234.90</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
 
 
@@ -320,8 +267,7 @@
                             </div>
 
                             <div class="col">
-                                <input type="text" wire:model.live="filter.description" class="form-control"
-                                    placeholder="Pesquisar..." aria-label="Search invoice">
+                                <input type="text" wire:model.live="filter.description" class="form-control" placeholder="Pesquisar..." aria-label="Search invoice">
                             </div>
 
 
@@ -349,8 +295,7 @@
                                             {{ $item->date->format('d/m/y') }}
                                         </td>
                                         <td>
-                                            <x-page.badge
-                                                color="{{ $item->currentStatus->color }}">{{ $item->currentStatus->label }}</x-page.badge>
+                                            <x-page.badge color="{{ $item->currentStatus->color }}">{{ $item->currentStatus->label }}</x-page.badge>
                                         </td>
                                         <td>
                                             {{ $item->description }}
@@ -366,18 +311,15 @@
                                             </x-page.status>
                                         </td>
                                         <td>
-                                            <span
-                                                class="text-{{ $item->type->color() }}"><strong>{{ currency($item->amount) }}</strong></span>
+                                            <span class="text-{{ $item->type->color() }}"><strong>{{ currency($item->amount) }}</strong></span>
                                         </td>
 
                                         <td>
                                             <div class="btn-actions">
-                                                <a class="btn btn-action"
-                                                    wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})"><!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                <a class="btn btn-action" wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})"><!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
                                                     <x-icons.edit /></a>
 
-                                                <a class="btn btn-action"
-                                                    wire:click="deleteTransaction({{ $item->id }})"><!-- Download SVG icon from http://tabler.io/icons/icon/x -->
+                                                <a class="btn btn-action" wire:click="deleteTransaction({{ $item->id }})"><!-- Download SVG icon from http://tabler.io/icons/icon/x -->
                                                     <x-icons.trash /></a>
                                             </div>
 

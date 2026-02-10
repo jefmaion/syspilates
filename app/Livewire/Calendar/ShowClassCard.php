@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
@@ -45,13 +45,13 @@ class ShowClassCard extends Component
 
         $this->loadData();
 
-        $this->dispatch('show-modal', modal:'modal-show-card');
+        $this->dispatch('show-modal', modal: 'modal-show-card');
     }
 
     public function registerClass()
     {
         $this->loadData();
-        $this->dispatch('show-form-register', id:$this->eventId, type:$this->eventType)->to(FormRegisterClass::class);
+        $this->dispatch('show-form-register', id: $this->eventId, type: $this->eventType)->to(FormRegisterClass::class);
     }
 
     public function editRegister()
@@ -77,13 +77,42 @@ class ShowClassCard extends Component
         $this->class        = Classes::with(['student.user', 'modality', 'instructor.user', 'registration.classes'])->find($this->eventId);
         $this->registration = $this->class->registration;
 
+        $makeup = ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $this->class->student_id)->where('expires_at', '>=', now())->count();
+
+        $alerts = [];
+
+        if ($this->class->student->user->isBirthday) {
+            $alerts[] = [
+                'icon' => 'icons.cake',
+                'type' => 'info',
+                'text' => 'Aniversario hoje (' . $this->class->student->user->age . ' anos)'
+            ];
+        }
+
+        if ($makeup) {
+            $alerts[] = [
+                'type' => 'warning',
+                'text' => 'Reposições à agendar'
+            ];
+        }
+
+        if ($this->registration->hasUnpaidTransactions) {
+            $alerts[] = [
+                'type' => 'danger',
+                'text' => 'Existem mensalidades em aberto!'
+            ];
+        }
+
+
+
         $this->data = (object) [
             'objective'  => $this->class->student->objective ?? null,
             'instructor' => $this->class->instructor->user,
             'student'    => $this->class?->student->user,
             'modality'   => $this->class->modality->name,
             'status'     => $this->class->status,
-            'makeup'     => ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $this->class->student_id)->where('expires_at', '>=', now())->count(),
+            'makeup'     => $makeup,
+            'alerts' => $alerts
         ];
     }
 

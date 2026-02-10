@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
@@ -35,6 +35,8 @@ class CreateMakeupClass extends Component
 
     public $_classes = [];
 
+    public $class;
+
     #[On('create-makeup-class')]
     public function show($datetime = null)
     {
@@ -49,7 +51,7 @@ class CreateMakeupClass extends Component
             return lw_alert($this, 'Não existem aulas de reposição para serem agendadas');
         }
 
-        $this->dispatch('show-modal', modal:'modal-makeup');
+        $this->dispatch('show-modal', modal: 'modal-makeup');
     }
 
     public function loadData()
@@ -76,6 +78,11 @@ class CreateMakeupClass extends Component
         }
 
         // $this->makeupClasses = ClassMakeup::with('origin')->where('status', 'active')->where('student_id', $studentId)->where('expires_at', '>=', now())->orderBy('expires_at')->get();
+    }
+
+    public function getClass()
+    {
+        $this->class = ClassMakeup::with('origin')->find($this->makeupId);
     }
 
     public function saveMakeup()
@@ -117,7 +124,7 @@ class CreateMakeupClass extends Component
 
         $origin->update(['makup_class_id' => $class->id]);
 
-        $this->dispatch('hide-modal', modal:'modal-makeup');
+        $this->dispatch('hide-modal', modal: 'modal-makeup');
         $this->dispatch('refresh-calendar');
         $this->dispatch('$refresh');
     }

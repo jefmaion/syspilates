@@ -8,24 +8,25 @@
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-
         <div class="modal-body pst-2">
 
+
+
+
             <x-common.user-block initials="{{ $data?->student->initials }}" size="lg" avatar="{{ $data?->student->avatar }}">
+                @if ($class && $class->is_makeup)
+                    <x-slot:prepend>
+                        <div class="me-1 mb-2"><x-page.badge color="orange">Aula de Reposição</x-page.badge></div>
+                    </x-slot:prepend>
+                @endif
                 <x-slot:title>
                     <a href="{{ route('registration.show', $class->registration_id) }}"> {{ $data?->student?->shortName ?? null }}</a>
                 </x-slot:title>
                 <x-slot:side-title>
                     <div class="d-flex justify-content-end">
-
-                        @if ($class && $class->is_makeup)
-                            <div class="me-1"><x-page.badge color="orange">Reposição</x-page.badge></div>
-                        @endif
-
                         @if ($data?->status)
                             <x-page.badge color="{{ $data?->status->color() }}">{{ $data?->status->label() }}</x-page.badge>
                         @endif
-
                     </div>
                 </x-slot:side-title>
                 <x-slot:subtitle>
@@ -35,76 +36,40 @@
                         <x-icons.phone /> {{ $data?->student->phone1 ?? null }} |
                         <x-page.avatar size="xs" :user="$data?->instructor" /> {{ $data?->instructor->shortName ?? null }}
                     </div>
-                    <div>
-                        <strong>Objetivo: </strong> {{ $data?->objective }}
-                    </div>
+
                 </x-slot:subtitle>
             </x-common.user-block>
-
-            {{-- <div class="d-flex">
-                <x-page.avatar size="xl" :user="$data?->student" />
-                <div class="flex-fill ms-2">
-                    @if ($class && $class->is_makeup)
-                        <div class="mb-1"><x-page.badge color="orange">Reposição</x-page.badge></div>
-                    @endif
-                    <div class="d-flex justify-content-between">
-
-                        <h2 class="font-weight-medium mb-2"><strong>
-                                <a href="{{ route('registration.show', $class->registration_id) }}"> {{ $data?->student->shortName ?? null }}</a>
-                            </strong></h2>
-                        <div>
-                            @if ($data?->status)
-                                <x-page.badge color="{{ $data?->status->color() }}">{{ $data?->status->label() }}</x-page.badge>
-                            @endif
-
-                        </div>
-                    </div>
-                    <div class="text-muted text-sm mb-2">
-                        <x-icons.modality /> {{ $data?->modality }} |
-                        <x-icons.time /> {{ $eventDatetime ? $eventDatetime->format('H\h') : '' }} |
-                        <x-icons.phone /> {{ $data?->student->phone1 ?? null }} |
-                        <x-page.avatar size="xs" :user="$data?->instructor" /> {{ $data?->instructor->shortName ?? null }}
-                    </div>
-                    <div>
-                        <strong>Objetivo: </strong> {{ $data?->objective }}
-                    </div>
-                </div>
-            </div> --}}
-
-            @if ($data->makeup)
-                <div class="alert alert-warning mb-0 mt-2" role="alert">
-                    <div class="alert-icon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon alert-icon icon-2 icon-pulse">
-                            <path d="M12 9v4"></path>
-                            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                            </path>
-                            <path d="M12 16h.01"></path>
-                        </svg>
-                    </div>
-                    Reposições à agendar
-                </div>
-            @endif
-
-            @if ($registration->hasUnpaidTransactions)
-                <div class="alert alert-danger mb-0 mt-2" role="alert">
-                    <div class="alert-icon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-tada icon alert-icon icon-2">
-                            <path d="M12 9v4"></path>
-                            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
-                            <path d="M12 16h.01"></path>
-                        </svg>
-                    </div>
-                    Existem mensalidades em aberto!
-                </div>
-            @endif
-
-
-
-
         </div>
 
+        <div class="modal-body">
+            <div>
+                <strong>Objetivo: </strong> {{ $data?->objective }}
+            </div>
+
+            @if ($data->alerts)
+                <div class="d-flex justify-content-between">
+                    @foreach ($data->alerts as $alert)
+                        <x-common.alert class="mb-0 mt-3 me-2 flex-fill" type="{{ $alert['type'] }}">
+
+                            @if (isset($alert['icon']))
+                                <x-slot:icon>
+                                    <x-dynamic-component class="icon-pulse" component="{{ $alert['icon'] }}" />
+                                </x-slot:icon>
+                            @endif
+
+                            <div class="text-center">{{ $alert['text'] }}</div>
+                        </x-common.alert>
+                    @endforeach
+                </div>
+            @endif
+            {{-- @if ($data->makeup)
+                <x-common.alert class="mb-0 mt-3" type="warning">Reposições à agendar</x-common.alert>
+            @endif
+            @if ($registration->hasUnpaidTransactions)
+                <x-common.alert class="mb-0 mt-3" type="danger">Existem mensalidades em aberto!</x-common.alert>
+            @endif --}}
+
+        </div>
 
 
         @if (!$history_classes->isEmpty())
@@ -118,35 +83,25 @@
                                 <td classs="text-center">
                                     <div class="mb-3 text-secondary">
                                         <strong> {{ $_class->datetime->format('d/m') }} | {{ $_class->datetime->format('H\h') }} </strong> -
-
                                         <span>
                                             {{ $_class->type->label() }} -
                                         </span>
-
                                         <x-page.avatar size="xs" :user="$_class->instructor?->user" /> <strong>{{ $_class->instructor?->user?->shortName ?? null }}</strong> -
                                         <x-page.badge color="{{ $_class->status->color() }}">{{ $_class->status->label() }}</x-page.badge>
-
-
                                     </div>
-
                                     <div class="mb-3">{{ $_class->evolution }}</div>
-
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-
                 {{ $history_classes->links() }}
             </div>
         @endif
-
         <div class="modal-footer bsorder-0 bg-tsransparent">
             <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
                 Fechar
             </button>
-
             @if ($class->status == App\Enums\ClassStatusEnum::SCHEDULED)
                 <button type="button" data-bs-dissmiss="modal" wire:click="registerClass()" class="btn btn-primary">
                     <span class="d-flex align-items-center">
@@ -154,7 +109,6 @@
                     </span>
                 </button>
             @endif
-
             @if ($class->status !== App\Enums\ClassStatusEnum::SCHEDULED && $class->canEdit)
                 <button type="button" data-bs-dissmiss="modal" wire:click="editRegister()" class="btn btn-teal">
                     <span class="d-flex align-items-center">
@@ -163,7 +117,5 @@
                 </button>
             @endif
         </div>
-
     @endif
-
 </x-modal.modal>

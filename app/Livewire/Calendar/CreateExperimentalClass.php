@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
@@ -40,11 +40,15 @@ class CreateExperimentalClass extends Component
     #[On('create-experimental-class')]
     public function show($datetime)
     {
+
+        $this->reset();
+        $this->resetValidation();
+
         $this->datetime = Carbon::parse($datetime);
         $this->date     = $this->datetime->format('Y-m-d');
         $this->time     = $this->datetime->format('H:i:s');
 
-        $this->dispatch('show-modal', modal:'modal-experimental');
+        $this->dispatch('show-modal', modal: 'modal-experimental');
     }
 
     #[On('edit-experimental-class')]
@@ -66,7 +70,7 @@ class CreateExperimentalClass extends Component
 
         $this->update = true;
 
-        $this->dispatch('show-modal', modal:'modal-experimental');
+        $this->dispatch('show-modal', modal: 'modal-experimental');
     }
 
     public function update()
@@ -106,21 +110,23 @@ class CreateExperimentalClass extends Component
                 'comments'      => $this->comments,
             ]);
 
-            Transaction::create([
-                'amount'         => $this->value,
-                'type'           => TransactionTypeEnum::CREDIT,
-                'status'         => 'scheduled',
-                'reference_id'   => $this->class->id,
-                'description'    => 'Aula Exp. ' . $this->class->modality->name,
-                'date'           => $this->datetime,
-                'reference_type' => 'experimental',
-            ]);
+            if ($this->value) {
+                Transaction::create([
+                    'amount'         => $this->value,
+                    'type'           => TransactionTypeEnum::CREDIT,
+                    'status'         => 'scheduled',
+                    'reference_id'   => $this->class->id,
+                    'description'    => 'Aula Exp. ' . $this->class->modality->name,
+                    'date'           => $this->datetime,
+                    'reference_type' => 'experimental',
+                ]);
+            }
         } else {
             $this->update();
         }
 
-        $this->dispatch('hide-modal', modal:'modal-experimental');
-        $this->dispatch('refresh-experimental-class', id:$this->class->id);
+        $this->dispatch('hide-modal', modal: 'modal-experimental');
+        $this->dispatch('refresh-experimental-class', id: $this->class->id);
         $this->dispatch('refresh-calendar');
     }
 

@@ -61,8 +61,20 @@
                         <x-form.textarea wire:model='comments' name="comments" />
                     </div>
 
+                    <div class="col-8 mb-3">
+                        <label class="form-label">Repetir</label>
+                        <x-form.select wire:model='repeat' name="repeat">
+                            <option value=""></option>
+                            <option value="weekly">Semanalmente</option>
+                            <option value="biweekly">Quinzenal</option>
+                            <option value="monthly">Mensalmente</option>
+                        </x-form.select>
+                    </div>
 
-
+                    <div class="col-4 mb-3">
+                        <label class="form-label">Vezes</label>
+                        <x-form.input-text type="text" wire:model='repeat_times' name="repeat_times" />
+                    </div>
 
 
                 </div>

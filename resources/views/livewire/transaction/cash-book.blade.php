@@ -152,6 +152,7 @@
                                 <tr>
                                     <th>Data</th>
                                     <th>Descrição</th>
+                                    <th>Categoria</th>
                                     <th class="text-center">Entrada</th>
                                     <th class="text-center">Saída</th>
                                     <th class="text-center">Saldo</th>
@@ -163,7 +164,10 @@
                                         <td>{{ $tran->date->format('d/m/y') }}</td>
                                         <td>
                                             <div><strong>{{ $tran->description }}</strong></div>
-                                            <div class="text-secondary">{{ $tran->category->name }}</div>
+
+                                        </td>
+                                        <td>
+                                            {{ $tran->category->name }}
                                         </td>
                                         <td class="text-center text-teal">
                                             <strongs>{{ $tran->type->value == 'C' ? currency($tran->amount) : '-' }}</strongs>
@@ -171,7 +175,7 @@
                                         <td class="text-center text-danger">
                                             <strongs>{{ $tran->type->value == 'D' ? currency($tran->amount) : '-' }}</strongs>
                                         </td>
-                                        <td class="text-center {{ $tran->apos < 0 ? 'text-danger' : 'text-green' }}">
+                                        <td class="text-center {{ $tran->apos < 0 ? 'text-danger' : 'text-teal' }}">
                                             <strongs>{{ currency($tran->apos) }}</strongs>
                                         </td>
                                     </tr>

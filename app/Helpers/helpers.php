@@ -29,7 +29,7 @@ if (! function_exists('currency')) {
 if (! function_exists('brlToUsd')) {
     function brlToUsd($value)
     {
-        return str_replace(",", ".", str_replace(".", "", $value));
+        return str_replace(",", ".", str_replace(".", "", (string) $value));
     }
 }
 

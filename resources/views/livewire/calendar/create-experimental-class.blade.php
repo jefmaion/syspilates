@@ -14,14 +14,19 @@
                 <div class="row">
 
 
-                    <div class="col-6 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label required">Dia</label>
                         <x-form.input-text type="date" name="date" wire:model="date" />
                     </div>
 
-                    <div class="col-6 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label required">Horario</label>
                         <x-form.select-time type="time" name="time" wire:model='time' />
+                    </div>
+
+                    <div class="col-4 mb-3">
+                        <label class="form-label required">Telefone</label>
+                        <x-form.input-text name="phone" wire:model="phone" />
                     </div>
 
                     <div class="col-12 mb-3">
@@ -29,30 +34,28 @@
                         <x-form.input-text name="name" wire:model="name" />
                     </div>
 
-                    <div class="col-6 mb-3">
-                        <label class="form-label required">Telefone</label>
-                        <x-form.input-text name="phone" wire:model="phone" />
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Professor</label>
+                        <x-form.select-instructor name="instructor_id" wire:model='instructor_id' />
                     </div>
+
+
 
                     <div class="col-6 mb-3">
                         <label for="" class="form-label">Modalidade</label>
                         <x-form.select-modality name="modality_id" wire:model='modality_id' />
                     </div>
 
-                    <div class="col-6 mb-3">
-                        <label class="form-label">Professor</label>
-                        <x-form.select-instructor name="instructor_id" wire:model='instructor_id' />
-                    </div>
+
 
                     <div class="col-6 mb-3">
-                            <label for="" class="form-label">Valor</label>
-                            <x-form.input-text name="value" wire:model='value' />
-                        </div>
+                        <label for="" class="form-label">Valor</label>
+                        <x-form.input-text name="value" wire:model='value' />
+                    </div>
 
                     <div class="mb-3 col-12">
                         <label class="form-label">Comentários</label>
-                        <textarea class="form-control {{ ($errors->has('comments') ? ' is-invalid' : '') }}" rows="5"
-                            name="comments" wire:model="comments"></textarea>
+                        <textarea class="form-control {{ $errors->has('comments') ? ' is-invalid' : '' }}" rows="5" name="comments" wire:model="comments"></textarea>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
@@ -59,6 +59,12 @@ class RegistrationForm extends Form
         }
     }
 
+    public function prepareForValidation($attributes)
+    {
+        $attributes['value'] = brlToUsd($attributes['value']);
+        return $attributes;
+    }
+
     public function rules()
     {
         return [
@@ -74,7 +80,7 @@ class RegistrationForm extends Form
             'deadline'       => ['required', 'numeric'],
             'start'          => ['required', 'date'],
 
-            'schedule'                 => ['required', 'array', 'min:' . 2],
+            'schedule'                 => ['required', 'array', 'min:' . 1],
             'schedule.*.weekday'       => ['required'],
             'schedule.*.time'          => ['required'],
             'schedule.*.instructor_id' => ['required'],

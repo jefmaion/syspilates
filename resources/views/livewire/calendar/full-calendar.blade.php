@@ -1,22 +1,21 @@
 <div>
     @section('scripts')
-    <script src="{{ asset('template/libs/fullcalendar/index.global.min.js') }}"></script>
+        <script src="{{ asset('template/libs/fullcalendar/index.global.min.js') }}"></script>
     @endsection
 
     @section('header')
-    <link href="{{  asset('css/fc.css') }}" rel="stylesheet" />
+        <link href="{{ asset('css/fc.css') }}" rel="stylesheet" />
     @endsection
 
- 
 
-    <div wire:ignore id="{{ $id }}"  style="width: 100%"></div>
+
+    <div wire:ignore id="{{ $id }}" style="width: 100%"></div>
 
     @script
         <script>
-
             let calendarInstance_{{ $id }};
 
-            document.addEventListener("livewire:navigated", function () {
+            document.addEventListener("livewire:navigated", function() {
 
                 if (calendarInstance_{{ $id }}) {
                     calendarInstance_{{ $id }}.refetchEvents();
@@ -32,12 +31,18 @@
 
                 var calendarInstance_{{ $id }} = new FullCalendar.Calendar(calendarEl, {
                     initialView: isMobile ? "timeGridDay" : "timeGridWeek",
-                    timeZone: "America/Sao_Paulo",
+                    locale: 'pt-br',
                     displayEventTime: false,
                     headerToolbar: {
                         left: "prev,next today",
                         center: "title",
                         right: "dayGridMonth,timeGridWeek,timeGridDay"
+                    },
+                    buttonText: {
+                        today: 'Hoje',
+                        month: 'Mês',
+                        week: 'Semana',
+                        day: 'Dia'
                     },
                     allDaySlot: false,
                     slotMinTime: "07:00:00",
@@ -60,10 +65,10 @@
                         hour12: false
                     },
                     events: {
-                        @if($endpoint)
-                        url: '{{ $endpoint }}',
+                        @if ($endpoint)
+                            url: '{{ $endpoint }}',
                         @endif
-                        extraParams: function(){
+                        extraParams: function() {
                             let params = {};
                             document.querySelectorAll('.filters').forEach(function(select) {
                                 params[select.name] = select.value;
@@ -74,8 +79,8 @@
                     dateClick: function(info) {
                         Livewire.dispatch('calendar-slot-clicked', {
                             datetime: info.dateStr,
-                            x:info.jsEvent.clientX,
-                            y:info.jsEvent.clientY
+                            x: info.jsEvent.clientX,
+                            y: info.jsEvent.clientY
                         });
                     },
                     eventClick: function(info) {
@@ -89,10 +94,12 @@
                         });
                     },
                     eventContent: function(arg) {
-                        return { html: arg.event.title };
+                        return {
+                            html: arg.event.title
+                        };
                     },
-                    
-                  
+
+
                     eventDrop: function(info) {
                         Livewire.dispatch('calendar-event-dropped', {
                             id: info.event.id,
@@ -100,11 +107,11 @@
                             props: info.event.extendedProps,
                         });
                     },
-                    eventAllow: function(dropInfo, draggedEvent) { 
-                        
-                        @if($config['allow_move_event_same_day'])
-                            
-                            if(draggedEvent.extendedProps.move) {
+                    eventAllow: function(dropInfo, draggedEvent) {
+
+                        @if ($config['allow_move_event_same_day'])
+
+                            if (draggedEvent.extendedProps.move) {
                                 return true
                             }
 
@@ -112,10 +119,10 @@
                             const originalDay = draggedEvent.start.getDay();
                             // 0=domingo, 1=segunda... 
                             const targetDay = dropInfo.start.getDay(); // só permite se for o mesmo dia 
-                            return originalDay === targetDay; 
-                         @else
-                         return true
-                         @endif
+                            return originalDay === targetDay;
+                        @else
+                            return true
+                        @endif
                     },
                     eventResize: function(info) {
                         Livewire.dispatch('calendar-event-resized', {
@@ -127,14 +134,13 @@
 
                 calendarInstance_{{ $id }}.render();
 
-                window.addEventListener('eventDeleted', function (event) {
+                window.addEventListener('eventDeleted', function(event) {
                     // Get the deleted event's ID (which was passed as 'uuid' in the PHP code above)
 
                     var eventId = event.detail.uuid;
 
                     // Find the event in the calendar and remove it
                     var calendarEvent = calendar.getEventById(eventId);
-                    alert(calendarEvent);
                     if (calendarEvent) {
                         calendarEvent.remove(); // This removes it from the calendar view
                     }

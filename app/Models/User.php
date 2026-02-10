@@ -101,6 +101,18 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         );
     }
 
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function isBirthday(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return Carbon::parse($this->birthdate)->isBirthday(Carbon::today());
+            }
+        );
+    }
+
     // Carbon::parse('1990-05-15')
 
     protected function status(): Attribute

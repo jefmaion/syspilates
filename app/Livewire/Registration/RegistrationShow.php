@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Registration;
 
@@ -84,31 +84,8 @@ class RegistrationShow extends Component
 
         GenerateRegistrationClasses::run($this->registration, $nextClass->datetime, $this->registration->end);
 
-        // $period = CarbonPeriod::create($nextClass->datetime, $this->registration->end);
 
-        // $countClasses = 0;
-
-        // foreach ($period as $date) {
-        //     foreach ($this->registration->schedule as $schedule) {
-        //         if ($date->dayOfWeek === $schedule->weekday->value) {
-        //             $this->registration->classes()->create([
-        //                 'student_id'               => $this->registration->student_id,
-        //                 'modality_id'              => $this->registration->modality_id,
-        //                 'datetime'                 => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
-        //                 'instructor_id'            => $schedule->instructor_id,
-        //                 'scheduled_datetime'       => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
-        //                 'type'                     => ClassTypesEnum::REGULAR,
-        //                 'registration_schedule_id' => $schedule->id,
-        //                 'status'                   => ClassStatusEnum::SCHEDULED,
-        //             ]);
-        //             $countClasses++;
-        //         }
-        //     }
-        // }
-
-        // $this->registration->update(['class_value' => $this->registration->value / $countClasses]);
-
-        $this->dispatch('hide-modal', modal:'modal-classes');
+        $this->dispatch('hide-modal', modal: 'modal-classes');
 
         lw_alert($this, 'Dias de aulas alteradas com sucesso');
 
@@ -125,7 +102,7 @@ class RegistrationShow extends Component
 
     public function editClass($id)
     {
-        $this->dispatch('edit-class', id:$id)->to(UpdateClass::class);
+        $this->dispatch('edit-class', id: $id)->to(UpdateClass::class);
     }
 
     public function render(): View | Closure | string
@@ -154,9 +131,9 @@ class RegistrationShow extends Component
 
         return view('livewire.registration.registration-show', [
             'countClasses' => $this->registration->classes->count(),
-            'classes'      => $classes->orderBy($this->_sortBy, $this->sortDirection)->paginate(8, pageName:'classes'),
-            'markups'      => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName:'makeup'),
-            'evolutions'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(6, pageName:'evolutions'),
+            'classes'      => $classes->orderBy($this->_sortBy, $this->sortDirection)->paginate(8, pageName: 'classes'),
+            'markups'      => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName: 'makeup'),
+            'evolutions'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(6, pageName: 'evolutions'),
             'presences'    => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
             'scheduleds'   => $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->count(),
             'countMakeups' => $this->registration->classes()->where('type', ClassTypesEnum::MAKEUP)->count(),
