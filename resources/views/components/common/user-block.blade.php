@@ -1,11 +1,11 @@
 @props([
-    'initials' => null,
-    'avatar' => null,
-    'color' => 'primary',
-    'size' => 'lg',
-    'subtitle' => null,
-    'sideTitle' => null,
-    'prepend' => null,
+'initials' => null,
+'avatar' => null,
+'color' => 'primary',
+'size' => 'lg',
+'subtitle' => null,
+'sideTitle' => null,
+'prepend' => null,
 ])
 <div class="row">
     <div class="col-auto pe-0">
@@ -13,7 +13,7 @@
     </div>
     <div class="col">
         @if ($prepend)
-            {{ $prepend }}
+        {{ $prepend }}
         @endif
         <div class="d-flex align-items-center">
 
@@ -23,13 +23,13 @@
                 </strong>
             </h2>
             @if ($sideTitle)
-                <div class="d-flex">
-                    {{ $sideTitle }}
-                </div>
+            <div class="d-flex">
+                {{ $sideTitle }}
+            </div>
             @endif
         </div>
         @if ($subtitle)
-            {{ $subtitle }}
+        {{ $subtitle }}
         @endif
         {{ $slot }}
     </div>

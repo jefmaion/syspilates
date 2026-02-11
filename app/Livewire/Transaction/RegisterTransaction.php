@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Transaction;
 
+use App\Enums\PaymentMethodEnum;
+use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Closure;
@@ -15,7 +17,7 @@ class RegisterTransaction extends Component
 {
     public Transaction $transaction;
 
-    public $paid_amount;
+    public $amount;
 
     public $paid_at;
 
@@ -27,17 +29,16 @@ class RegisterTransaction extends Component
     {
         $this->validate([
             'payment_method' => ['required'],
-            'paid_amount' => ['required'],
+            'amount' => ['required'],
             'paid_at' => ['required']
         ]);
 
         $this->transaction->update([
             'payment_method' => $this->payment_method,
             'paid_at'        => Carbon::parse($this->paid_at),
-            'paid_amount'    => brlToUsd($this->paid_amount),
+            'amount'    => $this->amount,
             'status'         => 'payed',
             'comments' => $this->comments,
-            'payed' => 1,
         ]);
 
         $this->dispatch('hide-modal', modal: 'modal-register-transaction');
@@ -52,11 +53,25 @@ class RegisterTransaction extends Component
         $this->resetValidation();
 
         $this->transaction = $transaction;
-        $this->paid_amount    = currency($transaction->amountWithFee, prepend: false);
+        $this->amount    = currency($transaction->amountWithFee, prepend: false);
         $this->paid_at        = date('Y-m-d');
         $this->payment_method = null;
 
         $this->dispatch('show-modal', modal: 'modal-register-transaction');
+    }
+
+    #[On('cancel-transaction')]
+    public function cancel(Transaction $transaction)
+    {
+        $transaction->update([
+            'payment_method' => PaymentMethodEnum::PIX,
+            'paid_at'        => null,
+            'amount'    => $transaction->amount,
+            'status'         => 'scheduled',
+            'comments' => null,
+            'payed' => 0,
+        ]);
+        $this->dispatch('transaction-registered');
     }
 
     public function render(): View | Closure | string

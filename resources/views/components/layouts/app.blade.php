@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <head>
-        @include('layouts.parts.header')
-    </head>
+<head>
+    @include('layouts.parts.header')
+</head>
 
-    <body>
-        @include('layouts.parts.theme')
-        <div class="page">
-            <livewire:layout.sidebar />
-            <livewire:layout.navigation />
-            <div class="page-wrapper">
-                {{ $slot }}
-                @include('layouts.parts.footer')
-            </div>
+<body class="">
+    @include('layouts.parts.theme')
+    <div class="page">
+        <livewire:layout.sidebar />
+        <livewire:layout.navigation />
+        <div class="page-wrapper">
+            {{ $slot }}
+            @include('layouts.parts.footer')
         </div>
-        @include('layouts.parts.scripts')
-        <script src="{{ asset('template/libs/imask/dist/imask.min.js') }}"></script>
-        <script>
-            window.addEventListener('show-modal', (params) => {
+    </div>
+
+    @include('layouts.parts.scripts')
+
+    <script>
+        window.addEventListener('show-modal', (params) => {
                 return getModal(params.detail.modal).show()
             });
             window.addEventListener('hide-modal', (params) => {
@@ -46,8 +47,8 @@
                     }, 3000); // Oculta após 3 segundos
                 }
             });
-        </script>
-        @stack('scripts')
-    </body>
+    </script>
+    @stack('scripts')
+</body>
 
 </html>

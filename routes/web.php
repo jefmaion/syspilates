@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\Livewire\Calendar\CalendarPage;
 use App\Livewire\Calendar\TodayClass;
@@ -19,6 +19,7 @@ use App\Livewire\Student\StudentForm;
 use App\Livewire\Student\StudentPage;
 use App\Livewire\Student\StudentShow;
 use App\Livewire\Transaction\CashBook;
+use App\Livewire\Transaction\ComissionPage;
 use App\Livewire\Transaction\TransactionPage;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 | Raiz global (opcional)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -41,36 +43,36 @@ Route::get('/', function () {
 Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
 
 
-            Route::get('dashboard', Dashboard::class)->name('dashboard');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-            Route::get('modality', ModalityPage::class)->name('modality');
-            Route::get('modality/create', CreateModality::class)->name('modality.create');
-            Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
+    Route::get('modality', ModalityPage::class)->name('modality');
+    Route::get('modality/create', CreateModality::class)->name('modality.create');
+    Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
 
-            Route::get('student', StudentPage::class)->name('student');
-            Route::get('student/create', StudentForm::class)->name('student.create');
-            Route::get('student/{student}/edit', StudentForm::class)->name('student.edit');
-            Route::get('student/{student}/show', StudentShow::class)->name('student.show');
+    Route::get('student', StudentPage::class)->name('student');
+    Route::get('student/create', StudentForm::class)->name('student.create');
+    Route::get('student/{student}/edit', StudentForm::class)->name('student.edit');
+    Route::get('student/{student}/show', StudentShow::class)->name('student.show');
 
-            Route::get('instructor', InstructorPage::class)->name('instructor');
-            Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
-            Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
-            Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
+    Route::get('instructor', InstructorPage::class)->name('instructor');
+    Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
+    Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
+    Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
 
-            Route::get('registration', RegistrationPage::class)->name('registration');
-            Route::get('registration/create', CreateRegistration::class)->name('registration.create');
-            Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
+    Route::get('registration', RegistrationPage::class)->name('registration');
+    Route::get('registration/create', CreateRegistration::class)->name('registration.create');
+    Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
 
-            Route::get('transaction', TransactionPage::class)->name('transaction');
-            Route::get('cashbook', CashBook::class)->name('cashbook');
+    Route::get('transaction', TransactionPage::class)->name('transaction');
+    Route::get('cashbook', CashBook::class)->name('cashbook');
+    Route::get('comission', ComissionPage::class)->name('comission');
 
-            Route::get('calendar', CalendarPage::class)->name('calendar');
-            Route::get('today', TodayClass::class)->name('today');
-            Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
+    Route::get('calendar', CalendarPage::class)->name('calendar');
+    Route::get('today', TodayClass::class)->name('today');
+    Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
 
-            Route::get('profile', Profile::class)->name('profile');
-
-    });
+    Route::get('profile', Profile::class)->name('profile');
+});
 
 /*
 |--------------------------------------------------------------------------

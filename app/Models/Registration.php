@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -119,7 +119,7 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return $this->transactions()->where('payed', 0)->where('date', '>', now())->first();
+                return $this->transactions()->whereNull('paid_at')->where('date', '>', now())->first();
             }
         );
     }
@@ -131,7 +131,7 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return $this->transactions()->where('payed', 0)->where('date', '<', now())->count();
+                return $this->transactions()->whereNull('paid_at')->where('date', '<', now())->count();
             }
         );
     }

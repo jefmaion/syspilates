@@ -22,8 +22,9 @@ class Transaction extends BaseModel
         'date'           => 'date',
         'paid_at'        => 'date',
         'amount'         => 'decimal:2',
-        'fine'           => 'decimal:2',
-        'fee'            => 'decimal:2',
+        'origin_amount'         => 'decimal:2',
+        'fine'           => 'float',
+        'fee'            => 'float',
         'payment_method' => PaymentMethodEnum::class,
         'type'           => TransactionTypeEnum::class,
     ];
@@ -36,7 +37,7 @@ class Transaction extends BaseModel
         return Attribute::make(
             get: function ($value, $attributes) {
                 if ($this->daysLate > 0) {
-                    return $this->amount * 0.02;
+                    return $this->origin_amount * 0.02;
                 }
 
                 return 0;
@@ -74,7 +75,7 @@ class Transaction extends BaseModel
                     return 0;
                 }
 
-                return $this->amount * 0.0033 * $daysLate;
+                return ($this->origin_amount * 0.0033) * $daysLate;
             }
         );
     }
@@ -87,7 +88,7 @@ class Transaction extends BaseModel
         return Attribute::make(
             get: function ($value, $attributes) {
                 // Juros de 0,33% ao dia
-                return $this->amount + $this->fee + $this->fine;
+                return $this->origin_amount + $this->fee + $this->fine;
             }
         );
     }
@@ -116,6 +117,25 @@ class Transaction extends BaseModel
         );
     }
 
+    protected function originAmount(): Attribute
+    {
+        return Attribute::make(
+            set: function ($value) {
+                return brlToUsd($value);
+            }
+        );
+    }
+
+    protected function isPaid(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return is_null($attributes['paid_at']);
+            }
+        );
+    }
+
+
     /**
      * @return Attribute<string, string>
      */
@@ -125,7 +145,7 @@ class Transaction extends BaseModel
             get: function ($value, $attributes) {
                 $return = [];
 
-                if ($this->payed) {
+                if (!is_null($this->paid_at)) {
                     return (object) ['label' => 'Pago', 'color' => 'teal'];
                 }
 
@@ -149,11 +169,11 @@ class Transaction extends BaseModel
     public function scopeCurrent($q, $filter)
     {
         return match ($filter) {
-            'open'  => $q->where('payed', false)->whereDate('date', '>', today()->addDays(3)),
-            'payed' => $q->where('payed', true),
-            'today' => $q->where('payed', false)->whereDate('date', today()),
-            'soon'  => $q->where('payed', false)->whereBetween('date', [today()->addDay(), today()->addDays(3)]),
-            'late'  => $q->where('payed', false)->whereDate('date', '<', today()),
+            'open'  => $q->whereNull('paid_at')->whereDate('date', '>', today()->addDays(3)),
+            'payed' => $q->whereNotNull('paid_at'),
+            'today' => $q->whereNull('paid_at')->whereDate('date', today()),
+            'soon'  => $q->whereNull('paid_at')->whereBetween('date', [today()->addDay(), today()->addDays(3)]),
+            'late'  => $q->whereNull('paid_at')->whereDate('date', '<', today()),
             default => $q
         };
 
@@ -162,7 +182,7 @@ class Transaction extends BaseModel
 
     public static function getAmountBefore($date)
     {
-        return self::where('payed', 1)->where('date', '<', Carbon::parse($date))->sum(DB::raw("CASE WHEN type = 'C' THEN amount ELSE -amount END"));
+        return self::whereNotNull('paid_at')->where('date', '<', Carbon::parse($date))->sum(DB::raw("CASE WHEN type = 'C' THEN amount ELSE -amount END"));
     }
 
     public function student()

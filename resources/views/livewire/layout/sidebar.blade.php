@@ -39,20 +39,23 @@
 
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <!-- BEGIN NAVBAR MENU -->
-            
+
             <ul class="navbar-nav pt-lg-3">
                 @foreach($sidebarMenu as $title => $item)
 
                 @if($item =='nav-header')
-                    <li class="nav-item nav-header ms-3 my-2"><small>{{ strtoupper($title) }}</small></li>
-                    @continue
+                <li class="nav-item nav-header ms-3 my-2"><small>{{ strtoupper($title) }}</small></li>
+                @continue
                 @endif
-               
-                <li class="nav-item {{ $item['active'] ? 'active' :  '' }} @if(isset($item['submenu'])) dropdown @endif">
-                    <a  class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"  @if(isset($item['submenu'])) href="#navbar-{{ $title }}"
-                        data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" @else wire:navisgate href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
+
+                <li
+                    class="nav-item {{ $item['active'] ? 'active' :  '' }} @if(isset($item['submenu'])) dropdown @endif">
+                    <a class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"
+                        @if(isset($item['submenu'])) href="#navbar-{{ $title }}" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false" @else wire:navigate
+                        href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            {!! $item['icon'] !!}
+                            <x-dynamic-component component="{{$item['icon']}}" />
                         </span>
                         <span class="nav-link-title"> {{ $title }} </span>
                     </a>
@@ -62,31 +65,39 @@
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 @foreach($item['submenu'] as $sub1Title => $sub1)
-                               
+
                                 @if(isset($sub1['submenu']))
-                                    <div class="dropend">
-                                        <a class="dropdown-item dropdown-toggle {{ $sub1['active'] ? 'show' :  ''}}" href="#sidebar-{{ $sub1Title }}" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
-                                            {!! $sub1['icon'] !!}
-                                            {{ $sub1Title }} 
-                                        </a>
-                                        <div class="dropdown-menu {{ $sub1['active'] ? 'show' :  ''}}">
-                                            @foreach($sub1['submenu'] as $sub3Title => $sub3)
-                                                <a wire:navigate href="{{ ($sub3['route']) ? route($sub3['route']) : '#' }}" class="dropdown-item @if($sub3['active']) active @endif"> {{ $sub3Title }}
-                                                    @if(isset($sub3['tag']))
-                                                        <span class="badge badge-sm {{ $sub3['tag']['color'] }}-lt text-uppercase ms-auto">{{ $sub3['tag']['label'] }}</span>
-                                                    @endif
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @else
-                                    <a wire:navigate class="dropdown-item {{ $sub1['active'] ? 'active' :  '' }}" href="{{ ($sub1['route']) ? route($sub1['route']) : '#' }}">
+                                <div class="dropend">
+                                    <a class="dropdown-item dropdown-toggle {{ $sub1['active'] ? 'show' :  ''}}"
+                                        href="#sidebar-{{ $sub1Title }}" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="false" role="button" aria-expanded="false">
                                         {!! $sub1['icon'] !!}
-                                        {{ $sub1Title }} 
-                                        @if(isset($sub1['tag']))
-                                            <span class="badge badge-sm {{ $sub1['tag']['color'] }}-lt text-uppercase ms-auto">{{ $sub1['tag']['label'] }}</span>
-                                        @endif
+                                        {{ $sub1Title }}
                                     </a>
+                                    <div class="dropdown-menu {{ $sub1['active'] ? 'show' :  ''}}">
+                                        @foreach($sub1['submenu'] as $sub3Title => $sub3)
+                                        <a wire:navigate href="{{ ($sub3['route']) ? route($sub3['route']) : '#' }}"
+                                            class="dropdown-item @if($sub3['active']) active @endif"> {{ $sub3Title }}
+                                            @if(isset($sub3['tag']))
+                                            <span
+                                                class="badge badge-sm {{ $sub3['tag']['color'] }}-lt text-uppercase ms-auto">{{
+                                                $sub3['tag']['label'] }}</span>
+                                            @endif
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @else
+                                <a wire:navigate class="dropdown-item {{ $sub1['active'] ? 'active' :  '' }}"
+                                    href="{{ ($sub1['route']) ? route($sub1['route']) : '#' }}">
+                                    {!! $sub1['icon'] !!}
+                                    {{ $sub1Title }}
+                                    @if(isset($sub1['tag']))
+                                    <span
+                                        class="badge badge-sm {{ $sub1['tag']['color'] }}-lt text-uppercase ms-auto">{{
+                                        $sub1['tag']['label'] }}</span>
+                                    @endif
+                                </a>
                                 @endif
                                 @endforeach
                             </div>

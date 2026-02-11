@@ -24,7 +24,7 @@
 
                     <div class="col-4 mb-3">
                         <label class="form-label">Valor</label>
-                        <x-form.input-text type="text" wire:model='paid_amount' name="paid_amount" />
+                        <x-form.input-currency wire:model='amount' name="amount" />
                     </div>
 
                     <div class="col-12 mb-3">
@@ -84,8 +84,10 @@
                 <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                     Fechar
                 </button>
+
                 <button type="submit" class="btn btn-primary">
-                    <span wire:loading.remove>Salvar</span>
+                    <span wire:loading.remove>@if($transaction?->type == App\Enums\TransactionTypeEnum::DEBIT) Pagar
+                        @else Receber @endif</span>
                     <span wire:loading>
                         <span class="spinner-border spinner-border-sm"></span>
                         Salvando...

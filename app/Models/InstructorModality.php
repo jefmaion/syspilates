@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -14,4 +15,16 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class InstructorModality extends Pivot
 {
     //
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function comission_value(): Attribute
+    {
+        return Attribute::make(
+            set: function ($value) {
+                return brlToUsd($value);
+            }
+        );
+    }
 }

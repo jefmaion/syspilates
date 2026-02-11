@@ -18,6 +18,7 @@ class CashBook extends Component
     use WithPagination;
 
     public $month;
+    public $year;
 
     public $category_id;
 
@@ -41,16 +42,17 @@ class CashBook extends Component
     public function mount()
     {
         $this->month = date('n');
+        $this->year = date('Y');
     }
 
     protected function baseQuery()
     {
-        return Transaction::with('category')->where('payed', 1)->whereMonth('date', $this->month)->whereYear('date', now()->year);
+        return Transaction::with('category')->whereNotNull('paid_at')->whereMonth('date', $this->month)->whereYear('date', $this->year);
     }
 
     protected function saldo()
     {
-        return Transaction::getAmountBefore(now()->year . '-' . $this->month . '-01');
+        return Transaction::getAmountBefore($this->year . '-' . $this->month . '-01');
     }
 
     protected function totalsByType(): array
@@ -74,9 +76,9 @@ class CashBook extends Component
         if ($month <= 0) return;
 
         return Transaction::select('type', DB::raw('SUM(amount) as total'))
-            ->where('payed', 1)
+            ->whereNull('paid_at')
             ->whereMonth('date', $month)
-            ->whereYear('date', now()->year)
+            ->whereYear('date', $this->year)
             ->groupBy('type')
             ->pluck('total', 'type')
             ->toArray();
@@ -121,6 +123,8 @@ class CashBook extends Component
             return $item;
         });
 
+        $sald = $this->saldo();
+
         return view('livewire.transaction.cash-book', [
             'monthName' => $this->months[$this->month],
             'transactions' => $transactions,
@@ -129,7 +133,8 @@ class CashBook extends Component
             'amount' => $amount,
             'categories' => $this->totalsByCategory(),
             'indicators' => $this->indicators(),
-            'sald' => $this->saldo()
+            'sald' => $sald,
+            'share' => $sald != 0 ? round((($amount - $sald) / $sald ?? 0) * 100, 1) : 0
         ]);
     }
 }

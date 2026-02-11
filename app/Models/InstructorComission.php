@@ -14,4 +14,9 @@ class InstructorComission extends BaseModel
     public $casts = [
         'datetime' => 'datetime'
     ];
+
+    public function instructor()
+    {
+        return $this->belongsTo(Instructor::class);
+    }
 }

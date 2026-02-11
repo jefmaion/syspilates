@@ -28,7 +28,7 @@
 
                         <div class="col-md-3 mb-3">
                             <label for="" class="form-label">Valor</label>
-                            <x-form.input-text name="form.value" wire:model='form.value' />
+                            <x-form.input-text name="form.value" class="currency" wire:model='form.value' />
                         </div>
 
 
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                @if(!empty($form->class_per_week))
+                @if (!empty($form->class_per_week))
 
                     <div class="table-responsive">
                         <table class="table">
@@ -61,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for($i=0; $i<$form->class_per_week;$i++)
+                                @for ($i = 0; $i < $form->class_per_week; $i++)
                                     <tr class="">
                                         <td scope="row">
                                             <x-form.select-weekday name="form.schedule.{{ $i }}.weekday" wire:model='form.schedule.{{ $i }}.weekday' />
@@ -73,7 +73,7 @@
                                             <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id" wire:model='form.schedule.{{ $i }}.instructor_id' />
                                         </td>
                                     </tr>
-                                    @endfor
+                                @endfor
                             </tbody>
                         </table>
                     </div>

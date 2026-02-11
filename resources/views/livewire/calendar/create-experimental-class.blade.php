@@ -50,12 +50,14 @@
 
                     <div class="col-6 mb-3">
                         <label for="" class="form-label">Valor</label>
-                        <x-form.input-text name="value" wire:model='value' />
+                        <x-form.input-currency name="value" wire:model='value' />
+
                     </div>
 
                     <div class="mb-3 col-12">
                         <label class="form-label">Comentários</label>
-                        <textarea class="form-control {{ $errors->has('comments') ? ' is-invalid' : '' }}" rows="5" name="comments" wire:model="comments"></textarea>
+                        <textarea class="form-control {{ $errors->has('comments') ? ' is-invalid' : '' }}" rows="5"
+                            name="comments" wire:model="comments"></textarea>
                     </div>
                 </div>
             </div>
@@ -74,5 +76,7 @@
             </div>
         </div>
     </form>
+
+
 
 </x-modal.modal>

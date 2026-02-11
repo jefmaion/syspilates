@@ -1,9 +1,14 @@
 <x-modal.modal class="blur" id="modal-form-instructor-modality" size="modal-sm">
-    <form wire:submit="{{ ($edit) ? 'update' : 'add' }}">
+    <form wire:submit="{{ $edit ? 'update' : 'add' }}">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title align-items-center" id="modalTitleId">
-                    <x-icons.users /> @if($edit) Editar @else Adicionar @endif Modalidade
+                    <x-icons.users />
+                    @if ($edit)
+                        Editar
+                    @else
+                        Adicionar
+                    @endif Modalidade
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -22,7 +27,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label required">Valor</label>
-                        <x-form.input-text wire:model="form.commission_value" name="form.commission_value" />
+                        <x-form.input-text wire:model="form.commission_value" class="currency" name="form.commission_value" />
                     </div>
 
                     <div class="col-md-12">

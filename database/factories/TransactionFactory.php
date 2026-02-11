@@ -27,16 +27,18 @@ class TransactionFactory extends Factory
         $types = ['C', 'D'];
         $type = $types[rand(0, 1)];
 
+        $amount = fake()->randomFloat(2, 10, 1000);
+
         return [
             'student_id'     => rand(1, 50),
             'date'           => $date,
-            'amount'         => fake()->randomFloat(2, 10, 1000),
-            'paid_amount'    => fake()->randomFloat(2, 10, 1000),
+            'origin_amount'    => $amount,
+            'amount'         => $amount,
             'type'           =>  $type,
             'payment_method' => fake()->randomElement(['pix', 'credit', 'debit']),
             'category_id'    => rand(2, 3),
             'description'    => fake()->sentence(),
-            'payed' => fake()->randomElement([1, 0]),
+            // 'paid_at' => fake()->randomElement([1, 0]),
         ];
     }
 }

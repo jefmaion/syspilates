@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Actions;
 
@@ -27,15 +27,15 @@ class CreateRegistration
 
         $date = Carbon::parse(date('Y-m-') . $registration->deadline);
 
-        for ($i = 1;$i <= $duration;$i++) {
+        for ($i = 1; $i <= $duration; $i++) {
             Transaction::create([
                 'registration_id' => $registration->id,
                 'student_id'      => $registration->student_id,
                 'date'            => $date->format('Y-m-d'),
                 'amount'          => $registration->value,
-                'paid_amount'     => $registration->value,
+                'origin_amount'     => $registration->value,
                 'type'            => TransactionTypeEnum::CREDIT,
-                'payment_method'  => PaymentMethodEnum::DEBIT,
+                'payment_method'  => null,
                 'category_id'     => 1,
                 'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
             ]);

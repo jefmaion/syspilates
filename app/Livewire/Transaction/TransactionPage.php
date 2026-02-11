@@ -63,23 +63,17 @@ class TransactionPage extends Component
 
     public function render(): View | Closure | string
     {
-        $sums = Transaction::whereBetween('date', [$this->start, $this->end]);
 
-        $box = [
-            // ['label' => 'Receitas', 'icon' => 'primary', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('open')->sum('amount')],
-            // ['label' => 'Despesas', 'icon' => 'success', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount')],
-            // ['label' => 'HOJE', 'icon' => 'warning', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount')],
-            // ['label' => 'PRÓXIMOS RECEBIMENTOS', 'icon' => 'orange', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('soon')->sum('amount')],
-            // ['label' => 'ATRASADOS', 'icon' => 'danger', 'value' => Transaction::whereBetween('date', [$this->start, $this->end])->current('late')->sum('amount')],
-        ];
+
+
 
         $box = [
             'Agendados' => [
                 'color' => 'primary',
-                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 0)->where('type', 'C')->sum('amount'),
-                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 0)->where('type', 'D')->sum('amount'),
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'D')->sum('amount'),
             ],
-            'Vencem Hoje' => [
+            'Pagar/Receber Hoje' => [
                 'color' => 'warning',
                 'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->where('type', 'C')->sum('amount'),
                 'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->where('type', 'D')->sum('amount'),
@@ -96,8 +90,8 @@ class TransactionPage extends Component
             ],
             'Recebidos/Pagos' => [
                 'color' => 'green',
-                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount'),
-                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'D')->sum('amount'),
+                'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'C')->sum('amount'),
+                'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'D')->sum('amount'),
             ],
         ];
 
@@ -115,15 +109,14 @@ class TransactionPage extends Component
             $transactions->whereLike($key, '%' . $value . '%');
         }
 
-
-
         if ($this->search) {
             $transactions->whereLike('description', '%' . $this->search . '%');
         }
 
-
-        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->where('payed', 1)->where('type', 'C')->sum('amount');
+        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'C')->sum('amount');
         $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
+
+
 
         return view('livewire.transaction.transaction-page', [
             'transactions' => $transactions->paginate(10),

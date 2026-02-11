@@ -39,15 +39,17 @@
 
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <!-- BEGIN NAVBAR MENU -->
-            
+
             <ul class="navbar-nav pt-lg-3">
                 @foreach(config('tabler.sidebar-menu') as $title => $item)
                 @php $isActive = request()->routeIs($item['route'].'.*') @endphp
                 <li class="nav-item @if($isActive) active @endif @if(isset($item['submenu'])) dropdown @endif">
-                    <a class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"  @if(isset($item['submenu'])) href="#navbar-{{ $title }}"
-                        data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" @else href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
+                    <a class="nav-link  @if(isset($item['submenu'])) dropdown-toggle @endif"
+                        @if(isset($item['submenu'])) href="#navbar-{{ $title }}" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false" @else
+                        href="{{ ($item['route']) ? route($item['route']) : '#' }}" @endif>
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            {!! $item['icon'] !!}
+                            <x-dynamic-component component="{{$item['icon']}}" />
                         </span>
                         <span class="nav-link-title"> {{ $title }} </span>
                     </a>
@@ -58,30 +60,38 @@
                                 @foreach($item['submenu'] as $sub1Title => $sub1)
                                 @php $isSubActive = request()->routeIs($sub1['route']) @endphp
                                 @if(isset($sub1['submenu']))
-                                    <div class="dropend">
-                                        <a class="dropdown-item dropdown-toggle {{ $isSubActive ? 'show' :  ''}}" href="#sidebar-{{ $sub1Title }}" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
-                                            {!! $sub1['icon'] !!}
-                                            {{ $sub1Title }} 
-                                        </a>
-                                        <div class="dropdown-menu {{ $isSubActive ? 'show' :  ''}}">
-                                            @foreach($sub1['submenu'] as $sub3Title => $sub3)
-                                            @php $isSubSubActive = request()->routeIs($sub3['route']) @endphp
-                                            <a href="{{ ($sub3['route']) ? route($sub3['route']) : '#' }}" class="dropdown-item @if($isSubActive) active @endif"> {{ $sub3Title }}
-                                                @if(isset($sub3['tag']))
-                                                    <span class="badge badge-sm {{ $sub3['tag']['color'] }}-lt text-uppercase ms-auto">{{ $sub3['tag']['label'] }}</span>
-                                                @endif
-                                            </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @else
-                                    <a class="dropdown-item @if($isSubActive) active @endif" href="{{ ($sub1['route']) ? route($sub1['route']) : '#' }}">
+                                <div class="dropend">
+                                    <a class="dropdown-item dropdown-toggle {{ $isSubActive ? 'show' :  ''}}"
+                                        href="#sidebar-{{ $sub1Title }}" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="false" role="button" aria-expanded="false">
                                         {!! $sub1['icon'] !!}
-                                        {{ $sub1Title }} 
-                                        @if(isset($sub1['tag']))
-                                            <span class="badge badge-sm {{ $sub1['tag']['color'] }}-lt text-uppercase ms-auto">{{ $sub1['tag']['label'] }}</span>
-                                        @endif
+                                        {{ $sub1Title }}
                                     </a>
+                                    <div class="dropdown-menu {{ $isSubActive ? 'show' :  ''}}">
+                                        @foreach($sub1['submenu'] as $sub3Title => $sub3)
+                                        @php $isSubSubActive = request()->routeIs($sub3['route']) @endphp
+                                        <a href="{{ ($sub3['route']) ? route($sub3['route']) : '#' }}"
+                                            class="dropdown-item @if($isSubActive) active @endif"> {{ $sub3Title }}
+                                            @if(isset($sub3['tag']))
+                                            <span
+                                                class="badge badge-sm {{ $sub3['tag']['color'] }}-lt text-uppercase ms-auto">{{
+                                                $sub3['tag']['label'] }}</span>
+                                            @endif
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @else
+                                <a class="dropdown-item @if($isSubActive) active @endif"
+                                    href="{{ ($sub1['route']) ? route($sub1['route']) : '#' }}">
+                                    {!! $sub1['icon'] !!}
+                                    {{ $sub1Title }}
+                                    @if(isset($sub1['tag']))
+                                    <span
+                                        class="badge badge-sm {{ $sub1['tag']['color'] }}-lt text-uppercase ms-auto">{{
+                                        $sub1['tag']['label'] }}</span>
+                                    @endif
+                                </a>
                                 @endif
                                 @endforeach
                             </div>

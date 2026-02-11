@@ -30,6 +30,7 @@ class RegistrationSeeder extends Seeder
 
         $plans  = [];
         $status = [];
+        $modalities = [];
 
         foreach (PlanEnum::cases() as $item) {
             $plans[] = $item->value;
@@ -42,14 +43,31 @@ class RegistrationSeeder extends Seeder
             $status[] = $item->value;
         }
 
-        for ($x = 1; $x <= 50; $x++) {
-            $date         = fake()->dateTimeBetween('-1 months');
+        foreach (Instructor::with('modalities')->get() as $instructor) {
+
+            foreach ($instructor->modalities as $modality) {
+                $modalities[] = $modality;
+            }
+        }
+
+        for ($x = 1; $x <= 100; $x++) {
+            $date         = fake()->dateTimeBetween('-2 months');
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);
 
             $schedule = [];
 
             $exists = [];
+
+            $modality = $modalities[rand(0, count($modalities) - 1)];
+
+            $instructors = Instructor::whereHas('modalities', function ($q) use ($modality) {
+
+                return $q->where('modality_id', $modality->id);
+            })->get();
+
+
+
 
             for ($i = 0; $i <= $classPerWeek; $i++) {
                 $wd = rand(1, 6);
@@ -61,7 +79,8 @@ class RegistrationSeeder extends Seeder
                 $schedule[] = [
                     'weekday'       => $wd,
                     'time'          => fake()->randomElements(array_keys($times->times))[0],
-                    'instructor_id' => Instructor::inRandomOrder()->first()->id,
+                    // 'instructor_id' => Instructor::inRandomOrder()->first()->id,
+                    'instructor_id' => $instructors[rand(0, count($instructors) - 1)]->id,
                 ];
 
                 $exists[] = $wd;
@@ -69,7 +88,7 @@ class RegistrationSeeder extends Seeder
 
             $registration = CreateRegistration::run([
                 'student_id'     => Student::inRandomOrder()->first()->id,
-                'modality_id'    => Modality::inRandomOrder()->first()->id,
+                'modality_id'    => $modality->id,
                 'duration'       => $duration,
                 'class_per_week' => $classPerWeek,
                 'value'          => fake()->randomFloat(2, 0, 500),

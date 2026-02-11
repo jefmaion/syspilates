@@ -19,7 +19,9 @@ class CreateTransaction extends Component
 
     public $type;
 
-    public $paid_amount;
+    public $amount;
+
+    public $paid_at;
 
     public $payed;
 
@@ -55,39 +57,57 @@ class CreateTransaction extends Component
 
         $this->date           = $this->transaction->date->format('Y-m-d');
         $this->type           = $this->transaction->type;
-        $this->paid_amount    = $this->transaction->paid_amount;
-        $this->payed          = $this->transaction->payed;
+        $this->amount    = currency($this->transaction->amount, prepend: null);
+        $this->paid_at          = $this->transaction->paid_at;
         $this->description    = $this->transaction->description;
         $this->student_id     = $this->transaction->student_id;
         $this->comments       = $this->transaction->comments;
         $this->payment_method = $this->transaction->payment_method;
         $this->category_id    = $this->transaction->category_id;
+        $this->payed = $this->transaction->isPaid;
 
         $this->dispatch('show-modal', modal: 'modal-create-transaction');
     }
+
+    public function prepareForValidation($attributes)
+    {
+        $attributes['amount'] = brlToUsd($attributes['amount']);
+        return $attributes;
+    }
+
+
 
     public function save()
     {
         $this->validate([
             'date'           => ['required'],
             'type'           => ['required'],
-            'paid_amount'    => ['required'],
+            'amount'    => ['required', 'numeric'],
             'description'    => ['required'],
             'payment_method' => ['required'],
             'category_id' => ['required'],
         ]);
 
-        $data           = $this->all();
-        $data['amount'] = $this->paid_amount;
 
+        $data = [
+            'date'           => $this->date,
+            'type'           => $this->type,
+            'amount'           =>   $this->amount,
+            'description'    => $this->description,
+            'student_id'     => $this->student_id,
+            'comments'       => $this->comments,
+            'payment_method' => $this->payment_method,
+            'category_id'    => $this->category_id,
+        ];
 
         if (! empty($this->transaction)) {
+            $data['paid_at'] = now();
             $this->transaction->update($data);
-            $this->transaction = null;
         } else {
 
-            $transaction = Transaction::create($data);
+            $data['origin_amount'] = $data['amount'];
 
+            $transaction = Transaction::create($data);
 
             if (!is_null($this->repeat) && !is_null($this->repeat_times)) {
 
@@ -115,12 +135,15 @@ class CreateTransaction extends Component
 
 
                     $data['date'] = $_data;
-                    $date['payed'] = 0;
+                    $date['paid_at'] = null;
 
                     Transaction::create($data);
                 }
             }
         }
+
+        $this->transaction = null;
+        $this->reset();
 
         $this->dispatch('hide-modal', modal: 'modal-create-transaction');
         $this->dispatch('transaction-created');
