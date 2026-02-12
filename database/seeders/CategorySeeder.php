@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Database\Seeders;
 
@@ -17,6 +17,7 @@ class CategorySeeder extends Seeder
         // Category::factory(10)->create();
 
         Category::create(['name' => 'Mensalidades']);
+        Category::create(['name' => 'Comissões']);
         Category::create(['name' => 'Material de Limpeza']);
         Category::create(['name' => 'Venda de Produtos']);
         Category::create(['name' => 'Outros']);

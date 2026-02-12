@@ -26,12 +26,11 @@
     <x-page.page-body>
 
 
-        <x-modal.modal-delete />
-        <livewire:transaction.create-transaction />
-        <livewire:transaction.comission />
+        <x-modal.modal-delete subtext="{{ $deleteText ?? null }}" />
+        <livewire:transaction.form-transaction />
+        <livewire:transaction.pay-transaction />
 
         <div class="row mb-3">
-
             @foreach ($box as $title => $data)
             <div class="col">
                 <div class="card card-sm">
@@ -103,11 +102,7 @@
                     <div class="card-header">
 
                         <div class="row flex-fill">
-                            <div class="col-auto">
-                                <div class="d-flex align-items-center">
 
-                                </div>
-                            </div>
                             <div class="col-auto">
                                 <label class="form-label">Status</label>
                                 <x-form.select wire:model.live='filter.status' placeholder="opa">
@@ -119,8 +114,6 @@
                                     <option value="soon">Próx. a Vencer</option>
                                 </x-form.select>
                             </div>
-
-
 
                             <div class="col-auto">
                                 <label class="form-label">Tipo</label>
@@ -137,7 +130,6 @@
                                 <input type="text" wire:model.live="filter.description" class="form-control"
                                     placeholder="Pesquisar..." aria-label="Search invoice">
                             </div>
-
 
                         </div>
                     </div>
@@ -189,75 +181,31 @@
                                                 }}</strong></span>
                                     </td>
 
-                                    <td>
+                                    <td class="text-center">
                                         <div class="btn-actions">
-                                            <a class="btn btn-action"
+
+
+                                            <button type="button" class="btn btn-action"
+                                                wire:click="pay({{ $item->id }})" @disabled($item->paid_at)>
+                                                <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                <x-icons.money class="icon icon-1" />
+                                            </button>
+
+
+                                            <button type="button" class="btn  btn-action"
                                                 wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
                                                 <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                <x-icons.edit />
-                                            </a>
+                                                <x-icons.edit class="icon icon-1" />
+                                            </button>
 
-                                            <a class="btn btn-action" wire:click="deleteTransaction({{ $item->id }})">
+                                            <button type="button" class="btn  btn-action"
+                                                wire:click="deleteTransaction({{ $item->id }})">
                                                 <!-- Download SVG icon from http://tabler.io/icons/icon/x -->
-                                                <x-icons.trash />
-                                            </a>
+                                                <x-icons.trash class="icon icon-1" />
+                                            </button>
                                         </div>
 
 
-                                        {{-- <div class="dropdown">
-                                            <a href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-dots">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M4 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                                    <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                                    <path d="M18 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                                </svg>
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <span class="dropdown-header">Ações</span>
-                                                <a class="dropdown-item" href="#"
-                                                    wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
-                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon dropdown-item-icon icon-2">
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                        </path>
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                        </path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                    Editar
-                                                </a>
-                                                @if (empty($item->registration_id))
-                                                <a class="dropdown-item" href="#"
-                                                    wire:click="deleteTransaction({{ $item->id }})">
-                                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="icon dropdown-item-icon icon-2">
-                                                        <path
-                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1">
-                                                        </path>
-                                                        <path
-                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                                        </path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                    Excluir
-                                                </a>
-                                                @endif
-                                            </div>
-
-                                        </div> --}}
 
                                     </td>
                                 </tr>

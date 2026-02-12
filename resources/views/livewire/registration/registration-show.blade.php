@@ -1,7 +1,7 @@
 <div wire:key="registration-show-{{ $registration->id }}">
 
     @section('title')
-        Detalhes da Matrícula
+    Detalhes da Matrícula
     @endsection
     <x-page.page-header>
         <h2 class="page-title">
@@ -10,15 +10,20 @@
         </h2>
         <x-slot:actions>
             <a class="btn btn-outline-secondary" wire:click="$dispatch('cancel-registration')">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                    <path
+                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
                     </path>
                     <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                 </svg>
                 Cancelar Matrícula</a>
             <a class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-classes">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
                     <path d="M13.5 6.5l4 4"></path>
@@ -33,11 +38,13 @@
 
         <livewire:registration.update-class />
         <livewire:calendar.form-register-class />
-        <livewire:transaction.register-transaction />
+        {{--
+        <livewire:transaction.register-transaction /> --}}
+        <livewire:transaction.pay-transaction />
 
 
         @if ($registration->hasUnpaidTransactions)
-            <x-common.alert type="warning">Existem mensalidades em aberto!</x-common.alert>
+        <x-common.alert type="warning">Existem mensalidades em aberto!</x-common.alert>
         @endif
 
         <div class="row ">
@@ -52,7 +59,9 @@
                             <div class="d-flex align-items-center">
                                 <x-page.avatar class="rounded-circle" size="lg" :user="$registration->student->user" />
                                 <div class="flex-fill align-items-top">
-                                    <h3 class=""><strong><a href="{{ route('student.show', $registration->student) }}">{{ $registration->student->user->name }}</a></strong></h3>
+                                    <h3 class=""><strong><a
+                                                href="{{ route('student.show', $registration->student) }}">{{
+                                                $registration->student->user->name }}</a></strong></h3>
                                     <div class="text-secondary">
                                         <a href="#" class="text-reset">lmiona@livejournal.com</a>
                                     </div>
@@ -86,7 +95,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <p>Status: <x-page.badge color="{{ $registration->status->color() }}">{{ $registration->status->label() }}</x-page.badge>
+                                <p>Status: <x-page.badge color="{{ $registration->status->color() }}">{{
+                                        $registration->status->label() }}</x-page.badge>
                                 </p>
                                 <p>Período: <strong>{{ $registration->planDescription }}</strong></p>
                                 <p>Modalidade: <strong>{{ $registration->modality->name }}</strong></p>
@@ -106,22 +116,34 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-scheduled" wire:click.prevent="tabs('tab-scheduled')" class="nav-link {{ $tab === 'tab-scheduled' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1">Aulas</a>
+                                <a href="#tab-scheduled" wire:click.prevent="tabs('tab-scheduled')"
+                                    class="nav-link {{ $tab === 'tab-scheduled' ? 'active' : '' }}" data-bs-toggle="tab"
+                                    aria-selected="false" role="tab" tabindex="-1">Aulas</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-makeup" wire:click.prevent="tabs('tab-makeup')" class="nav-link {{ $tab === 'tab-makeup' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Reposições</a>
+                                <a href="#tab-makeup" wire:click.prevent="tabs('tab-makeup')"
+                                    class="nav-link {{ $tab === 'tab-makeup' ? 'active' : '' }}" data-bs-toggle="tab"
+                                    aria-selected="true" role="tab">Reposições</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-evolution" wire:click.prevent="tabs('tab-evolution')" class="nav-link {{ $tab === 'tab-evolution' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Evoluções</a>
+                                <a href="#tab-evolution" wire:click.prevent="tabs('tab-evolution')"
+                                    class="nav-link {{ $tab === 'tab-evolution' ? 'active' : '' }}" data-bs-toggle="tab"
+                                    aria-selected="true" role="tab">Evoluções</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a href="#tab-transactions" wire:click.prevent="tabs('tab-transactions')" class="nav-link {{ $tab === 'tab-transactions' ? 'active' : '' }}" data-bs-toggle="tab" aria-selected="true" role="tab">Mensalidades</a>
+                                <a href="#tab-transactions" wire:click.prevent="tabs('tab-transactions')"
+                                    class="nav-link {{ $tab === 'tab-transactions' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" aria-selected="true" role="tab">Mensalidades
+
+                                </a>
+
                             </li>
                         </ul>
                     </div>
                     <div class="scard-body">
                         <div class="tab-content">
-                            <div class="tab-pane fade {{ $tab === 'tab-scheduled' ? 'active show' : '' }} " id="tab-scheduled" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-scheduled' ? 'active show' : '' }} "
+                                id="tab-scheduled" role="tabpanel">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col">
@@ -173,35 +195,36 @@
                                 </div>
                                 @include('livewire.registration.parts.class-table')
                             </div>
-                            <div class="tab-pane fade {{ $tab === 'tab-makeup' ? 'active show' : '' }}" id="tab-makeup" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-makeup' ? 'active show' : '' }}" id="tab-makeup"
+                                role="tabpanel">
                                 <div class="card-body">
                                     <p><strong>Reposições à agendar</strong></p>
                                 </div>
                                 @if ($markups->isEmpty())
-                                    <div class="card-body">
-                                        <p class="m-3">Nenhuma reposição encontrada.</p>
-                                    </div>
+                                <div class="card-body">
+                                    <p class="m-3">Nenhuma reposição encontrada.</p>
+                                </div>
                                 @else
-                                    @include('livewire.registration.parts.makeup-table')
+                                @include('livewire.registration.parts.makeup-table')
                                 @endif
                             </div>
-                            <div class="tab-pane fade {{ $tab === 'tab-evolution' ? 'active show' : '' }}" id="tab-evolution" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-evolution' ? 'active show' : '' }}"
+                                id="tab-evolution" role="tabpanel">
                                 <div class="card-body">
-                                    <p><strong>Linha do tempo</strong></p>
                                     @if ($markups->isEmpty())
-                                        <p class="m-3">Nenhuma evolução encontrada.</p>
+                                    <p class="m-3">Nenhuma evolução encontrada.</p>
                                     @else
-                                        @include('livewire.registration.parts.evolution-timeline')
+                                    @include('livewire.registration.parts.evolution-timeline')
                                     @endif
                                 </div>
                             </div>
-                            <div class="tab-pane fade {{ $tab === 'tab-transactions' ? 'active show' : '' }}" id="tab-transactions" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab === 'tab-transactions' ? 'active show' : '' }}"
+                                id="tab-transactions" role="tabpanel">
                                 <div class="card-body">
-                                    <p><strong>Linha do tempo</strong></p>
                                     @if ($transactions->isEmpty())
-                                        <p class="m-3">Nenhuma evolução encontrada.</p>
+                                    <p class="m-3">Nenhuma evolução encontrada.</p>
                                     @else
-                                        @include('livewire.registration.parts.transactions-table')
+                                    @include('livewire.registration.parts.transactions-table')
                                     @endif
                                 </div>
                             </div>
@@ -220,13 +243,14 @@
                     <div class="card-body">
                         <p>Status:
                             @if ($registration->hasUnpaidTransactions)
-                                <x-page.badge color="danger">Pendente</x-page.badge>
+                            <x-page.badge color="danger">Pendente</x-page.badge>
                             @else
-                                <x-page.badge>Em Dia</x-page.badge>
+                            <x-page.badge>Em Dia</x-page.badge>
                             @endif
 
                         </p>
-                        <p>Próximo Vencimento: <strong>{{ $registration->nextTransaction?->date->format('d/m/y') ?? '-' }}</strong></p>
+                        <p>Próximo Vencimento: <strong>{{ $registration->nextTransaction?->date->format('d/m/y') ?? '-'
+                                }}</strong></p>
                     </div>
                 </div>
 
@@ -236,39 +260,41 @@
                     </div>
                     <div class="card-body">
                         @if ($markups->isEmpty())
-                            <p class="m-3">Nenhuma reposição encontrada.</p>
+                        <p class="m-3">Nenhuma reposição encontrada.</p>
                         @else
-                            <x-table.table :search="false" class="mb-3">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Falta</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($markups as $date => $class)
-                                        <tr>
-                                            <td>{{ $class->origin->datetime->format('d/m/y') }} / {{ ucfirst($class->origin->datetime->isoFormat('ddd')) }}
-                                            </td>
-                                            <td class="text-right">
+                        <x-table.table :search="false" class="mb-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Falta</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($markups as $date => $class)
+                                <tr>
+                                    <td>{{ $class->origin->datetime->format('d/m/y') }} / {{
+                                        ucfirst($class->origin->datetime->isoFormat('ddd')) }}
+                                    </td>
+                                    <td class="text-right">
 
-                                                @if ($class->status == 'active')
-                                                    <x-page.badge color="success">Ativo</x-page.badge>
-                                                @endif
+                                        @if ($class->status == 'active')
+                                        <x-page.badge color="success">Ativo</x-page.badge>
+                                        @endif
 
-                                                @if ($class->status == 'next_to_expire')
-                                                    <x-page.badge color="warning"> Expira em {{ $class->daysToExpire }} dia(s)</x-page.badge>
-                                                @endif
+                                        @if ($class->status == 'next_to_expire')
+                                        <x-page.badge color="warning"> Expira em {{ $class->daysToExpire }} dia(s)
+                                        </x-page.badge>
+                                        @endif
 
-                                                @if ($class->status == 'expired')
-                                                    <x-page.badge color="secondary">Expirado</x-page.badge>
-                                                @endif
+                                        @if ($class->status == 'expired')
+                                        <x-page.badge color="secondary">Expirado</x-page.badge>
+                                        @endif
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </x-table.table>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </x-table.table>
                         @endif
                     </div>
                 </div>
@@ -297,16 +323,19 @@
                                 @for ($i = 0; $i < $form->class_per_week; $i++)
                                     <tr class="">
                                         <td scope="row">
-                                            <x-form.select-weekday name="form.schedule.{{ $i }}.weekday" wire:model='form.schedule.{{ $i }}.weekday' />
+                                            <x-form.select-weekday name="form.schedule.{{ $i }}.weekday"
+                                                wire:model='form.schedule.{{ $i }}.weekday' />
                                         </td>
                                         <td>
-                                            <x-form.select-time type="time" name="form.schedule.{{ $i }}.time" wire:model='form.schedule.{{ $i }}.time' />
+                                            <x-form.select-time type="time" name="form.schedule.{{ $i }}.time"
+                                                wire:model='form.schedule.{{ $i }}.time' />
                                         </td>
                                         <td>
-                                            <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id" wire:model='form.schedule.{{ $i }}.instructor_id' />
+                                            <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id"
+                                                wire:model='form.schedule.{{ $i }}.instructor_id' />
                                         </td>
                                     </tr>
-                                @endfor
+                                    @endfor
                             </tbody>
                         </x-table.table>
 

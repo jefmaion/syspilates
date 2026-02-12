@@ -50,7 +50,7 @@ class RegistrationSeeder extends Seeder
             }
         }
 
-        for ($x = 1; $x <= 100; $x++) {
+        for ($x = 1; $x <= 20; $x++) {
             $date         = fake()->dateTimeBetween('-2 months');
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);

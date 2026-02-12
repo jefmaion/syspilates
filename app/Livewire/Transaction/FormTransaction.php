@@ -1,18 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Livewire\Transaction;
 
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Closure;
+use Livewire\Component;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
-use Livewire\Component;
 
-class CreateTransaction extends Component
+class FormTransaction extends Component
 {
+
     public $transaction;
 
     public $date;
@@ -39,6 +38,8 @@ class CreateTransaction extends Component
 
     public $repeat_times;
 
+    public $paid;
+
     #[On('create-transaction')]
     public function create()
     {
@@ -47,14 +48,14 @@ class CreateTransaction extends Component
 
         $this->date = now()->format('Y-m-d');
 
-        $this->dispatch('show-modal', modal: 'modal-create-transaction');
+        $this->dispatch('show-modal', modal: 'modal-form-transaction');
     }
 
     #[On('edit-transaction')]
     public function edit($id)
     {
-
-
+        $this->reset();
+        $this->resetValidation();
 
         $this->transaction = Transaction::find($id);
 
@@ -69,7 +70,7 @@ class CreateTransaction extends Component
         $this->category_id    = $this->transaction->category_id;
         $this->payed = $this->transaction->isPaid;
 
-        $this->dispatch('show-modal', modal: 'modal-create-transaction');
+        $this->dispatch('show-modal', modal: 'modal-form-transaction');
     }
 
     public function prepareForValidation($attributes)
@@ -91,7 +92,6 @@ class CreateTransaction extends Component
             'category_id' => ['required'],
         ]);
 
-
         $data = [
             'date'           => $this->date,
             'type'           => $this->type,
@@ -101,10 +101,11 @@ class CreateTransaction extends Component
             'comments'       => $this->comments,
             'payment_method' => $this->payment_method,
             'category_id'    => $this->category_id,
+            'paid_at'        => ($this->paid) ? now() : null
         ];
 
         if (! empty($this->transaction)) {
-            $data['paid_at'] = now();
+            unset($data['paid_at']);
             $this->transaction->update($data);
         } else {
 
@@ -138,8 +139,6 @@ class CreateTransaction extends Component
 
 
                     $data['date'] = $_data;
-                    $date['paid_at'] = null;
-
                     Transaction::create($data);
                 }
             }
@@ -148,12 +147,14 @@ class CreateTransaction extends Component
         $this->transaction = null;
         $this->reset();
 
-        $this->dispatch('hide-modal', modal: 'modal-create-transaction');
+        $this->dispatch('hide-modal', modal: 'modal-form-transaction');
         $this->dispatch('transaction-created');
     }
 
-    public function render(): View | Closure | string
+
+
+    public function render(): View|Closure|string
     {
-        return view('livewire.transaction.create-transaction');
+        return view('livewire.transaction.form-transaction');
     }
 }

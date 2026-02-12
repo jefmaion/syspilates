@@ -11,63 +11,74 @@ use Closure;
 use Livewire\Component;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class ComissionPage extends Component
 {
 
+    use WithPagination;
+
     public $start;
     public $end;
+
     public $instructor_id;
 
-    public $comissions = [];
-    public $amount;
+
     public $date;
     public $payment_method;
 
-    public $instructor;
 
     public $comments;
     public $category_id;
 
     public $payed = null;
 
+    public $toPay;
+
+    public $payStart;
+    public $payEnd;
+    public $instructor;
+    public $amount;
+    public $count;
+
+
     public function mount()
     {
         $this->start = now()->startOfMonth()->format('Y-m-d');
         $this->end = now()->endOfMonth()->format('Y-m-d');
-
-        $this->calculate();
     }
 
     public function calculate()
     {
-        $comissions = InstructorComission::selectRaw('instructor_id,  COUNT(*) as total_class, SUM(value) as total')
-            ->with('instructor.user')
-            ->whereBetween('datetime', [$this->start, $this->end])
-            ->whereNull('transaction_id')
-            ->groupBy('instructor_id');
+        $this->payStart = Carbon::parse($this->start);
+        $this->payEnd = Carbon::parse($this->end);
 
-        if ($this->instructor_id) {
-            $comissions->where('instructor_id', $this->instructor_id);
-        }
-
-        $this->comissions = $comissions->get();
+        $this->resetPage();
     }
 
-    public function createComissionTransaction($instructor_id)
+    public function createComissionTransaction()
     {
 
-        $this->calculate();
+        $this->reset('payment_method', 'category_id', 'comments', 'payed');
 
-        $this->instructor = Instructor::with('user')->find($instructor_id);
         $this->date = now()->format('Y-m-d');
-        $this->amount = InstructorComission::whereBetween('datetime', [$this->start, $this->end])->where('instructor_id', $instructor_id)->whereNull('transaction_id')->sum('value');
+
+        $this->count =  InstructorComission::whereBetween('datetime', [$this->start, $this->end])->where('instructor_id', $this->instructor->id)->whereNull('transaction_id')->count();
+
+        $this->amount = InstructorComission::whereBetween('datetime', [$this->start, $this->end])->where('instructor_id', $this->instructor->id)->whereNull('transaction_id')->sum('value');
 
         $this->dispatch('show-modal', modal: "modal-pay");
     }
 
     public function generatePayment()
     {
+
+        $this->validate([
+            'date' => ['required'],
+            'payment_method' => ['required'],
+            'category_id' => ['required'],
+        ]);
+
         $transaction = Transaction::create([
             'date'            => $this->date,
             'amount'          => $this->amount,
@@ -85,11 +96,29 @@ class ComissionPage extends Component
             ->update(['transaction_id' => $transaction->id]);
 
         $this->dispatch('hide-modal', modal: "modal-pay");
-        $this->calculate();
     }
 
     public function render(): View|Closure|string
     {
-        return view('livewire.transaction.comission-page');
+
+        $comiss = InstructorComission::with('instructor.user')
+            ->with('class.student.user')
+            ->with('class.modality')
+            ->with('transaction')
+            ->whereBetween('datetime', [$this->start, $this->end])
+            ->whereNull('transaction_id')
+            ->where('instructor_id', $this->instructor_id)
+            ->orderBy('datetime', 'desc');
+
+        $this->amount = InstructorComission::with('instructor.user')
+            ->whereBetween('datetime', [$this->start, $this->end])
+            ->whereNull('transaction_id')
+            ->where('instructor_id', $this->instructor_id)->sum('value');
+
+        $this->instructor = Instructor::with('user')->find($this->instructor_id);
+
+        return view('livewire.transaction.comission-page', [
+            'comissions' => $comiss->paginate(8),
+        ]);
     }
 }

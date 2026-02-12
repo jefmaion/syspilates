@@ -1,3 +1,4 @@
+@props(['subtext' => null])
 <x-modal.modal {{ $attributes }} size="modal-sm" id="modal-delete">
     <div class="modal-status bg-danger"></div>
     <div class="modal-body text-center py-4">
@@ -13,7 +14,8 @@
         </svg>
         <h3>Tem certeza?</h3>
         <div class="text-secondary">Deseja excluir esse registro?</div>
-    </div>  
+        <div class="text-secondary mt-2">{{ $subtext }}</div>
+    </div>
     <div class="modal-footer">
         <div class="w-100">
             <div class="row">

@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Registration;
 
+use App\Enums\RegistrationStatusEnum;
 use App\Models\Registration;
 use App\Traits\PaginationTrait;
 use Closure;
@@ -20,9 +21,7 @@ class RegistrationPage extends Component
     public $duration = null;
 
     #[On('refresh-registrations')]
-    public function _refresh()
-    {
-    }
+    public function _refresh() {}
 
     public function render(): View | Closure | string
     {
@@ -39,7 +38,13 @@ class RegistrationPage extends Component
         }
 
         return view('livewire.registration.registration-page', [
-            'registrations' => $registrations->orderBy('id', 'desc')->paginate($this->pages),
+            'registrations' => $registrations->orderBy('end', 'desc')->paginate($this->pages),
+
+            'active' => Registration::current('active')->count(),
+            'expiring' => Registration::current('expiring')->count(),
+            'canceled' => Registration::current('canceled')->count(),
+            'expired' => Registration::current('expired')->count(),
+            'late' => Registration::current('late')->count(),
         ]);
     }
 }

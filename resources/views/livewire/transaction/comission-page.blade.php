@@ -19,67 +19,120 @@
             <div class="col-12">
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-body">
                         <div class="row align-items-end">
-                            <div class="col-auto mb-3">
+                            <div class="col mb-3">
                                 <label class="form-label">Instrutor</label>
                                 <x-form.select-instructor wire:model='instructor_id' name="instructor_id" />
                             </div>
-                            <div class="col-auto mb-3">
+                            <div class="col-2 mb-3">
                                 <label class="form-label">Data</label>
-                                <x-form.input-text type="date" wire:model.live='start' name="start" />
+                                <x-form.input-text type="date" wire:model='start' name="start" />
                             </div>
-                            <div class="col-auto mb-3">
+                            <div class="col-2 mb-3">
                                 <label class="form-label">Data</label>
-                                <x-form.input-text type="date" wire:model.live='end' name="end" />
+                                <x-form.input-text type="date" wire:model='end' name="end" />
                             </div>
                             <div class="col-auto mb-3">
                                 <a name="" id="" class="btn btn-primary" href="#" role="button"
-                                    wire:click.prevent='calculate()'>Calcular</a>
+                                    wire:click.prevent='calculate'>Calcular</a>
                             </div>
                         </div>
                     </div>
-                    <div class="card-bodsy">
-                        <table class="table">
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                @if($instructor)
+                                <h2>Valores de {{ $instructor->user->shortName }} - {{ $payStart->format('d/m') }} à {{
+                                    $payEnd->format('d/m') }}</h2>
+                                @endif
+
+                            </div>
+                            <div class="col text-end">
+                                @if(!$comissions->isEmpty())
+
+                                <button type="button" class="btn btn-primary" wire:click='createComissionTransaction'>
+                                    <x-icons.money />
+
+                                    Gerar
+                                    Pagamento
+                                </button>
+
+                                @endif
+                            </div>
+                        </div>
+
+                        <x-table.table :search="false">
                             <thead>
                                 <tr>
-                                    <th>Professor</th>
-                                    <th>Qtde. Aulas</th>
-                                    <th>Total</th>
-                                    <th>Ações</th>
+                                    <th>Modalidade</th>
+                                    <th>Aluno</th>
+                                    <th>Data</th>
+                                    <th class="text-center">Tipo de Comissão</th>
+                                    <th class="text-center">Valor da Aula</th>
+                                    <th class="text-center">Valor Comissão</th>
+                                    <th class="text-center">Valor a Receber</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($comissions)
-                                @foreach ($comissions as $comission)
+                                @forelse($comissions as $comission)
                                 <tr>
-                                    <td scope="row">{{ $comission->instructor->user->name }}</td>
-                                    <td>{{ $comission->total_class }}</td>
-                                    <td> R$ {{ currency($comission->total) }} </td>
+                                    <td>{{ $comission->class->modality->name }}</td>
                                     <td>
-                                        <a
-                                            wire:click.prevent="createComissionTransaction('{{$comission->instructor->id}}')">
-                                            Pagar
-                                        </a>
+
+                                        <x-page.user-avatar size="xs" :user="$comission->class->student->user">
+                                            <span class="small">
+                                                {{ $comission->class->student->user->shortName }}
+                                            </span>
+                                        </x-page.user-avatar>
+
+                                    </td>
+                                    <td>{{ $comission->class->datetime?->format('d/m/y H\h') }}</td>
+                                    <td class="text-center">
+                                        {{ $comission->comission_type->label() }}
+
+                                    </td>
+                                    <td class="text-center">R$ {{ currency($comission->class_value) }}</td>
+
+                                    <td class="text-center">
+                                        @if($comission->comission_type == App\Enums\ComissionTypeEnum::PERCENT)
+                                        {{ $comission->comission_value }}{{ $comission->comission_type->icon()
+                                        }}
+                                        @endif
+
+                                        @if($comission->comission_type == App\Enums\ComissionTypeEnum::FIXED)
+                                        {{ $comission->comission_type->icon() }} {{
+                                        currency($comission->comission_value) }}
+                                        @endif
+                                    </td>
+                                    <td class="text-center">R$ {{ currency($comission->value) }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="9" class="text-center">
+                                        Nenhuma comissão encontrada para esse período.
                                     </td>
                                 </tr>
-                                @endforeach
-                                @else
-                                <tr>
-                                    <td colspan="3" class="text-center">Nenhum</td>
-                                </tr>
-                                @endif
+                                @endforelse
                             </tbody>
-                        </table>
-
-
+                            @if(!$comissions->isEmpty())
+                            <tfoot>
+                                <tr>
+                                    <th colspan="9" class="text-end">
+                                        <h1>Total: R$ {{ currency($amount) }} </h1>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                            @endif
+                        </x-table.table>
+                        <div class="mt-3">
+                            {{ $comissions->links() }}
+                        </div>
                     </div>
 
                 </div>
             </div>
-
-
-
         </div>
 
         <x-modal.modal class="blur" id="modal-pay" size="modsal-lg">
@@ -87,24 +140,49 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title align-items-center" id="modalTitleId">
-                        <x-icons.users /> Registrar Pagamento
+                        <x-icons.users /> Gerar Pagamento de Comissão
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
 
-                    <h2 class="mb-3"><strong>Criar Ordem de Pagamento</strong></h2>
+
 
                     <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <x-page.user-block :user="$instructor->user" cslass="mb-3">
+
+                                <div class="flex-fill">
+                                    <div class="font-weight-medium"> <strong>{{ $instructor->user->name }}</strong>
+                                    </div>
+                                    <div class="text-secondary">
+                                        <a href="#" class="text-reset">{{$instructor->profession}} </a>
+                                    </div>
+                                </div>
+
+                            </x-page.user-block>
+                        </div>
                         <div class="card-body">
-                            <p><strong>Instrutor: </strong>{{ $instructor->user->shortName }}</p>
-                            <p><strong>Perído: </strong>{{ $start }} até {{ $end }}</p>
-                            <p><strong>Valor: </strong>R$ {{ $amount }}</p>
+                            <div class="row mb-3">
+
+                                <div class="col text-center">
+                                    <div class="text-muted">Período:</div>
+                                    <h2>
+                                        {{ $payStart?->format('d/m') }} à {{ $payEnd?->format('d/m') }}
+                                    </h2>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="text-muted">Aulas:</div>
+                                    <h2>{{ $count }}</h2>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="text-muted">Valor:</div>
+                                    <h2>R$ {{ $amount }}</h2>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
 
                     <div class="row">
                         <div class="col-4 mb-3">

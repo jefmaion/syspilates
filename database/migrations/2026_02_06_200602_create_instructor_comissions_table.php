@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ComissionTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->foreignId('instructor_id');
             $table->foreignId('transaction_id')->nullable();
             $table->datetime('datetime');
-            $table->enum('comission_type', ['percent', 'fixed']);
+            $table->enum('comission_type', ComissionTypeEnum::cases());
             $table->decimal('comission_value', 8, 2);
             $table->decimal('class_value', 8, 2);
             $table->decimal('value', 8, 2);

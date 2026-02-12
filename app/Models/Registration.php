@@ -172,6 +172,23 @@ class Registration extends BaseModel
         });
     }
 
+    public function scopeCurrent($q, $filter)
+    {
+        return match ($filter) {
+            'active'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('end', '>=', now()->startOfDay()),
+            'canceled' => $q->where('status', RegistrationStatusEnum::CANCELED),
+            'expired' => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('end', '<', now()->startOfDay()),
+            'expiring'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereBetween('end', [now()->startOfDay(), now()->endOfWeek()->startOfDay()]),
+
+            'late'  => $q->whereHas('transactions', function ($t) {
+                return $t->whereNull('paid_at')->where('date', '<', now());
+            }),
+            default => $q
+        };
+
+        return $q;
+    }
+
     public function isCanceled()
     {
         return $this->status->value === RegistrationStatusEnum::CANCELED->value;

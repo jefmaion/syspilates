@@ -30,6 +30,10 @@ class TransactionPage extends Component
 
     public $filter = [];
 
+    public $deleteText;
+
+
+
     #[On('transaction-created')]
     public function mount()
     {
@@ -40,19 +44,49 @@ class TransactionPage extends Component
         $this->resetPage();
     }
 
+    public function create()
+    {
+        $this->resetValidation();
+        $this->dispatch('create-transaction');
+    }
+
     public function deleteTransaction($id)
     {
+        $this->deleteText = null;
         $this->transaction = Transaction::find($id);
+
+        if ($this->transaction->comissions->count()) {
+            $this->deleteText = "As comissões deverão ser geradas novamente!";
+        }
+
         $this->dispatch('show-modal', modal: 'modal-delete');
+    }
+
+    public function updated($property, $value)
+    {
+
+        if (in_array($property, ['start', 'end', 'type', 'student_id', 'description', 'student_id', 'type'])) {
+            $this->resetPage();
+        }
     }
 
     public function delete()
     {
+        if ($this->transaction->comissions) {
+            $this->transaction->comissions()->update(['transaction_id' => null]);
+        }
+
         $this->transaction->delete();
+
         $this->transaction = null;
 
         $this->dispatch('hide-modal', modal: 'modal-delete');
         $this->dispatch('$refresh');
+    }
+
+    public function pay($id)
+    {
+        $this->dispatch('pay-transaction', id: $id);
     }
 
     protected function saldo()
@@ -63,12 +97,8 @@ class TransactionPage extends Component
 
     public function render(): View | Closure | string
     {
-
-
-
-
         $box = [
-            'Agendados' => [
+            'Em Aberto' => [
                 'color' => 'primary',
                 'credit' => Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'C')->sum('amount'),
                 'debit' =>  Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'D')->sum('amount'),
@@ -96,13 +126,30 @@ class TransactionPage extends Component
         ];
 
 
+        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'C')->sum('amount');
+        $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
+
+
+        // $this->resetPage();
+        return view('livewire.transaction.transaction-page', [
+            'transactions' => $this->filters()->paginate(10),
+            'box'          => $box,
+            'credit' => $credit,
+            'debit' => $debit,
+            'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount'),
+            'sald' => $this->saldo(),
+            'amount' => ($this->saldo() + $credit) - $debit
+        ]);
+    }
+
+    public function filters()
+    {
 
         $transactions = Transaction::with(['student.user', 'category'])->whereBetween('date', [$this->start, $this->end])->orderBy('created_at', 'desc');
 
         foreach ($this->filter as $key => $value) {
             if ($key == 'status') {
                 $transactions->when($value, fn($q) => $q->current($value));
-
                 continue;
             }
 
@@ -113,19 +160,6 @@ class TransactionPage extends Component
             $transactions->whereLike('description', '%' . $this->search . '%');
         }
 
-        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'C')->sum('amount');
-        $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
-
-
-
-        return view('livewire.transaction.transaction-page', [
-            'transactions' => $transactions->paginate(10),
-            'box'          => $box,
-            'credit' => $credit,
-            'debit' => $debit,
-            'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount'),
-            'sald' => $this->saldo(),
-            'amount' => ($this->saldo() + $credit) - $debit
-        ]);
+        return $transactions;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Database\Seeders;
 
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             ModalitySeeder::class,
             StudentSeeder::class,
             InstructorSeeder::class,
-            RegistrationSeeder::class,
+            // RegistrationSeeder::class,
             RegistrationPlanSeeder::class,
             CategorySeeder::class,
             TransactionSeeder::class,

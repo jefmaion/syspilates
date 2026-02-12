@@ -87,7 +87,11 @@ class Transaction extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                // Juros de 0,33% ao dia
+
+                if ($this->type == TransactionTypeEnum::DEBIT) {
+                    return $this->amount;
+                }
+
                 return $this->origin_amount + $this->fee + $this->fine;
             }
         );
@@ -193,5 +197,10 @@ class Transaction extends BaseModel
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function comissions()
+    {
+        return $this->hasMany(InstructorComission::class);
     }
 }
