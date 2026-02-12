@@ -24,7 +24,7 @@
             </x-slot:prepend>
             @endif
             <x-slot:title>
-                <a href="{{ route('registration.show', $class->registration_id) }}"> {{ $data?->student?->shortName ??
+                <a href="{{ route('registration.show', $class->registration_id) }}" wire:navigate> {{ $data?->student?->shortName ??
                     null }}</a>
             </x-slot:title>
             <x-slot:side-title>

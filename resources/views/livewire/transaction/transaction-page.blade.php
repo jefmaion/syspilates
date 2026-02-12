@@ -15,8 +15,6 @@
             </span>
         </div>
         <x-slot name="actions">
-            {{-- <a href="#" class="btn btn-primary" wire:click="$dispatch('calculate-comission')">Calcular Comissão de
-                Professores</a> --}}
             <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">
                 <x-icons.success /> Novo Lançamento
             </a>
@@ -185,7 +183,7 @@
                                         </x-page.status>
                                     </td>
                                     <td>
-                                        <span class="text-{{ $item->type->color() }}"><strong>{{ currency($item->amount)
+                                        <span class="text-{{ $item->type->color() }}"><strong>R$ {{ currency($item->amount)
                                                 }}</strong></span>
                                     </td>
 
