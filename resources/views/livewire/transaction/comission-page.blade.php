@@ -150,7 +150,7 @@
 
 
                     <div class="card mb-3">
-                        <div class="card-header bg-light">
+                        <div class="card-header bg-ligzht">
                             <x-page.user-block :user="$instructor->user" cslass="mb-3">
 
                                 <div class="flex-fill">
