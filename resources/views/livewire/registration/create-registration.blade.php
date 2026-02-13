@@ -25,11 +25,12 @@
                             <x-form.select-duration name="form.duration" wire:model='form.duration' />
                         </div>
 
-
                         <div class="col-md-3 mb-3">
                             <label for="" class="form-label">Valor</label>
                             <x-form.input-text name="form.value" class="currency" wire:model='form.value' />
                         </div>
+
+
 
 
                     </div>
@@ -47,36 +48,44 @@
                             <label for="" class="form-label">Aulas p/ Semana</label>
                             <x-form.input-text name="form.class_per_week" wire:model.live='form.class_per_week' />
                         </div>
+
+                        <div class="col-md-12 mb-3">
+                            <x-form.checkbox name="form.paid" wire:model.live='form.paid'>Marcar 1º Mensalidade Paga
+                            </x-form.checkbox>
+                        </div>
                     </div>
                 </div>
                 @if (!empty($form->class_per_week))
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Dia</th>
-                                    <th scope="col">Horário</th>
-                                    <th scope="col">Professor</th>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Dia</th>
+                                <th scope="col">Horário</th>
+                                <th scope="col">Professor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for ($i = 0; $i < $form->class_per_week; $i++)
+                                <tr class="">
+                                    <td scope="row">
+                                        <x-form.select-weekday name="form.schedule.{{ $i }}.weekday"
+                                            wire:model='form.schedule.{{ $i }}.weekday' />
+                                    </td>
+                                    <td>
+                                        <x-form.select-time type="time" name="form.schedule.{{ $i }}.time"
+                                            wire:model='form.schedule.{{ $i }}.time' />
+                                    </td>
+                                    <td>
+                                        <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id"
+                                            wire:model='form.schedule.{{ $i }}.instructor_id' />
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @for ($i = 0; $i < $form->class_per_week; $i++)
-                                    <tr class="">
-                                        <td scope="row">
-                                            <x-form.select-weekday name="form.schedule.{{ $i }}.weekday" wire:model='form.schedule.{{ $i }}.weekday' />
-                                        </td>
-                                        <td>
-                                            <x-form.select-time type="time" name="form.schedule.{{ $i }}.time" wire:model='form.schedule.{{ $i }}.time' />
-                                        </td>
-                                        <td>
-                                            <x-form.select-instructor name="form.schedule.{{ $i }}.instructor_id" wire:model='form.schedule.{{ $i }}.instructor_id' />
-                                        </td>
-                                    </tr>
                                 @endfor
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
 
                 @endif
                 <div class="modal-footer">

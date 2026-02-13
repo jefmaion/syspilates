@@ -50,8 +50,9 @@ class RegistrationSeeder extends Seeder
             }
         }
 
-        for ($x = 1; $x <= 20; $x++) {
-            $date         = fake()->dateTimeBetween('-2 months');
+        for ($x = 1; $x <= 70; $x++) {
+
+            $date         = fake()->dateTimeBetween('-4 months');
             $duration     = fake()->randomElements($plans)[0];
             $classPerWeek = rand(1, 3);
 
@@ -97,7 +98,7 @@ class RegistrationSeeder extends Seeder
                 'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),
                 'status'         => 'active',
                 'schedule'       => $schedule,
-            ]);
+            ], true);
 
             foreach ($registration->classes()->where('datetime', '<=', now())->orderBy('datetime', 'asc')->get() as $class) {
                 $newStatus = $status[rand(0, (count($status) - 1))];

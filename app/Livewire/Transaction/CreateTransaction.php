@@ -53,14 +53,11 @@ class CreateTransaction extends Component
     #[On('edit-transaction')]
     public function edit($id)
     {
-
-
-
         $this->transaction = Transaction::find($id);
 
         $this->date           = $this->transaction->date->format('Y-m-d');
         $this->type           = $this->transaction->type;
-        $this->amount    = currency($this->transaction->amount, prepend: null);
+        $this->amount           = currency($this->transaction->amount, prepend: null);
         $this->paid_at          = $this->transaction->paid_at;
         $this->description    = $this->transaction->description;
         $this->student_id     = $this->transaction->student_id;

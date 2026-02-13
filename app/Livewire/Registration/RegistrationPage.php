@@ -20,6 +20,8 @@ class RegistrationPage extends Component
 
     public $duration = null;
 
+    public $status;
+
     #[On('refresh-registrations')]
     public function _refresh() {}
 
@@ -37,8 +39,13 @@ class RegistrationPage extends Component
             $registrations->where('duration', $this->duration);
         }
 
+
+        if (!empty($this->status)) {
+            $registrations->current($this->status);
+        }
+
         return view('livewire.registration.registration-page', [
-            'registrations' => $registrations->orderBy('end', 'desc')->paginate($this->pages),
+            'registrations' => $registrations->orderBy('id', 'desc')->paginate($this->pages),
 
             'active' => Registration::current('active')->count(),
             'expiring' => Registration::current('expiring')->count(),

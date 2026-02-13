@@ -33,9 +33,14 @@ class RegistrationForm extends Form
 
     public array $schedule = [];
 
+    public bool $paid;
+
+    public $renew = false;
+
     public function updatedClassPerWeek($value)
     {
         if ($value === null || $value === '' || ! is_numeric($value)) {
+
             $this->class_per_week = null;
             $this->schedule       = [];
 
@@ -44,19 +49,22 @@ class RegistrationForm extends Form
 
         if ($value <= 0) {
             $this->schedule = [];
-
             return;
         }
 
-        $this->schedule = [];
+        // $this->schedule = [];
+
+        $news = [];
 
         for ($i = 0; $i < $value; $i++) {
-            $this->schedule[$i] = [
-                'weekday'       => null,
-                'time'          => null,
-                'instructor_id' => null,
+            $news[$i] = [
+                'weekday'       => $this->schedule[$i]['weekday'] ?? null,
+                'time'          => $this->schedule[$i]['time'] ?? null,
+                'instructor_id' => $this->schedule[$i]['instructor_id'] ?? null,
             ];
         }
+
+        $this->schedule = $news;
     }
 
     public function prepareForValidation($attributes)
@@ -67,10 +75,17 @@ class RegistrationForm extends Form
 
     public function rules()
     {
+
+        $unique = Rule::unique('registrations', 'modality_id')->whereIn('status', ['active'])->where('student_id', $this->student_id);
+
+        if ($this->renew) {
+            $unique = null;
+        }
+
         return [
 
             // registration
-            'modality_id' => ['required', Rule::unique('registrations', 'modality_id')->whereIn('status', ['active'])->where('student_id', $this->student_id)],
+            'modality_id' => ['required', $unique],
             'student_id'  => ['required'],
 
             // registration plan
@@ -94,6 +109,7 @@ class RegistrationForm extends Form
 
         $this->resetValidation();
 
+
         return CreateRegistration::run([
             'modality_id'    => (int) $this->modality_id,
             'student_id'     => (int) $this->student_id,
@@ -105,7 +121,7 @@ class RegistrationForm extends Form
             'end'            => Carbon::parse($this->start)->addDays((int) $this->duration)->format('Y-m-d'),
             'status'         => 'active',
             'schedule'       => $this->schedule,
-        ]);
+        ], $this->paid);
     }
 
     public function populate(Registration $registration)

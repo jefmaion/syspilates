@@ -7,10 +7,13 @@ namespace App\Livewire\Calendar;
 use App\Actions\CalculateComission;
 use App\Actions\CreateMarkupClass;
 use App\Enums\ClassStatusEnum;
+use App\Enums\ClassTypesEnum;
+use App\Enums\RegistrationStatusEnum;
 use App\Models\Classes;
 use App\Models\ClassMakeup;
 use App\Models\InstructorComission;
 use App\Models\InstructorModality;
+use App\Models\Registration;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -31,8 +34,6 @@ class FormRegisterClass extends Component
     public $canMakeup = true;
 
     public Classes $class;
-    // ----
-
     public $registration_id;
 
     public $student_id;
@@ -97,6 +98,13 @@ class FormRegisterClass extends Component
 
         if ($this->status == ClassStatusEnum::PRESENCE->value) {
             CalculateComission::run($this->class);
+        }
+
+        $registration = Registration::find($this->class->registration_id);
+
+
+        if ($registration->classesScheduled == 0) {
+            $registration->setStatus(RegistrationStatusEnum::CLOSED->value);
         }
 
 

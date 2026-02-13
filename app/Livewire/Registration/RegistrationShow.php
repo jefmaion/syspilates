@@ -69,6 +69,8 @@ class RegistrationShow extends Component
 
     public function mount(Registration $registration)
     {
+
+        // dd($registration->last_instalment);
         $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);

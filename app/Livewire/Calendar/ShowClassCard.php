@@ -96,7 +96,7 @@ class ShowClassCard extends Component
             ];
         }
 
-        if ($this->registration->hasUnpaidTransactions) {
+        if ($this->registration->hasLastUnpaidTransactions) {
             $alerts[] = [
                 'type' => 'danger',
                 'text' => 'Existem mensalidades em aberto!'

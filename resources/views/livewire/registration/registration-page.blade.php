@@ -99,7 +99,7 @@
                             <div class="col">
                                 <div class="text-secondary">Vencidas</div>
                                 <div class="font-weight-medium h2">
-                                    {{$expired}}
+                                    {{$late}}
                                 </div>
 
                             </div>
@@ -107,8 +107,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="col">
                 <div class="col">
                     <div class="card card-sm">
@@ -139,7 +137,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col">
                 <div class="col">
                     <div class="card card-sm">
@@ -174,9 +171,17 @@
 
         <div class="card">
             <div class="card-header">
-                {{--
-                <x-table.table-search /> --}}
                 <div class="row flex-fill">
+                    <div class="col-auto">
+                        <x-form.select wire:model.live='status' placeholder="opa">
+                            <option value=""></option>
+                            <option value="active">Ativo</option>
+                            <option value="canceled">Cancelado</option>
+                            <option value="expired">Expirado</option>
+                            <option value="expiring">Vencendo</option>
+                            <option value=""></option>
+                        </x-form.select>
+                    </div>
                     <div class="col-auto">
                         <x-form.select-duration wire:model.live='duration' placeholder="opa" />
                     </div>
@@ -223,13 +228,22 @@
 
 
                             <td>
-                                <x-page.status color="{{ $item->registrarionStatus->color() }}">
-                                    {{ $item->registrarionStatus->label() }}
+
+                                @if($item->currentStatus == App\Enums\RegistrationComputedStatusEnum::EXPIRING)
+                                <x-page.status color="{{ $item->currentStatus->color() }}">
+                                    Vence em {{ $item->daysToExpire }} dia(s)
                                 </x-page.status>
+                                @else
+                                <x-page.status color="{{ $item->currentStatus->color() }}">
+                                    {{ $item->currentStatus->label() }}
+                                </x-page.status>
+                                @endif
+
+
 
                             </td>
                             <td>
-                                @if ($item->hasUnpaidTransactions)
+                                @if ($item->hasLastUnpaidTransactions)
                                 <x-page.badge color="danger">
                                     Pendente
                                 </x-page.badge>

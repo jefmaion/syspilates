@@ -9,6 +9,7 @@
             Detalhes da Matrícula
         </h2>
         <x-slot:actions>
+            @if($registration->isActive)
             <a class="btn btn-outline-secondary" wire:click="$dispatch('cancel-registration')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -29,6 +30,21 @@
                     <path d="M13.5 6.5l4 4"></path>
                 </svg>
                 Alterar Dia de aulas</a>
+            @endif
+            @if($registration->daysToExpire <= 7) <a class="btn btn-blue"
+                wire:click='$dispatch("renew-registration", {id: {{$registration->id}} })'>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                    <path d="M13.5 6.5l4 4"></path>
+                </svg>
+                Renovar</a>
+
+                <livewire:registration.create-registration />
+                @endif
+
         </x-slot:actions>
     </x-page.page-header>
 
@@ -43,7 +59,7 @@
         <livewire:transaction.pay-transaction />
 
 
-        @if ($registration->hasUnpaidTransactions)
+        @if ($registration->hasLastUnpaidTransactions)
         <x-common.alert type="warning">Existem mensalidades em aberto!</x-common.alert>
         @endif
 
@@ -95,8 +111,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <p>Status: <x-page.badge color="{{ $registration->status->color() }}">{{
-                                        $registration->status->label() }}</x-page.badge>
+                                <p>Status: <x-page.badge color="{{ $registration->currentStatus->color() }}">{{
+                                        $registration->currentStatus->label() }}</x-page.badge>
                                 </p>
                                 <p>Período: <strong>{{ $registration->planDescription }}</strong></p>
                                 <p>Modalidade: <strong>{{ $registration->modality->name }}</strong></p>
@@ -104,6 +120,7 @@
                             <div class="col-12">
                                 <p>Início: <strong>{{ $registration->start->format('d/m/Y') }}</strong></p>
                                 <p>Fim: <strong>{{ $registration->end->format('d/m/Y') }}</strong></p>
+                                <p>Renovação: <strong>{{ $registration->date_expiration->format('d/m/Y') }}</strong></p>
                             </div>
                         </div>
                     </div>
@@ -242,7 +259,7 @@
                     </div>
                     <div class="card-body">
                         <p>Status:
-                            @if ($registration->hasUnpaidTransactions)
+                            @if ($registration->hasLastUnpaidTransactions)
                             <x-page.badge color="danger">Pendente</x-page.badge>
                             @else
                             <x-page.badge>Em Dia</x-page.badge>

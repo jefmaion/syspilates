@@ -26,6 +26,7 @@ class Registration extends BaseModel
     public $casts = [
         'start'    => 'date',
         'end'      => 'date',
+        'date_expiration' => 'date',
         'status'   => RegistrationStatusEnum::class,
         'duration' => PlanEnum::class,
         'value'    => 'float',
@@ -33,7 +34,7 @@ class Registration extends BaseModel
 
     public function scopeJustActives(Builder $query)
     {
-        return $query->whereIn('status', ['scheduled', 'active']);
+        return $query->whereIn('status', ['scheduled', 'active', 'closed']);
     }
 
     /**
@@ -43,22 +44,28 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
+
                 if ($this->status === RegistrationStatusEnum::CANCELED) {
                     return RegistrationStatusEnum::CANCELED;
                 }
 
-                if (! $this->end) {
-                    return RegistrationStatusEnum::ACTIVE;
+                // if (! $this->end) {
+                //     return RegistrationStatusEnum::ACTIVE;
+                // }
+
+                $lastInstallment = $this->last_instalment;
+
+                if (!$lastInstallment) {
+                    return RegistrationComputedStatusEnum::EXPIRED;
                 }
 
-                $days = now()->startOfDay()->diffInDays(Carbon::parse($this->end)->startOfDay(), false);
+                $days = now()->startOfDay()->diffInDays(Carbon::parse($lastInstallment->date)->startOfDay(), false);
 
                 if ($days < 0) {
                     return RegistrationComputedStatusEnum::EXPIRED;
                 }
 
                 if ($days <= 7) {
-                    // return 'Vence em ' . $days . ' dias';
                     return RegistrationComputedStatusEnum::EXPIRING;
                 }
 
@@ -67,11 +74,52 @@ class Registration extends BaseModel
         );
     }
 
+    protected function currentStatus(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+
+
+                if ($this->status == RegistrationStatusEnum::CANCELED) {
+                    return RegistrationStatusEnum::CANCELED;
+                }
+
+                if ($this->status == RegistrationStatusEnum::CLOSED) {
+                    return RegistrationStatusEnum::CLOSED;
+                }
+
+                if ($this->date_expiration?->startOfday() == now()->startOfDay()) {
+                    return RegistrationComputedStatusEnum::TODAY;
+                }
+
+
+                if (now()->diffInDays(Carbon::parse($this->date_expiration)->startOfDay()) < 0) {
+                    return RegistrationComputedStatusEnum::EXPIRED;
+                }
+
+                if ($this->date_expiration?->between(now()->startOfWeek(), now()->endOfWeek())) {
+                    return RegistrationComputedStatusEnum::EXPIRING;
+                }
+
+                return RegistrationComputedStatusEnum::WORKING;
+            }
+        );
+    }
+
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->status == RegistrationStatusEnum::ACTIVE;
+            }
+        );
+    }
+
     protected function daysToExpire(): Attribute
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return now()->startOfDay()->diffInDays(Carbon::parse($this->end)->startOfDay(), false);
+                return now()->startOfDay()->diffInDays($this->date_expiration?->startOfDay(), false);
             }
         );
     }
@@ -115,6 +163,30 @@ class Registration extends BaseModel
     /**
      * @return Attribute<string, string>
      */
+    protected function lastClass(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->classes()->where('type', ClassTypesEnum::REGULAR)->orderBy('datetime', 'desc')->first();
+            }
+        );
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function classesScheduled(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->classes()->where('type', ClassTypesEnum::REGULAR)->where('status', ClassStatusEnum::SCHEDULED)->count();
+            }
+        );
+    }
+
+    /**
+     * @return Attribute<string, string>
+     */
     protected function nextTransaction(): Attribute
     {
         return Attribute::make(
@@ -127,7 +199,7 @@ class Registration extends BaseModel
     /**
      * @return Attribute<string, string>
      */
-    protected function hasUnpaidTransactions(): Attribute
+    protected function hasLastUnpaidTransactions(): Attribute
     {
         return Attribute::make(
             get: function ($value, $attributes) {
@@ -136,29 +208,35 @@ class Registration extends BaseModel
         );
     }
 
-    public function getScheduleClasses($start = null, $end = null)
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function hasUnpaidTransactions(): Attribute
     {
-        $start = $start ?? $this->start;
-        $end   = $end ?? $this->end;
-
-        $period  = CarbonPeriod::create($start, $end);
-        $classes = [];
-
-        foreach ($period as $date) {
-            if (! $date->between($start, $end)) {
-                continue;
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->transactions()->whereNull('paid_at')->count();
             }
-
-            foreach ($this->schedule as $schedule) {
-                if ($date->dayOfWeek === $schedule->weekday->value) {
-                    $key           = $date->format('Y-m-d ' . $schedule->time) . '.' . $schedule->id . '.' . $this->id;
-                    $classes[$key] = array_merge($schedule->toArray(), ['datetime' => $date->format('Y-m-d ' . $schedule->time)]);
-                }
-            }
-        }
-
-        return $classes;
+        );
     }
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function lastInstalment(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->transactions()->where('category_id', 1)->orderBy('date', 'desc')->first();
+            }
+        );
+    }
+
+    public function setStatus($status)
+    {
+        $this->update(['status' => $status]);
+    }
+
 
     public function scopeWithinRange(Builder $query, $start, $end): Builder
     {
@@ -175,10 +253,10 @@ class Registration extends BaseModel
     public function scopeCurrent($q, $filter)
     {
         return match ($filter) {
-            'active'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('end', '>=', now()->startOfDay()),
+            'active'  => $q->where('status', RegistrationStatusEnum::ACTIVE),
             'canceled' => $q->where('status', RegistrationStatusEnum::CANCELED),
-            'expired' => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('end', '<', now()->startOfDay()),
-            'expiring'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereBetween('end', [now()->startOfDay(), now()->endOfWeek()->startOfDay()]),
+            'expired' => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('date_expiration', '<', now()->startOfDay()),
+            'expiring'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereBetween('date_expiration', [now()->startOfDay(), now()->endOfWeek()->startOfDay()]),
 
             'late'  => $q->whereHas('transactions', function ($t) {
                 return $t->whereNull('paid_at')->where('date', '<', now());

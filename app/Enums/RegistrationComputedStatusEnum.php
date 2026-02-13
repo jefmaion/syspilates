@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Enums;
 
@@ -10,14 +10,16 @@ enum RegistrationComputedStatusEnum: string
     case EXPIRING = 'expiring';
     case WORKING  = 'working';
     case CLOSED   = 'closed';
+    case TODAY   = 'today';
 
-    public function label(): string
+    public function label($prep = null): string
     {
         return match ($this) {
-            self::EXPIRED  => 'Expirado',
-            self::EXPIRING => 'Expirando',
-            self::WORKING  => 'Em Andamento',
-            self::CLOSED   => 'Finalizado',
+            self::EXPIRED  => 'Expirado' . $prep,
+            self::EXPIRING => 'Expirando' . $prep,
+            self::WORKING  => 'Em Andamento' . $prep,
+            self::CLOSED   => 'Finalizado' . $prep,
+            self::TODAY   => 'Vence Hoje' . $prep,
         };
     }
 
@@ -28,6 +30,7 @@ enum RegistrationComputedStatusEnum: string
             self::EXPIRING => 'warning',
             self::WORKING  => 'success',
             self::CLOSED   => 'secondary',
+            self::TODAY   => 'warning',
         };
     }
 }
