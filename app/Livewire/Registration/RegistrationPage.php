@@ -47,11 +47,11 @@ class RegistrationPage extends Component
         return view('livewire.registration.registration-page', [
             'registrations' => $registrations->orderBy('id', 'desc')->paginate($this->pages),
 
-            'active' => Registration::current('active')->count(),
-            'expiring' => Registration::current('expiring')->count(),
-            'canceled' => Registration::current('canceled')->count(),
-            'expired' => Registration::current('expired')->count(),
-            'late' => Registration::current('late')->count(),
+            'active' => Registration::actives()->count(),
+            'today' => Registration::dueToday()->count(),
+            'finished' => Registration::finisheds()->count(),
+            'expired' => Registration::late()->count(),
+            'canceled' => Registration::canceled()->count(),
         ]);
     }
 }

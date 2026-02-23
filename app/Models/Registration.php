@@ -37,6 +37,31 @@ class Registration extends BaseModel
         return $query->whereIn('status', ['scheduled', 'active', 'closed']);
     }
 
+    public function scopeActives(Builder $query) {
+        return  $query->where('status', RegistrationStatusEnum::ACTIVE);
+    }
+    
+    public function scopeFinisheds(Builder $query) {
+        return  $query->where('status', RegistrationStatusEnum::CLOSED);
+    }
+
+    public function scopeCanceled(Builder $query) {
+        return  $query->where('status', RegistrationStatusEnum::CANCELED);
+    }
+
+    public function scopeDueToday(Builder $query) {
+        return  $query->actives()->where('date_expiration',  now()->startOfDay());
+    }
+
+    public function scopeDueWeek(Builder $query) {
+        return  $query->actives()->whereBetween('date_expiration', [now()->startOfWeek(), now()->endOfWeek()]);
+    }
+
+    public function scopeLate(Builder $query) {
+        return  $query->actives()->whereDate('date_expiration', '<', now());
+    }
+
+
     /**
      * @return Attribute<string, string>
      */
@@ -253,18 +278,17 @@ class Registration extends BaseModel
     public function scopeCurrent($q, $filter)
     {
         return match ($filter) {
-            'active'  => $q->where('status', RegistrationStatusEnum::ACTIVE),
-            'canceled' => $q->where('status', RegistrationStatusEnum::CANCELED),
-            'expired' => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereDate('date_expiration', '<', now()->startOfDay()),
-            'expiring'  => $q->where('status', RegistrationStatusEnum::ACTIVE)->whereBetween('date_expiration', [now()->startOfDay(), now()->endOfWeek()->startOfDay()]),
-
-            'late'  => $q->whereHas('transactions', function ($t) {
-                return $t->whereNull('paid_at')->where('date', '<', now());
-            }),
+            'active' => $q->actives()->count(),
+            'today' => $q->dueToday()->count(),
+            'finished' => $q->finisheds()->count(),
+            'expired' => $q->late()->count(),
+            'canceled' => $q->canceled()->count(),
+            'week' => $q->dueWeek()->count(),
             default => $q
         };
 
         return $q;
+
     }
 
     public function isCanceled()

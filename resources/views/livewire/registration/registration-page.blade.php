@@ -69,9 +69,9 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="text-secondary">À Vencer</div>
+                                <div class="text-secondary">Hoje</div>
                                 <div class="font-weight-medium h2">
-                                    {{$expiring}}
+                                    {{$today}}
                                 </div>
 
                             </div>
@@ -97,9 +97,9 @@
                                 </span>
                             </div>
                             <div class="col">
-                                <div class="text-secondary">Vencidas</div>
+                                <div class="text-secondary">Não Finalizados</div>
                                 <div class="font-weight-medium h2">
-                                    {{$late}}
+                                    {{$expired}}
                                 </div>
 
                             </div>
@@ -126,9 +126,9 @@
                                     </span>
                                 </div>
                                 <div class="col">
-                                    <div class="text-secondary">Expirados</div>
+                                    <div class="text-secondary">Finalizados</div>
                                     <div class="font-weight-medium h2">
-                                        {{$canceled}}
+                                        {{$finished}}
                                     </div>
 
                                 </div>
@@ -156,9 +156,9 @@
                                     </span>
                                 </div>
                                 <div class="col">
-                                    <div class="text-secondary">Mensalidades Vencidas</div>
+                                    <div class="text-secondary">Cancelados</div>
                                     <div class="font-weight-medium h2">
-                                        {{$late}}
+                                        {{$canceled}}
                                     </div>
 
                                 </div>
@@ -178,7 +178,8 @@
                             <option value="active">Ativo</option>
                             <option value="canceled">Cancelado</option>
                             <option value="expired">Expirado</option>
-                            <option value="expiring">Vencendo</option>
+                            <option value="today">Hoje</option>
+                            <option value="week">Semana</option>
                             <option value=""></option>
                         </x-form.select>
                     </div>
