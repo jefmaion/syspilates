@@ -14,11 +14,13 @@
                 <x-form.input-text type="date" wire:model.live='end' />
             </span>
         </div>
+        @can('create transaction')
         <x-slot name="actions">
             <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">
                 <x-icons.success /> Novo Lançamento
             </a>
         </x-slot>
+        @endcan
     </x-page.page-header>
 
     <x-page.page-body>
@@ -175,13 +177,13 @@
                                         </x-page.status>
                                     </td>
                                     <td>
-                                        <span class="text-{{ $item->type->color() }}"><strong>R$ {{ currency($item->amount)
+                                        <span class="text-{{ $item->type->color() }}"><strong>R$ {{
+                                                currency($item->amount)
                                                 }}</strong></span>
                                     </td>
 
                                     <td class="text-center">
                                         <div class="btn-actions">
-
 
                                             <button type="button" class="btn btn-action"
                                                 wire:click="pay({{ $item->id }})" @disabled($item->paid_at)>
@@ -189,18 +191,21 @@
                                                 <x-icons.money class="icon icon-1" />
                                             </button>
 
-
+                                            @can('edit transaction')
                                             <button type="button" class="btn  btn-action"
                                                 wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
                                                 <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
                                                 <x-icons.edit class="icon icon-1" />
                                             </button>
+                                            @endcan
 
+                                            @can('delete transaction')
                                             <button type="button" class="btn  btn-action"
                                                 wire:click="deleteTransaction({{ $item->id }})">
                                                 <!-- Download SVG icon from http://tabler.io/icons/icon/x -->
                                                 <x-icons.trash class="icon icon-1" />
                                             </button>
+                                            @endcan
                                         </div>
 
 

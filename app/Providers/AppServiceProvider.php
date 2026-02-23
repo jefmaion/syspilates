@@ -1,15 +1,22 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Instructor;
+use App\Policies\InstructorPolicy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+    protected $policies = [
+        Instructor::class => InstructorPolicy::class
+    ];
+
     /**
      * Register any application services.
      */

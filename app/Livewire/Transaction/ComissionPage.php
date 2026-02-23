@@ -88,6 +88,7 @@ class ComissionPage extends Component
             'type'            => TransactionTypeEnum::DEBIT,
             'category_id'     => $this->category_id,
             'description'     => 'Pagamento de Aulas - ' . $this->instructor->user->shortName . ' - (' . Carbon::parse($this->start)->format('d/m/y') . ' à ' . Carbon::parse($this->end)->format('d/m/y') . ')',
+            'instructor_id' => $this->instructor->id
         ]);
 
         InstructorComission::whereBetween('datetime', [$this->start, $this->end])

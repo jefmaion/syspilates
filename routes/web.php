@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Admin\PermissionPage;
 use App\Livewire\Calendar\CalendarPage;
 use App\Livewire\Calendar\TodayClass;
 use App\Livewire\Dashboard;
@@ -66,6 +67,7 @@ Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
     Route::get('transaction', TransactionPage::class)->name('transaction');
     Route::get('cashbook', CashBook::class)->name('cashbook');
     Route::get('comission', ComissionPage::class)->name('comission');
+    Route::get('permission', PermissionPage::class)->name('permission');
 
     Route::get('calendar', CalendarPage::class)->name('calendar');
     Route::get('today', TodayClass::class)->name('today');

@@ -15,14 +15,12 @@
 
     <x-page.page-show>
         <x-slot:left>
-            <div class="card flex-fill mb-3">
+            <div class="card flex-fill">
                 <div>
                     <div class="card-body p-4 text-center">
                         <a href="#" wire:click="$dispatch('show-upload-avatar')">
                             <x-page.avatar size="xl" :user="$student->user" />
-                                
-                            </a>
-
+                        </a>
                         <h3 class="m-0 mb-1"><a href="#">{{ $student->user->name }}</a></h3>
                         <div class="text-secondary">UI Designer</div>
                         <div class="mt-3">
@@ -44,11 +42,7 @@
                                 <td><strong>Email</strong></td>
                                 <td class="text-end">{{ $student->user->email }}</td>
                             </tr>
-
-
                             <livewire:avatar-uploader :user="$student->user" />
-
-
                         </table>
                     </div>
                     <div class="card-body">
@@ -96,21 +90,24 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs nasv-fill" data-bs-toggle="tabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
-                                role="tab">
+                            <a href="#tabs-home-7" wire:click.prevent="tabs('tabs-home-7')"
+                                class="nav-link {{ $tab === 'tabs-home-7' ? 'active' : '' }}" data-bs-toggle="tab"
+                                aria-selected="true" role="tab">
                                 Histórico de Aulas
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                                role="tab" tabindex="-1">
+                            <a href="#tabs-profile-7" wire:click.prevent="tabs('tabs-profile-7')"
+                                class="nav-link {{ $tab === 'tabs-profile-7' ? 'active' : '' }}" data-bs-toggle="tab"
+                                aria-selected="false" role="tab" tabindex="-1">
                                 <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
                                 Dados Cadastrais
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a href="#tabs-activity-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                                role="tab" tabindex="-1">
+                            <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
+                                class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}" data-bs-toggle="tab"
+                                aria-selected="false" role="tab" tabindex="-1">
                                 <!-- Download SVG icon from http://tabler.io/icons/icon/activity -->
                                 Mensalidades
                             </a>
@@ -119,7 +116,8 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
+                        <div class="tab-pane {{ $tab === 'tabs-home-7' ? 'active show' : '' }}" id="tabs-home-7"
+                            role="tabpanel">
                             <x-table.table :search="false">
                                 <thead>
                                     <tr>
@@ -135,7 +133,7 @@
                                     @foreach($classes as $date => $class)
                                     <tr>
                                         <td scope="row">
-                                            {{ $class->datetime->format('d/m/y') }} / 
+                                            {{ $class->datetime->format('d/m/y') }} /
                                             {{ ucfirst($class->datetime->isoFormat('ddd')) }}
                                         </td>
                                         <td>
@@ -155,7 +153,8 @@
                                             </x-page.user-avatar>
                                         </td>
                                         <td>
-                                            <x-page.badge icon="{{ $class->status->icon() }}" color="{{ $class->status->color() }}">
+                                            <x-page.badge icon="{{ $class->status->icon() }}"
+                                                color="{{ $class->status->color() }}">
                                                 {{ $class->status->label() }}
                                             </x-page.badge>
                                         </td>
@@ -167,41 +166,49 @@
                                 {{$classes->links()}}
                             </div>
                         </div>
-                        <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
+                        <div class="tab-pane {{ $tab === 'tabs-profile-7' ? 'active show' : '' }}" id="tabs-profile-7"
+                            role="tabpanel">
                             <livewire:student.student-form :modal="false" :student="$student" />
                         </div>
-                        <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
-                            <h4>Activity tab</h4>
+                        <div class="tab-pane {{ $tab === 'tabs-activity-7' ? 'active show' : '' }}" id="tabs-activity-7"
+                            role="tabpanel">
+
                             <div>
                                 <x-table.table :search="false">
-                                <thead>
-                                    <tr>
-                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Vencto</th>
-                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Descrição</th>
-                                        <th style="cursor:pointer" wire:click="sortBy('datetime')">Valor</th>
-                                        <th style="cursor:pointer" wire:click="sortBy('modality.name')">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($transactions as $k => $item)
-                                    <tr>
-                                        <td scope="row">
-                                           {{ $item->date }}
-                                        </td>
-                                        <td>
-                                            {{ $item->description }}
-                                        </td>
-                                        <td>
-                                            {{ $item->amount }}
-                                        </td>
-                                        <td>
-                                            {{ $item->status }}
-                                        </td>
-                                        
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </x-table.table>
+                                    <thead>
+                                        <tr>
+                                            <th style="cursor:pointer" wire:click="sortBy('datetime')">Vencto</th>
+                                            <th style="cursor:pointer" wire:click="sortBy('datetime')">Descrição</th>
+                                            <th style="cursor:pointer" wire:click="sortBy('datetime')">Valor</th>
+                                            <th style="cursor:pointer" wire:click="sortBy('modality.name')">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($transactions as $k => $item)
+                                        <tr>
+                                            <td scope="row">
+                                                {{ $item->date->format('d/m/y') }}
+                                            </td>
+                                            <td>
+                                                {{ $item->description }}
+                                            </td>
+                                            <td>
+                                                {{ $item->amount }}
+                                            </td>
+                                            <td>
+
+                                                <x-page.badge color="{{ $item->currentStatus->color }}">
+                                                    {{ $item->currentStatus->label }}
+                                                </x-page.badge>
+                                            </td>
+
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </x-table.table>
+                                <div class="mx-3">
+                                    {{$transactions->links()}}
+                                </div>
                             </div>
                         </div>
                     </div>

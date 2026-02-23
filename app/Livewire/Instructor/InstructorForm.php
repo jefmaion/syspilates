@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Instructor;
 
 use App\Livewire\Forms\InstructorForm as FormsInstructorForm;
 use App\Livewire\Forms\UserForm;
 use App\Models\Instructor;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -26,23 +27,31 @@ class InstructorForm extends Component
     #[On('create-instructor')]
     public function create(): void
     {
+
+        // Gate::authorize('create', Instructor::class);
+        // $this->authorize('create', []);
+
         $this->user->reset();
         $this->form->reset();
 
         $this->resetValidation();
-        $this->dispatch('show-modal', modal:'modal-form-instructor');
+        $this->dispatch('show-modal', modal: 'modal-form-instructor');
     }
 
     #[On('edit-instructor')]
     public function edit(Instructor  $instructor): void
     {
+
         $this->mount($instructor);
         $this->resetValidation();
-        $this->dispatch('show-modal', modal:'modal-form-instructor');
+        $this->dispatch('show-modal', modal: 'modal-form-instructor');
     }
 
     public function mount(?Instructor  $instructor): void
     {
+
+
+
         $this->instructor = $instructor;
 
         if (isset($this->instructor->id)) {
@@ -64,8 +73,8 @@ class InstructorForm extends Component
 
         $user = $this->user->create();
         $this->form->create($user);
-        $this->dispatch('hide-modal', modal:'modal-form-instructor');
-        $this->dispatch('show-alert', message:'Professor cadastrado com sucesso!');
+        $this->dispatch('hide-modal', modal: 'modal-form-instructor');
+        $this->dispatch('show-alert', message: 'Professor cadastrado com sucesso!');
         $this->dispatch('instructor-created');
     }
 
@@ -75,8 +84,8 @@ class InstructorForm extends Component
         $this->user->update();
         $this->form->update();
 
-        $this->dispatch('hide-modal', modal:'modal-form-instructor');
-        $this->dispatch('show-alert', message:'Dados alterados com sucesso!');
+        $this->dispatch('hide-modal', modal: 'modal-form-instructor');
+        $this->dispatch('show-alert', message: 'Dados alterados com sucesso!');
         $this->dispatch('instructor-updated');
     }
 

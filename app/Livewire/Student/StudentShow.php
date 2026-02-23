@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Student;
 
@@ -19,6 +19,13 @@ class StudentShow extends Component
 
     public Student $student;
 
+    public $tab = 'tabs-home-7';
+
+    public function tabs(string $tab): void
+    {
+        $this->tab = $tab;
+    }
+
     public function mount(Student $student): void
     {
         $this->student = $student->load('user');
@@ -33,8 +40,8 @@ class StudentShow extends Component
     public function render(): View
     {
         return view('livewire.student.student-show', [
-            'classes'      => Classes::with(['instructor.user', 'registration', 'modality'])->where('status', '<>', ClassStatusEnum::SCHEDULED)->where('student_id', $this->student->id)->paginate(10, pageName:'classes'),
-            'transactions' => Transaction::where('student_id', $this->student->id)->get(),
+            'classes'      => Classes::with(['instructor.user', 'registration', 'modality'])->where('status', '<>', ClassStatusEnum::SCHEDULED)->where('student_id', $this->student->id)->paginate(10, pageName: 'classes'),
+            'transactions' => Transaction::where('category_id', 1)->where('student_id', $this->student->id)->paginate(10, pageName: 'transactions'),
         ]);
     }
 }

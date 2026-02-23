@@ -39,7 +39,6 @@ class Transaction extends BaseModel
                 if ($this->daysLate > 0) {
                     return $this->origin_amount * 0.02;
                 }
-
                 return 0;
             }
         );
@@ -55,7 +54,6 @@ class Transaction extends BaseModel
                 if (now()->greaterThan($this->date)) {
                     return (int) $this->date->diffInDays(now());
                 }
-
                 return 0;
             }
         );

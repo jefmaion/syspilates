@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Instructor;
 
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\Instructor;
+use App\Models\Transaction;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -42,7 +43,7 @@ class InstructorShow extends Component
     public function block()
     {
         $this->instructor->user()->update(['active' => $this->active]);
-        $this->dispatch('show-alert', message:'Usuário ' . (($this->active) ? 'ativado' : 'bloqueado') . ' com sucesso!');
+        $this->dispatch('show-alert', message: 'Usuário ' . (($this->active) ? 'ativado' : 'bloqueado') . ' com sucesso!');
         $this->_refresh();
     }
 
@@ -58,7 +59,8 @@ class InstructorShow extends Component
     public function render(): View
     {
         return view('livewire.instructor.instructor-show', [
-            'classes' => Classes::where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10),
+            'classes' => Classes::with('modality')->where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10),
+            'transactions' => Transaction::where('instructor_id', $this->instructor->id)->paginate(10, pageName: 'transactions')
         ]);
     }
 }

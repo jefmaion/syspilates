@@ -55,7 +55,8 @@ class CreateRegistration
                 'origin_amount'   => $registration->value,
                 'type'            => TransactionTypeEnum::CREDIT,
                 'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
-                'paid_at' => $payed
+                'paid_at' => $payed,
+                'reference_type' => 'installment'
             ]);
 
             $date->addMonth();
