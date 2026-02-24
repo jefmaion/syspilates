@@ -37,27 +37,33 @@ class Registration extends BaseModel
         return $query->whereIn('status', ['scheduled', 'active', 'closed']);
     }
 
-    public function scopeActives(Builder $query) {
+    public function scopeActives(Builder $query)
+    {
         return  $query->where('status', RegistrationStatusEnum::ACTIVE);
     }
-    
-    public function scopeFinisheds(Builder $query) {
+
+    public function scopeFinisheds(Builder $query)
+    {
         return  $query->where('status', RegistrationStatusEnum::CLOSED);
     }
 
-    public function scopeCanceled(Builder $query) {
+    public function scopeCanceled(Builder $query)
+    {
         return  $query->where('status', RegistrationStatusEnum::CANCELED);
     }
 
-    public function scopeDueToday(Builder $query) {
+    public function scopeDueToday(Builder $query)
+    {
         return  $query->actives()->where('date_expiration',  now()->startOfDay());
     }
 
-    public function scopeDueWeek(Builder $query) {
+    public function scopeDueWeek(Builder $query)
+    {
         return  $query->actives()->whereBetween('date_expiration', [now()->startOfWeek(), now()->endOfWeek()]);
     }
 
-    public function scopeLate(Builder $query) {
+    public function scopeLate(Builder $query)
+    {
         return  $query->actives()->whereDate('date_expiration', '<', now());
     }
 
@@ -135,7 +141,7 @@ class Registration extends BaseModel
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                return $this->status == RegistrationStatusEnum::ACTIVE;
+                return $this->status == RegistrationStatusEnum::ACTIVE || $this->status == RegistrationStatusEnum::SCHEDULED;
             }
         );
     }
@@ -288,7 +294,6 @@ class Registration extends BaseModel
         };
 
         return $q;
-
     }
 
     public function isCanceled()

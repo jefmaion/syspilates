@@ -11,7 +11,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label for="" class="form-label">Aluno</label>
+                            <label for="" class="form-label">Aluno (<a href="#"
+                                    wire:click.prevent='$dispatch("create-student")'>Novo Aluno</a>)</label>
                             <x-form.select-student name="form.student_id" wire:model='form.student_id' />
                         </div>
                     </div>

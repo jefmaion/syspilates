@@ -6,9 +6,10 @@
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
-            Detalhes da Matrícula
+            Matrícula de {{ $registration->student->user->name }} {{ $registration->isActive }}
         </h2>
         <x-slot:actions>
+
             @if($registration->isActive)
             <a class="btn btn-outline-secondary" wire:click="$dispatch('cancel-registration')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
@@ -54,8 +55,6 @@
 
         <livewire:registration.update-class />
         <livewire:calendar.form-register-class />
-        {{--
-        <livewire:transaction.register-transaction /> --}}
         <livewire:transaction.pay-transaction />
 
 
@@ -66,70 +65,62 @@
         <div class="row ">
             <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-flex flex-column">
 
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h3 class="card-title">Informações</h3>
-                    </div>
+                <div class="card flex-fill">
                     <div>
+                        <div class="card-body p-4 text-center">
+                            <x-page.avatar size="xl" :user="$registration->student->user" />
+                            <h3 class="m-0 mb-1"><a href="#">{{ $registration->student->user->name }}</a></h3>
+                            <div class="text-secondary">{{ $registration->modality->name }}</div>
+                            <div class="mt-3">
+                                <x-page.badge color="{{ $registration->currentStatus->color() }}">{{
+                                    $registration->currentStatus->label() }}</x-page.badge>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <x-page.avatar class="rounded-circle" size="lg" :user="$registration->student->user" />
-                                <div class="flex-fill align-items-top">
-                                    <h3 class=""><strong><a
-                                                href="{{ route('student.show', $registration->student) }}">{{
-                                                $registration->student->user->name }}</a></strong></h3>
-                                    <div class="text-secondary">
-                                        <a href="#" class="text-reset">lmiona@livejournal.com</a>
-                                    </div>
+                            <h3><strong>Objetivo</strong></h3>
+                            <p>{{ $registration->student->objective }}</p>
+                        </div>
+                        <div class="card-body">
+                            <h3><strong>Mensalidade</strong></h3>
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <p>Status: @if ($registration->hasLastUnpaidTransactions)
+                                        <x-page.badge color="danger">Pendente</x-page.badge>
+                                        @else
+                                        <x-page.badge>Em Dia</x-page.badge>
+                                        @endif
+                                    </p>
+                                    <p>Próx. Vencto: <strong>{{ $registration->nextTransaction?->date->format('d/m/y')
+                                            ?? '-' }}</strong></p>
                                 </div>
+
                             </div>
                         </div>
-                        <div class="px-4 py-2">
-                            <div class="mb-2">
-                                <x-icons.info /> Idade: {{ $registration->student->user->age }}
-                            </div>
-
-                            <div class="mb-2">
-                                <x-icons.info /> Tel.: {{ $registration->student->user->phone1 }}
-                            </div>
-                            <div class="mb-2">
-                                <x-icons.info /> Objetivo: {{ $registration->student->objective }}
-                            </div>
+                        <div class="card-body">
+                            <h3><strong>Plano</strong></h3>
+                            <p>Período: <strong>{{ $registration->planDescription }}</strong></p>
+                            <p>Valor: <strong>R$ {{ currency($registration->value) }}</strong></p>
+                            <p>Início: <strong>{{ $registration->start->format('d/m/Y') }}</strong></p>
+                            <p>Fim: <strong>{{ $registration->end->format('d/m/Y') }}</strong></p>
+                            <p>Renovação: <strong>{{ $registration->date_expiration->format('d/m/Y') }}</strong></p>
                         </div>
 
                         <div class="card-body">
+
                             <a href="{{ route('registration') }}" wire:navigate class="btn btn-link">Voltar</a>
                         </div>
                     </div>
-
                 </div>
 
-                <div class="card flex-fill">
-                    <div class="card-header">
-                        <h3 class="card-title">Plano</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <p>Status: <x-page.badge color="{{ $registration->currentStatus->color() }}">{{
-                                        $registration->currentStatus->label() }}</x-page.badge>
-                                </p>
-                                <p>Período: <strong>{{ $registration->planDescription }}</strong></p>
-                                <p>Modalidade: <strong>{{ $registration->modality->name }}</strong></p>
-                            </div>
-                            <div class="col-12">
-                                <p>Início: <strong>{{ $registration->start->format('d/m/Y') }}</strong></p>
-                                <p>Fim: <strong>{{ $registration->end->format('d/m/Y') }}</strong></p>
-                                <p>Renovação: <strong>{{ $registration->date_expiration->format('d/m/Y') }}</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-9 d-flex">
 
-                <div class="card">
+
+
+                <div class="card flex-fill">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -165,10 +156,21 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="card">
+                                                <div class="card-status-start bg-purple"></div>
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="subheader">TOTAL DE AULAS</div>
+                                                    </div>
+                                                    <div class="h1">{{ ($total) }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card">
                                                 <div class="card-status-start bg-primary"></div>
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center">
-                                                        <div class="subheader">AGENDADAS</div>
+                                                        <div class="subheader">A REALIZAR</div>
                                                     </div>
                                                     <div class="h1">{{ $scheduleds }}</div>
                                                 </div>
@@ -251,25 +253,9 @@
 
             </div>
 
-            <div class="col d-flex flex-column">
+            {{-- <div class="col d-flex flex-column">
 
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h3 class="card-title">Mensalidade</h3>
-                    </div>
-                    <div class="card-body">
-                        <p>Status:
-                            @if ($registration->hasLastUnpaidTransactions)
-                            <x-page.badge color="danger">Pendente</x-page.badge>
-                            @else
-                            <x-page.badge>Em Dia</x-page.badge>
-                            @endif
 
-                        </p>
-                        <p>Próximo Vencimento: <strong>{{ $registration->nextTransaction?->date->format('d/m/y') ?? '-'
-                                }}</strong></p>
-                    </div>
-                </div>
 
                 <div class="card flex-fill">
                     <div class="card-header">
@@ -315,7 +301,7 @@
                         @endif
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <x-modal.modal size="modal-lg" id="modal-classes">

@@ -22,9 +22,16 @@ class PermissionPage extends Component
 
     public function render(): View|Closure|string
     {
+
+        $permissions = [];
+
+        foreach (Permission::orderBy('group')->get() as $permission) {
+            $permissions[$permission->group][] = $permission;
+        }
+
         return view('livewire.admin.permission-page', [
             'roles' => Role::all(),
-            'permissions' => Permission::orderBy('group')->get()
+            'permissions' => $permissions
         ]);
     }
 }

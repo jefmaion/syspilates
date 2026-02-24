@@ -7,7 +7,9 @@ namespace App\Livewire\Registration;
 use App\Enums\RegistrationStatusEnum;
 use App\Livewire\Forms\RegistrationForm;
 use App\Models\Registration;
+use App\Models\Student;
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -18,13 +20,22 @@ class CreateRegistration extends Component
 
     public Registration $registration;
 
+    public ?Collection $students;
+
     #[On('create-registration')]
     public function create()
     {
         $this->resetValidation();
         $this->resetExcept('form');
+
         $this->form->start = date('Y-m-d');
         $this->dispatch('show-modal', modal: 'modal-create-registration');
+    }
+
+    #[On('student-created')]
+    public function setStudent(string $id)
+    {
+        $this->form->student_id =  $id;
     }
 
     #[On('renew-registration')]

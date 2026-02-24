@@ -139,6 +139,7 @@ class RegistrationShow extends Component
             'presences'    => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
             'scheduleds'   => $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->count(),
             'countMakeups' => $this->registration->classes()->where('type', ClassTypesEnum::MAKEUP)->count(),
+            'total' => $this->registration->classes()->count(),
             'absenses'     => $this->registration->classes()->whereIn('status', [ClassStatusEnum::JUSTIFIED, ClassStatusEnum::ABSENSE, ClassStatusEnum::CANCELED])->count(),
             'transactions' => $this->registration->transactions,
         ]);

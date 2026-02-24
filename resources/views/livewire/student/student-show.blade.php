@@ -6,7 +6,6 @@
     @endsection
 
     <x-page.page-header>
-        <div class="page-pretitle">Overview</div>
         <h2 class="page-title">
             <x-icons.users />
             Detalhes do Aluno
@@ -22,10 +21,14 @@
                             <x-page.avatar size="xl" :user="$student->user" />
                         </a>
                         <h3 class="m-0 mb-1"><a href="#">{{ $student->user->name }}</a></h3>
-                        <div class="text-secondary">UI Designer</div>
                         <div class="mt-3">
-                            <x-page.status color="{{ $student->user->active ? 'green' : 'secondary' }}">
-                                {{$student->user->status }}</x-page.status>
+                            <x-page.status color="{{ ($student->hasRegistration) ? 'green' : 'secondary' }}">
+                                @if($student->hasRegistration)
+                                Ativo
+                                @else
+                                Sem Matrícula
+                                @endif
+                            </x-page.status>
                         </div>
                     </div>
                     <div class="card-bsody p-0">
@@ -52,29 +55,12 @@
                             <div class="dropdown">
                                 <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                 <div class="dropdown-menu">
-                                    <span class="dropdown-header">Dropdown header</span>
                                     <a class="dropdown-item" wire:click='block' wire:model='active' href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                            </path>
-                                            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                        </svg>
+                                        <x-icons.block class="dropdown-item-icon" />
                                         Bloquear Acesso
                                     </a>
                                     <a class="dropdown-item" href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                                            <path d="M13.5 6.5l4 4"></path>
-                                        </svg>
+                                        <x-icons.trash class="dropdown-item-icon" />
                                         Excluir
                                     </a>
                                 </div>

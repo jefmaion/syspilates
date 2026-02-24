@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ClassStatusEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,6 +15,15 @@ class Student extends BaseModel
     use HasFactory;
 
     public $guarded = ['id'];
+
+    protected function hasRegistration(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return $this->registrations()->where('status', 'active')->count() > 0;
+            }
+        );
+    }
 
     /**
      * @return BelongsTo<User, $this>

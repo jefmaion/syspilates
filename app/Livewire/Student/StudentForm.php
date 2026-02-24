@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Student;
 
@@ -30,7 +30,7 @@ class StudentForm extends Component
         $this->form->reset();
         $this->resetValidation();
 
-        $this->dispatch('show-modal', modal:'modal-form-student');
+        $this->dispatch('show-modal', modal: 'modal-form-student');
     }
 
     #[On('edit-student')]
@@ -38,7 +38,7 @@ class StudentForm extends Component
     {
         $this->mount($student);
         $this->resetValidation();
-        $this->dispatch('show-modal', modal:'modal-form-student');
+        $this->dispatch('show-modal', modal: 'modal-form-student');
     }
 
     public function mount(?Student $student): void
@@ -64,9 +64,9 @@ class StudentForm extends Component
 
         $user = $this->user->create();
         $this->form->create($user);
-        $this->dispatch('hide-modal', modal:'modal-form-student');
-        $this->dispatch('student-created');
-        lw_alert($this, 'Aluno Criado com sucesso!');
+        $this->dispatch('student-created', id: $user->student->id);
+        $this->dispatch('hide-modal', modal: 'modal-form-student');
+        // lw_alert($this, 'Aluno Criado com sucesso!');
     }
 
     public function update(): void
@@ -75,7 +75,7 @@ class StudentForm extends Component
         $this->user->update();
         $this->form->update();
 
-        $this->dispatch('hide-modal', modal:'modal-form-student');
+        $this->dispatch('hide-modal', modal: 'modal-form-student');
         $this->dispatch('student-updated');
         lw_alert($this, 'Dados alterados com sucesso!');
     }

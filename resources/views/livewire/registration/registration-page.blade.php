@@ -17,11 +17,12 @@
                 </a>
             </div>
             <livewire:registration.create-registration />
+            <livewire:student.student-form />
+
         </x-slot>
     </x-page.page-header>
 
     <x-page.page-body>
-
         <div class="row mb-3">
             <div class="col">
                 <div class="card card-sm">
@@ -168,11 +169,11 @@
                 </div>
             </div>
         </div>
-
         <div class="card">
             <div class="card-header">
                 <div class="row flex-fill">
                     <div class="col-auto">
+                        <label class="form-label">Status</label>
                         <x-form.select wire:model.live='status' placeholder="opa">
                             <option value=""></option>
                             <option value="active">Ativo</option>
@@ -184,19 +185,21 @@
                         </x-form.select>
                     </div>
                     <div class="col-auto">
+                        <label class="form-label">Período</label>
                         <x-form.select-duration wire:model.live='duration' placeholder="opa" />
                     </div>
                     <div class="col-auto">
+                        <label class="form-label">Modalidade</label>
                         <x-form.select-modality wire:model.live='modality_id' />
                     </div>
                     <div class="col">
+                        <label class="form-label">Pesquisar</label>
                         <input type="text" wire:model.live='search' class="form-control w-100"
                             placeholder="Pesquisar aluno...">
                     </div>
                 </div>
             </div>
             <div class="card-body">
-
                 <x-table.table :search="false" class="fs-4 table-ssm">
                     <thead>
                         <tr>
@@ -213,23 +216,17 @@
                         @foreach($registrations as $item)
                         <tr>
                             <td>
-
-                                <div class="d-flex align-items-center">
-                                    <x-page.avatar :user="$item->student->user" />
+                                <x-page.user-avatar :user="$item->student->user">
                                     <a href="{{ route('registration.show', $item) }}" wire:navigate>{{
-                                        $item->student->user->name }}</a>
-                                </div>
-
+                                        $item->student->user->name
+                                        }}</a>
+                                </x-page.user-avatar>
                             </td>
                             <td>{{ $item->modality->name }}</td>
-
                             <td>
                                 {{ $item->planDescription }}
                             </td>
-
-
                             <td>
-
                                 @if($item->currentStatus == App\Enums\RegistrationComputedStatusEnum::EXPIRING)
                                 <x-page.status color="{{ $item->currentStatus->color() }}">
                                     Vence em {{ $item->daysToExpire }} dia(s)
@@ -239,9 +236,6 @@
                                     {{ $item->currentStatus->label() }}
                                 </x-page.status>
                                 @endif
-
-
-
                             </td>
                             <td>
                                 @if ($item->hasLastUnpaidTransactions)
@@ -253,7 +247,6 @@
                                     Em dia
                                 </x-page.badge>
                                 @endif
-
                             </td>
                             <td>
                                 {{ $item->nextClass?->datetime->format('d/m/y H\h') }}
@@ -270,8 +263,6 @@
                 </div>
             </div>
         </div>
-
         <x-modal.modal-delete />
-
     </x-page.page-body>
 </div>

@@ -68,7 +68,13 @@
                                 </div>
                             </td>
                             <td>
-                                <x-page.status>Ativo</x-page.status>
+                                <x-page.status color="{{ ($item->hasRegistration) ? 'green' : 'secondary' }}">
+                                    @if($item->hasRegistration)
+                                    Ativo
+                                    @else
+                                    Sem Matrícula
+                                    @endif
+                                </x-page.status>
                             </td>
                             <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         </tr>

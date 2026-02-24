@@ -20,7 +20,8 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', ['tenant' => app('tenant'), 'absolute' => false]), navigate: false);
+        // $this->redirectIntended(default: route('dashboard', ['tenant' => app('tenant'), 'absolute' => false]), navigate: false);
+        $this->redirectIntended(default: route('dashboard', ['absolute' => false]), navigate: false);
     }
 }; ?>
 

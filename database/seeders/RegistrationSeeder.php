@@ -92,7 +92,7 @@ class RegistrationSeeder extends Seeder
                 'modality_id'    => $modality->id,
                 'duration'       => $duration,
                 'class_per_week' => $classPerWeek,
-                'value'          => fake()->randomFloat(2, 0, 500),
+                'value'          => fake()->randomFloat(2, 200, 400),
                 'deadline'       => rand(1, 28),
                 'start'          => $date,
                 'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),

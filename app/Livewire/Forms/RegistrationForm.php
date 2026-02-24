@@ -33,7 +33,7 @@ class RegistrationForm extends Form
 
     public array $schedule = [];
 
-    public bool $paid;
+    public bool $paid = false;
 
     public $renew = false;
 
