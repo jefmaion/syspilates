@@ -96,9 +96,9 @@ class FormRegisterClass extends Component
             CreateMarkupClass::run($this->class);
         }
 
-        if ($this->status == ClassStatusEnum::PRESENCE->value) {
-            CalculateComission::run($this->class);
-        }
+
+        CalculateComission::run($this->class);
+
 
         $registration = Registration::find($this->class->registration_id);
 

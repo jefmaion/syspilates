@@ -195,7 +195,10 @@
                                     <td>{{ $tran->date->format('d/m/y') }}</td>
                                     <td>{{ $tran->paid_at->format('d/m/y') }}</td>
                                     <td>
-                                        <div><strong>{{ $tran->description }}</strong></div>
+                                        {{ $tran->description }}
+                                        @if($tran->student)
+                                        {{ $tran->student->user->shortName }}
+                                        @endif
 
                                     </td>
                                     <td>

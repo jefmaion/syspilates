@@ -47,20 +47,15 @@
                                 }}</td>
                             <td>R$ {{ currency($plan->value) }}</td>
                             <td>{{ $plan->created_at->format('d/m/Y H:i') }}</td>
-                            <td>
-                                <div class="btn-actions">
-                                    <a class="btn btn-action"
-                                        wire:click="$dispatch('edit-plan', {id: {{ $plan->id }}})">
-                                        <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
-                                        <x-icons.edit class="" />
-                                    </a>
-                                    <a class="btn btn-action text-danger"
-                                        wire:click="$dispatch('delete-plan', { plan: {{ $plan }} })">
-                                        <!-- Download SVG icon from http://tabler.io/icons/icon/copy -->
-                                        <x-icons.trash />
-                                    </a>
-
-                                </div>
+                            <td class="btn-actions">
+                                <a class="btn btn-action" wire:click="$dispatch('edit-plan', {id: {{ $plan->id }}})">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                    <x-icons.edit class="icon icon-1" />
+                                </a>
+                                <a class="btn btn-action" wire:click="$dispatch('delete-plan', { plan: {{ $plan }} })">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/copy -->
+                                    <x-icons.trash class="icon icon-1" />
+                                </a>
                             </td>
                         </tr>
                         @endforeach

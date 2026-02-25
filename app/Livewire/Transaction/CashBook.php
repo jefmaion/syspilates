@@ -47,7 +47,7 @@ class CashBook extends Component
 
     protected function baseQuery()
     {
-        return Transaction::with('category')->whereNotNull('paid_at')->whereMonth('date', $this->month)->whereYear('date', $this->year);
+        return Transaction::with('category', 'student.user')->whereNotNull('paid_at')->whereMonth('date', $this->month)->whereYear('date', $this->year);
     }
 
     protected function saldo()

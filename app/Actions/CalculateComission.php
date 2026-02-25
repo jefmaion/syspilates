@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Enums\ClassStatusEnum;
 use App\Models\InstructorComission;
 use App\Models\InstructorModality;
 
@@ -17,7 +18,20 @@ class CalculateComission
 
     public static function run($class)
     {
+
+        if (InstructorComission::where('class_id', $class->id)->count() > 0) {
+            return;
+        }
+
         if (!$comiss = InstructorModality::where('instructor_id', $class->instructor_id)->where('modality_id', $class->modality_id)->first()) {
+            return;
+        }
+
+        if ($class->status != ClassStatusEnum::PRESENCE && $class->status != ClassStatusEnum::JUSTIFIED) {
+            return;
+        }
+
+        if ($class->status == ClassStatusEnum::JUSTIFIED && $comiss->calculate_on_justified_absence == 0) {
             return;
         }
 

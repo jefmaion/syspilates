@@ -8,7 +8,7 @@ return [
     'theme-config' => [
         'theme'         => 'light',
         /** light, dark */
-        'theme-base'    => 'stone',
+        'theme-base'    => 'slate',
         /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',
         /** sans-serif, serif, monospace, comic */

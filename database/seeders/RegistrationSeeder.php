@@ -101,7 +101,7 @@ class RegistrationSeeder extends Seeder
                 'value'          => $plan->value,
                 'deadline'       => rand(1, 28),
                 'start'          => $date,
-                'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),
+                'end'            => Carbon::parse($date)->addDays($plan->duration)->format('Y-m-d'),
                 'status'         => 'active',
                 'schedule'       => $schedule,
             ], fake()->randomElement([true, false]));
@@ -118,9 +118,9 @@ class RegistrationSeeder extends Seeder
                     'evolution' => fake()->text(),
                 ]);
 
-                if ($newStatus == ClassStatusEnum::PRESENCE->value) {
-                    CalculateComission::run($class);
-                }
+                // if ($newStatus == ClassStatusEnum::PRESENCE->value) {
+                CalculateComission::run($class);
+                // }
 
                 if (in_array($newStatus, ['canceled', 'justified'])) {
                     CreateMarkupClass::run($class);

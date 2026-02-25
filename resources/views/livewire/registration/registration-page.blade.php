@@ -206,9 +206,9 @@
                     <thead>
                         <tr>
                             <th scope="col" wsidth="50%">Aluno</th>
+                            <th>Status</th>
                             <th>Modalidade</th>
                             <th>Plano</th>
-                            <th>Status</th>
                             <th>Mensalidade</th>
                             <th>Próx.Aula</th>
                             <th>Vigência</th>
@@ -224,21 +224,22 @@
                                         }}</a>
                                 </x-page.user-avatar>
                             </td>
+                            <td>
+                                @if($item->currentStatus == App\Enums\RegistrationComputedStatusEnum::EXPIRING)
+                                <x-page.badge color="{{ $item->currentStatus->color() }}">
+                                    Vence em {{ $item->daysToExpire }} dia(s)
+                                </x-page.badge>
+                                @else
+                                <x-page.badge color="{{ $item->currentStatus->color() }}">
+                                    {{ $item->currentStatus->label() }}
+                                </x-page.badge>
+                                @endif
+                            </td>
                             <td>{{ $item->modality->name }}</td>
                             <td>
                                 {{ $item->plan->name }}
                             </td>
-                            <td>
-                                @if($item->currentStatus == App\Enums\RegistrationComputedStatusEnum::EXPIRING)
-                                <x-page.status color="{{ $item->currentStatus->color() }}">
-                                    Vence em {{ $item->daysToExpire }} dia(s)
-                                </x-page.status>
-                                @else
-                                <x-page.status color="{{ $item->currentStatus->color() }}">
-                                    {{ $item->currentStatus->label() }}
-                                </x-page.status>
-                                @endif
-                            </td>
+
                             <td>
                                 @if ($item->hasLastUnpaidTransactions)
                                 <x-page.badge color="danger">

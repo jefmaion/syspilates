@@ -1,4 +1,4 @@
-<x-modal.modal class="blur" id="modal-form-transaction" sizse="modal-lg">
+<x-modal.modal class="blur" id="modal-form-transaction" size="modal-lg">
     <form wire:submit="save">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,6 +9,7 @@
             </div>
 
             <div class="modal-body">
+
 
                 <div class="row">
 
@@ -51,10 +52,7 @@
                         </x-form.select>
                     </div> --}}
 
-                    <div class="col-12 mb-3">
-                        <label class="form-label">Aluno</label>
-                        <x-form.select-student wire:model='student_id' name="student_id" />
-                    </div>
+
 
                     <div class="col-12 mb-3">
                         <label class="form-label">Comentários</label>
@@ -78,8 +76,14 @@
 
             </div>
 
-            @if(!isset($transaction))
             <div class="modal-body">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Aluno</label>
+                    <x-form.select-student wire:model='student_id' name="student_id" />
+                </div>
+
+                @if(!isset($transaction))
+
                 <div class="row">
                     <div class="col-8 mb-3">
                         <label class="form-label">Repetir</label>
@@ -96,10 +100,8 @@
                         <x-form.input-text type="text" wire:model='repeat_times' name="repeat_times" />
                     </div>
                 </div>
+                @endif
             </div>
-
-
-            @endif
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">

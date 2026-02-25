@@ -61,29 +61,12 @@
                             <div class="dropdown">
                                 <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                 <div class="dropdown-menu">
-                                    <span class="dropdown-header">Dropdown header</span>
                                     <a class="dropdown-item" wire:click='block' wire:model='active' href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                            </path>
-                                            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                        </svg>
+                                        <x-icons.block class="dropdown-item-icon" />
                                         Bloquear Acesso
                                     </a>
                                     <a class="dropdown-item" href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                                            <path d="M13.5 6.5l4 4"></path>
-                                        </svg>
+                                        <x-icons.trash class="dropdown-item-icon" />
                                         Excluir
                                     </a>
                                 </div>
@@ -144,7 +127,7 @@
                             id="tab-class-history" role="tabpanel">
 
                             <div class="card-body">
-                                <h4>Home tab</h4>
+
                             </div>
                             <x-table.table :search="false">
                                 <thead>
@@ -205,18 +188,17 @@
                                         <td>{{ currency($modality->pivot->commission_value, prepend: null) }}</td>
                                         <td>{{ $modality->pivot->calculate_on_justified_absence ? 'Sim' : 'Não' }}
                                         </td>
-                                        <td>
-                                            <x-buttons.button-link href="#"
-                                                wire:click="$dispatch('edit-modality', {modalityId: {{ $modality->id }}})"
-                                                class="btn-warning btn-sm">
-                                                <x-icons.edit class="" /><span class="d-none d-sm-inline">Editar</span>
-                                            </x-buttons.button-link>
-
-                                            <x-buttons.button-link
-                                                wire:click="$dispatch('remove-modality', {modalityId: {{ $modality->id }}})"
-                                                class="btn-danger bgst btn-sm">
-                                                <x-icons.trash /> <span class="d-none d-sm-inline">Remover</span>
-                                            </x-buttons.button-link>
+                                        <td class="btn-actions">
+                                            <a class="btn btn-action"
+                                                wire:click="$dispatch('edit-modality', {modalityId: {{ $modality->id }}})">
+                                                <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
+                                                <x-icons.edit class="icon icon-1" />
+                                            </a>
+                                            <a class="btn btn-action"
+                                                wire:click="$dispatch('remove-modality', {modalityId: {{ $modality->id }}})">
+                                                <!-- Download SVG icon from http://tabler.io/icons/icon/copy -->
+                                                <x-icons.trash class="icon icon-1" />
+                                            </a>
                                         </td>
 
                                     </tr>

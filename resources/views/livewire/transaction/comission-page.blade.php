@@ -12,12 +12,8 @@
     </x-page.page-header>
 
     <x-page.page-body>
-
-
         <div class="row">
-
             <div class="col-12">
-
                 <div class="card">
                     <div class="card-body">
                         <div class="row align-items-end">
@@ -47,18 +43,14 @@
                                 <h2>Valores de {{ $instructor->user->shortName }} - {{ $payStart->format('d/m') }} à {{
                                     $payEnd->format('d/m') }}</h2>
                                 @endif
-
                             </div>
                             <div class="col text-end">
                                 @if(!$comissions->isEmpty())
-
                                 <button type="button" class="btn btn-primary" wire:click='createComissionTransaction'>
                                     <x-icons.money />
-
                                     Gerar
                                     Pagamento
                                 </button>
-
                                 @endif
                             </div>
                         </div>
@@ -69,6 +61,7 @@
                                     <th>Modalidade</th>
                                     <th>Aluno</th>
                                     <th>Data</th>
+                                    <th>Status</th>
                                     <th class="text-center">Tipo de Comissão</th>
                                     <th class="text-center">Valor da Aula</th>
                                     <th class="text-center">Valor Comissão</th>
@@ -89,6 +82,7 @@
 
                                     </td>
                                     <td>{{ $comission->class->datetime?->format('d/m/y H\h') }}</td>
+                                    <td>{{ $comission->class->status->label() }}</td>
                                     <td class="text-center">
                                         {{ $comission->comission_type->label() }}
 

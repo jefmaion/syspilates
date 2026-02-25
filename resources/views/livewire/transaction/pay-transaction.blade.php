@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body">
-                <x-page.badge class="mb-1" color="{{ $transaction->currentStatus->color }}">{{
+                <x-page.badge class="mb-2" color="{{ $transaction->currentStatus->color }}">{{
                     $transaction->currentStatus->label }}
                 </x-page.badge>
                 <h3 class="mb-0">{{ $transaction->description }}</h3>
@@ -55,32 +55,24 @@
 
             </div>
             @endif
-
             <div class="modal-body">
                 <div class="row">
-
-                    <div class="col-6 mb-3">
+                    <div class="col-4 mb-3">
                         <label class="form-label">Data</label>
                         <x-form.input-text type="date" wire:model='paid_at' name="paid_at" />
                     </div>
-
-
-                    <div class="col-6 mb-3">
+                    <div class="col-3 mb-3">
                         <label class="form-label">Valor</label>
                         <x-form.input-currency wire:model='amount' name="amount" />
                     </div>
-
-                    <div class="col-12 mb-3">
+                    <div class="col-5 mb-3">
                         <label class="form-label">Forma de Pagamento</label>
                         <x-form.select-payment-method wire:model='payment_method' name="payment_method" />
                     </div>
-
                     <div class="col-12 mb-3">
                         <label class="form-label">Comentários</label>
-                        <x-form.textarea wire:model='comments' name="comments" />
+                        <x-form.textarea wire:model='comments' name="comments" rows="5" />
                     </div>
-
-
                 </div>
             </div>
 

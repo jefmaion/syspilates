@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Calendar;
 
@@ -98,11 +98,11 @@ class CalendarPage extends Component
 
         $events = [];
 
-        $eventClass = 'p-1 mt-1 me-1 ';
+        $eventClass = 'p-1 mt-1 me-1 rounded-3 ';
 
         foreach ($classes as $class) {
             $badge   = null;
-            $bgColor = 'bg-' . $class->status->color();
+            $bgColor = 'bg-' . $class->status->color() .  ' text-' . $class->status->color() . '-lt-fg';
 
             if ($class->registration->status == RegistrationStatusEnum::CANCELED) {
                 $bgColor .= '-lt';
@@ -169,10 +169,10 @@ class CalendarPage extends Component
         $this->currentId = $id;
 
         if ($props['type'] == ClassTypesEnum::EXPERIMENTAL->value) {
-            return $this->dispatch('show-experimental-class', id:$props['event_id']);
+            return $this->dispatch('show-experimental-class', id: $props['event_id']);
         }
 
-        $this->dispatch('show-class-card', id:$props['event_id'], type: $props['type'], datetime:$props['datetime']);
+        $this->dispatch('show-class-card', id: $props['event_id'], type: $props['type'], datetime: $props['datetime']);
     }
 
     #[On('calendar-slot-clicked')]

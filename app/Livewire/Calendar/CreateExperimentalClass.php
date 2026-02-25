@@ -118,6 +118,8 @@ class CreateExperimentalClass extends Component
                     'reference_id'   => $this->class->id,
                     'description'    => 'Aula Exp. ' . $this->class->modality->name,
                     'date'           => $this->datetime,
+                    'amount'         => $this->value,
+                    'origin_amount'         => $this->value,
                     'reference_type' => 'experimental',
                 ]);
             }
