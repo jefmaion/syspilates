@@ -82,20 +82,21 @@
                                 Histórico de Aulas
                             </a>
                         </li>
+
+                        <li class="nav-item" role="presentation">
+                            <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
+                                class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}" data-bs-toggle="tab"
+                                aria-selected="false" role="tab" tabindex="-1">
+                                <!-- Download SVG icon from http://tabler.io/icons/icon/activity -->
+                                Financeiro
+                            </a>
+                        </li>
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-profile-7" wire:click.prevent="tabs('tabs-profile-7')"
                                 class="nav-link {{ $tab === 'tabs-profile-7' ? 'active' : '' }}" data-bs-toggle="tab"
                                 aria-selected="false" role="tab" tabindex="-1">
                                 <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
                                 Dados Cadastrais
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
-                                class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}" data-bs-toggle="tab"
-                                aria-selected="false" role="tab" tabindex="-1">
-                                <!-- Download SVG icon from http://tabler.io/icons/icon/activity -->
-                                Mensalidades
                             </a>
                         </li>
                     </ul>
@@ -164,6 +165,7 @@
                                     <thead>
                                         <tr>
                                             <th style="cursor:pointer" wire:click="sortBy('datetime')">Vencto</th>
+                                            <th style="cursor:pointer" wire:click="sortBy('datetime')">Categoria</th>
                                             <th style="cursor:pointer" wire:click="sortBy('datetime')">Descrição</th>
                                             <th style="cursor:pointer" wire:click="sortBy('datetime')">Valor</th>
                                             <th style="cursor:pointer" wire:click="sortBy('modality.name')">Status</th>
@@ -176,8 +178,12 @@
                                                 {{ $item->date->format('d/m/y') }}
                                             </td>
                                             <td>
+                                                {{ $item->category->name }}
+                                            </td>
+                                            <td>
                                                 {{ $item->description }}
                                             </td>
+
                                             <td>
                                                 {{ $item->amount }}
                                             </td>

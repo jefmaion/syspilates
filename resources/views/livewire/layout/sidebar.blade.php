@@ -45,7 +45,7 @@
                 <li class="nav-item nav-header ms-3 my-2"><small>Aulas</small></li>
 
                 <li class="nav-item {{ request()->routeIs('calendar*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('calendar') }}">
+                    <a class="nav-link" href="{{ route('calendar') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <x-icons.calendar />
                         </span>
@@ -105,6 +105,17 @@
                             <x-icons.list />
                         </span>
                         <span class="nav-link-title"> Modalidades</span>
+                    </a>
+                </li>
+                @endif
+
+                @can('list modality')
+                <li class="nav-item {{ request()->routeIs('plan*') ? 'active' : '' }}">
+                    <a class="nav-link" wire:navigate href="{{ route('plan') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <x-icons.list />
+                        </span>
+                        <span class="nav-link-title"> Planos</span>
                     </a>
                 </li>
                 @endif

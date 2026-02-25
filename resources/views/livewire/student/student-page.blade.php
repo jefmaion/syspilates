@@ -38,7 +38,11 @@
                     <thead>
                         <tr>
                             <th scope="col" wsidth="50%">Nome</th>
+                            {{-- <th>Telefone</th> --}}
                             <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Idade</th>
+                            <th>Gênero</th>
                             <th>Status</th>
                             <th scope="col">Data de Cadastro</th>
                         </tr>
@@ -53,19 +57,18 @@
                                         }}</a>
                                 </x-page.user-avatar>
 
-                                {{-- <div class="d-flex align-items-center">
-                                    <span
-                                        class="avatar avatar-sm me-2  {{ ($item->user->gender == 'M') ? 'bg-blue-lt' : 'bg-purple-lt' }}">{{
-                                        $item->user->initials }}</span>
-                                    <a href="{{ route('student.show', $item) }}" wire:navigate>{{ $item->user->name
-                                        }}</a>
-                                </div> --}}
                             </td>
-                            <td class="d-flex">
-                                <div class="flex-fill">
-                                    <div><strong>{{ $item->user->phone1 }}</strong></div>
-                                    <div class="text-muted"><small>{{ $item->user->email}}</small></div>
-                                </div>
+                            <td>
+                                {{ $item->user->phone1 }}
+                            </td>
+                            <td>
+                                {{ $item->user->email }}
+                            </td>
+                            <td>
+                                {{ $item->user->age }}
+                            </td>
+                            <td>
+                                {{ $item->user->gender }}
                             </td>
                             <td>
                                 <x-page.status color="{{ ($item->hasRegistration) ? 'green' : 'secondary' }}">

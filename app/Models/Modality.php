@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -29,5 +29,10 @@ class Modality extends BaseModel
                 'commission_value',
                 'calculate_on_justified_absence',
             ]);
+    }
+
+    public function classes()
+    {
+        return $this->hasMany(Classes::class);
     }
 }

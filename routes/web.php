@@ -12,6 +12,7 @@ use App\Livewire\Instructor\InstructorShow;
 use App\Livewire\Modality\CreateModality;
 use App\Livewire\Modality\ModalityPage;
 use App\Livewire\Modality\UpdateModality;
+use App\Livewire\Plan\PlanPage;
 use App\Livewire\Profile;
 use App\Livewire\Registration\CreateRegistration;
 use App\Livewire\Registration\RegistrationPage;
@@ -49,6 +50,9 @@ Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
     Route::get('modality', ModalityPage::class)->name('modality');
     Route::get('modality/create', CreateModality::class)->name('modality.create');
     Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
+
+
+    Route::get('plan', PlanPage::class)->name('plan');
 
     Route::get('student', StudentPage::class)->name('student');
     Route::get('student/create', StudentForm::class)->name('student.create');

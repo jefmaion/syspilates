@@ -18,7 +18,7 @@ class RegistrationPage extends Component
 
     public $modality_id = null;
 
-    public $duration = null;
+    public $plan_id = null;
 
     public $status;
 
@@ -27,7 +27,7 @@ class RegistrationPage extends Component
 
     public function render(): View | Closure | string
     {
-        $registrations = Registration::with(['student.user', 'modality'])->whereHas('student.user', function ($query) {
+        $registrations = Registration::with(['student.user', 'modality', 'plan'])->whereHas('student.user', function ($query) {
             return $query->whereLike('name', '%' . $this->search . '%');
         });
 
@@ -35,8 +35,8 @@ class RegistrationPage extends Component
             $registrations->where('modality_id', $this->modality_id);
         }
 
-        if (! empty($this->duration)) {
-            $registrations->where('duration', $this->duration);
+        if (! empty($this->plan_id)) {
+            $registrations->where('plan_id', $this->plan_id);
         }
 
 

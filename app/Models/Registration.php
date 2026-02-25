@@ -311,10 +311,16 @@ class Registration extends BaseModel
         return $this->hasMany(Classes::class)->with('instructor.user')->orderBy('created_at', 'desc');
     }
 
+    // public function plan()
+    // {
+    //     return $this->hasOne(RegistrationPlan::class)->where('status', 'active')->latest('start');
+    // }
+
     public function plan()
     {
-        return $this->hasOne(RegistrationPlan::class)->where('status', 'active')->latest('start');
+        return $this->belongsTo(Plan::class);
     }
+
 
     public function plans()
     {

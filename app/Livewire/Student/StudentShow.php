@@ -41,7 +41,7 @@ class StudentShow extends Component
     {
         return view('livewire.student.student-show', [
             'classes'      => Classes::with(['instructor.user', 'registration', 'modality'])->where('status', '<>', ClassStatusEnum::SCHEDULED)->where('student_id', $this->student->id)->paginate(10, pageName: 'classes'),
-            'transactions' => Transaction::where('category_id', 1)->where('student_id', $this->student->id)->paginate(10, pageName: 'transactions'),
+            'transactions' => Transaction::with('category')->where('student_id', $this->student->id)->paginate(10, pageName: 'transactions'),
         ]);
     }
 }

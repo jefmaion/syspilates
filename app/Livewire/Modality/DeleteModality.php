@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Modality;
 
@@ -18,15 +18,18 @@ class DeleteModality extends Component
     public function select(Modality $modality): Event
     {
         $this->modality = $modality;
-
         return $this->dispatch('show-modal', modal: 'modal-delete');
     }
 
     public function delete(): void
     {
+        if ($this->modality->classes()->count() > 0) {
+            lw_alert($this, 'Não é possível excluir essa modalidade. Existem aulas/matrículas relacionadas à ela.', 'warning');
+            return;
+        }
         $this->modality->delete();
         session()->flash('info', 'Modalidade excluída com sucesso!');
-        $this->redirect(route('modality'), navigate:true);
+        $this->redirect(route('modality'), navigate: true);
     }
 
     public function render(): View

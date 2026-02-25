@@ -11,6 +11,7 @@ use App\Enums\ClassStatusEnum;
 use App\Enums\PlanEnum;
 use App\Models\Instructor;
 use App\Models\Modality;
+use App\Models\Plan;
 use App\Models\Registration;
 use App\Models\Student;
 use App\View\Components\Form\SelectTime;
@@ -50,11 +51,13 @@ class RegistrationSeeder extends Seeder
             }
         }
 
-        for ($x = 1; $x <= 100; $x++) {
+        for ($x = 1; $x <= 50; $x++) {
+
+            $plan = Plan::inRandomOrder()->first();
 
             $date         = fake()->dateTimeBetween('-2 months');
             $duration     = fake()->randomElements($plans)[0];
-            $classPerWeek = rand(1, 3);
+            $classPerWeek = $plan->classes_per_week;
 
             $schedule = [];
 
@@ -87,12 +90,15 @@ class RegistrationSeeder extends Seeder
                 $exists[] = $wd;
             }
 
+
+
             $registration = CreateRegistration::run([
                 'student_id'     => Student::inRandomOrder()->first()->id,
                 'modality_id'    => $modality->id,
-                'duration'       => $duration,
+                'plan_id' => $plan->id,
+                'duration'       => $plan->duration,
                 'class_per_week' => $classPerWeek,
-                'value'          => fake()->randomFloat(2, 200, 400),
+                'value'          => $plan->value,
                 'deadline'       => rand(1, 28),
                 'start'          => $date,
                 'end'            => Carbon::parse($date)->addDays($duration)->format('Y-m-d'),

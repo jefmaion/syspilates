@@ -186,7 +186,9 @@
                     </div>
                     <div class="col-auto">
                         <label class="form-label">Período</label>
-                        <x-form.select-duration wire:model.live='duration' placeholder="opa" />
+                        {{--
+                        <x-form.select-duration wire:model.live='duration' placeholder="opa" /> --}}
+                        <x-form.select-plan name="plan_id" wire:model.live='plan_id' />
                     </div>
                     <div class="col-auto">
                         <label class="form-label">Modalidade</label>
@@ -224,7 +226,7 @@
                             </td>
                             <td>{{ $item->modality->name }}</td>
                             <td>
-                                {{ $item->planDescription }}
+                                {{ $item->plan->name }}
                             </td>
                             <td>
                                 @if($item->currentStatus == App\Enums\RegistrationComputedStatusEnum::EXPIRING)

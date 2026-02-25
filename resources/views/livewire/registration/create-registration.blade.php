@@ -17,13 +17,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-5 mb-4">
                             <label for="" class="form-label">Modalidade</label>
                             <x-form.select-modality name="form.modality_id" wire:model='form.modality_id' />
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="" class="form-label">Plano</label>
-                            <x-form.select-duration name="form.duration" wire:model='form.duration' />
+                            <x-form.select-plan show_value="true" name="form.plan_id" wire:model='form.plan_id'
+                                wire:change='setPlan()' />
                         </div>
 
                         <div class="col-md-3 mb-3">
@@ -35,22 +36,22 @@
 
 
                     </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-2">
+                    <div class="row ">
+                        <div class="col-md-2 mb-2">
                             <label for="" class="form-label">Dia Vencto.</label>
                             <x-form.input-text name="form.deadline" wire:model='form.deadline' />
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-auto mb-3">
                             <label for="" class="form-label">Início das Aulas</label>
                             <x-form.input-text type="date" name="form.start" wire:model='form.start' />
                         </div>
 
-                        <div class="col-md-4 mb-3">
+                        {{-- <div class="col-md-4 mb-3">
                             <label for="" class="form-label">Aulas p/ Semana</label>
                             <x-form.input-text name="form.class_per_week" wire:model.live='form.class_per_week' />
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-12 mb-3">
+                        <div class="col-auto mb-3 d-flex align-items-end justify-content-end">
                             <x-form.checkbox name="form.paid" wire:model.live='form.paid'>Marcar 1º Mensalidade Paga
                             </x-form.checkbox>
                         </div>

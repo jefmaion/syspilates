@@ -99,7 +99,7 @@
                         </div>
                         <div class="card-body">
                             <h3><strong>Plano</strong></h3>
-                            <p>Período: <strong>{{ $registration->planDescription }}</strong></p>
+                            <p>Período: <strong>{{ $registration->plan->name }}</strong></p>
                             <p>Valor: <strong>R$ {{ currency($registration->value) }}</strong></p>
                             <p>Início: <strong>{{ $registration->start->format('d/m/Y') }}</strong></p>
                             <p>Fim: <strong>{{ $registration->end->format('d/m/Y') }}</strong></p>

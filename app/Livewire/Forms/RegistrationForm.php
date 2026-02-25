@@ -19,6 +19,8 @@ class RegistrationForm extends Form
 
     public ?string $student_id = null;
 
+    public ?string $plan_id = null;
+
     public ?int $duration = null;
 
     public ?string $class_per_week = null;
@@ -36,6 +38,8 @@ class RegistrationForm extends Form
     public bool $paid = false;
 
     public $renew = false;
+
+
 
     public function updatedClassPerWeek($value)
     {
@@ -87,6 +91,7 @@ class RegistrationForm extends Form
             // registration
             'modality_id' => ['required', $unique],
             'student_id'  => ['required'],
+            'plan_id'  => ['required'],
 
             // registration plan
             'duration'       => ['required', 'numeric'],
@@ -103,6 +108,23 @@ class RegistrationForm extends Form
         ];
     }
 
+    public function resetFields()
+    {
+        $this->registration = null;
+        $this->modality_id = null;
+        $this->student_id = null;
+        $this->plan_id = null;
+        $this->duration = null;
+        $this->class_per_week = null;
+        $this->deadline = null;
+        $this->value = null;
+        $this->start = null;
+        $this->status = RegistrationStatusEnum::ACTIVE->value;
+        $this->schedule = [];
+        $this->paid = false;
+        $this->renew = false;
+    }
+
     public function create()
     {
         $this->validate();
@@ -113,6 +135,7 @@ class RegistrationForm extends Form
         return CreateRegistration::run([
             'modality_id'    => (int) $this->modality_id,
             'student_id'     => (int) $this->student_id,
+            'plan_id'        => (int) $this->plan_id,
             'duration'       => (int) $this->duration,
             'class_per_week' => (int) $this->class_per_week,
             'value'          => (float) $this->value,
@@ -130,6 +153,7 @@ class RegistrationForm extends Form
 
         $this->modality_id    = (string) $this->registration->modality_id;
         $this->student_id     = (string) $this->registration->student_id;
+        $this->plan_id        = (string) $this->registration->plan_id;
         $this->status         = (string) $this->registration->status->value;
         $this->duration       = (int) $this->registration->duration->value;
         $this->class_per_week = (string) $this->registration->class_per_week;

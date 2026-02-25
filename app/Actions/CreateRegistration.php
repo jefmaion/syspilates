@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\PaymentMethodEnum;
 use App\Enums\TransactionTypeEnum;
+use App\Models\Plan;
 use App\Models\Registration;
 use App\Models\Transaction;
 use Carbon\Carbon;

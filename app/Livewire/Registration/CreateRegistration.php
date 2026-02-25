@@ -6,6 +6,7 @@ namespace App\Livewire\Registration;
 
 use App\Enums\RegistrationStatusEnum;
 use App\Livewire\Forms\RegistrationForm;
+use App\Models\Plan;
 use App\Models\Registration;
 use App\Models\Student;
 use Closure;
@@ -26,10 +27,22 @@ class CreateRegistration extends Component
     public function create()
     {
         $this->resetValidation();
-        $this->resetExcept('form');
+        $this->form->resetFields();
 
+        $this->form->class_per_week = null;
         $this->form->start = date('Y-m-d');
+        $this->form->deadline = date('d');
+
         $this->dispatch('show-modal', modal: 'modal-create-registration');
+    }
+
+    public function setPlan()
+    {
+        $plan = Plan::find($this->form->plan_id);
+
+        $this->form->duration = $plan->duration;
+        $this->form->class_per_week = (string) $plan->classes_per_week;
+        $this->form->value = (string) $plan->value;
     }
 
     #[On('student-created')]
