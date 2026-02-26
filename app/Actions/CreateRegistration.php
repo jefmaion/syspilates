@@ -18,7 +18,11 @@ class CreateRegistration
         $schedules = $data['schedule'] ?? null;
         unset($data['schedule']);
 
+
+
         $registration = Registration::create($data);
+
+
 
         $registration->schedule()->createMany($schedules);
 
@@ -26,7 +30,7 @@ class CreateRegistration
 
         $duration = (int) ($registration->duration->value / 30);
 
-        $date = Carbon::parse($registration->start->format('Y'), $registration->start->format('m'), $registration->deadline);
+        $date = Carbon::parse($registration->start->format('Y-m-' . $registration->deadline));
 
         $firstDueDate = $date->copy();
 
@@ -65,8 +69,13 @@ class CreateRegistration
 
 
         $date = $last->date;
+
         if ($firstDueDate->lte($registration->start)) {
             $date = $last->date->addMonth();
+        }
+
+        if ($duration == 1) {
+            $date = $registration->end;
         }
 
         $registration->update(['date_expiration' => $date]);

@@ -11,21 +11,17 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                @include('livewire.userform')
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            @include('livewire.userform')
-                            <div class="row ">
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label">Profissão</label>
-                                    <x-form.input-text name="form.profession" wire:model='form.profession' />
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label">Objetivo</label>
-                                    <textarea class="form-control" rows="3" name="form.objective"
-                                        wire:model="form.objective"></textarea>
-                                </div>
-                            </div>
+                    <div class="row ">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Profissão</label>
+                            <x-form.input-text name="form.profession" wire:model='form.profession' />
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Objetivo</label>
+                            <textarea class="form-control" rows="3" name="form.objective"
+                                wire:model="form.objective"></textarea>
                         </div>
                     </div>
                 </div>
@@ -33,7 +29,7 @@
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                         Fechar
                     </button>
-                    <button type="button" class="btn btn-primary" wire:click='{{ ($edit) ? 'update' : 'store' }}'>
+                    <button type="button" class="btn btn-primary" wire:click='{{ ($edit) ? ' update' : 'store' }}'>
                         <x-page.spinner target="{{ ($edit) ? 'update' : 'store' }}">
                             <x-icons.success /> Salvar
                         </x-page.spinner>

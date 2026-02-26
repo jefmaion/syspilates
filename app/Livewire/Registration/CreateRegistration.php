@@ -31,7 +31,7 @@ class CreateRegistration extends Component
 
         $this->form->class_per_week = null;
         $this->form->start = date('Y-m-d');
-        $this->form->deadline = date('d');
+        // $this->form->deadline = date('d');
 
         $this->dispatch('show-modal', modal: 'modal-create-registration');
     }

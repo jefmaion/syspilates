@@ -179,10 +179,10 @@
                         <x-table.table :search="false">
                             <thead>
                                 <tr>
-                                    <th>Data Vencimento</th>
-                                    <th>Data Pagamento</th>
+                                    <th width="10%">Data Vencimento</th>
+                                    <th width="10%">Data Pagamento</th>
                                     <th>Descrição</th>
-                                    <th>Categoria</th>
+                                    <th class="text-center">Categoria</th>
                                     <th class="text-center">Entrada</th>
                                     <th class="text-center">Saída</th>
                                     <th class="text-center">Saldo</th>
@@ -192,8 +192,8 @@
                                 @if(!$transactions->isEmpty())
                                 @foreach ($transactions as $tran)
                                 <tr class="@if ($tran->payed == 0) text-secondary @endif">
-                                    <td>{{ $tran->date->format('d/m/y') }}</td>
-                                    <td>{{ $tran->paid_at->format('d/m/y') }}</td>
+                                    <td class="text-center">{{ $tran->date->format('d/m/y') }}</td>
+                                    <td class="text-center">{{ $tran->paid_at->format('d/m/y') }}</td>
                                     <td>
                                         {{ $tran->description }}
                                         @if($tran->student)
@@ -201,7 +201,7 @@
                                         @endif
 
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $tran->category->name }}
                                     </td>
                                     <td class="text-center text-teal">

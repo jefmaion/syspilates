@@ -11,14 +11,12 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    @include('livewire.instructor.instructor-form-fields')
-                </div>
+                @include('livewire.instructor.instructor-form-fields')
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-outline-secondary" data-bs-dismiss="modal">
                         Fechar
                     </button>
-                    <button type="button" class="btn btn-primary" wire:click='{{ ($edit) ? 'update' : 'store' }}'>
+                    <button type="button" class="btn btn-primary" wire:click='{{ ($edit) ? ' update' : 'store' }}'>
                         <x-page.spinner target="{{ ($edit) ? 'update' : 'store' }}">
                             <x-icons.success /> Salvar
                         </x-page.spinner>

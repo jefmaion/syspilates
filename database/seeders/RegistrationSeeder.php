@@ -51,7 +51,7 @@ class RegistrationSeeder extends Seeder
             }
         }
 
-        for ($x = 1; $x <= 50; $x++) {
+        for ($x = 1; $x <= 100; $x++) {
 
             $plan = Plan::inRandomOrder()->first();
 
@@ -73,7 +73,7 @@ class RegistrationSeeder extends Seeder
 
 
 
-            for ($i = 0; $i <= $classPerWeek; $i++) {
+            for ($i = 0; $i < $classPerWeek; $i++) {
                 $wd = rand(1, 6);
 
                 while (in_array($wd, $exists)) {

@@ -35,7 +35,6 @@
                     <thead>
                         <tr>
                             <th scope="col" wsidth="50%">Nome</th>
-                            {{-- <th>Telefone</th> --}}
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Idade</th>
@@ -49,8 +48,8 @@
                         <tr class="align-middle">
                             <td scope="row" class="align-middle">
                                 <x-page.user-avatar :user="$item->user">
-                                    <a href="{{ route('student.show', $item) }}" wire:navigate>{{ $item->user->name
-                                        }}</a>
+                                    <a href="{{ route('student.show', $item) }}" wire:navigate>{{
+                                        $item->user->name}}</a>
                                 </x-page.user-avatar>
                             </td>
                             <td>
@@ -84,6 +83,6 @@
                 </div>
             </div>
         </div>
-        <x-modal.modal-delete />
+
     </x-page.page-body>
 </div>

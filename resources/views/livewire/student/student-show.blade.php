@@ -14,6 +14,7 @@
 
     <x-page.page-show>
         <x-slot:left>
+            <x-modal.modal-delete />
             <div class="card flex-fill">
                 <div>
                     <div class="card-body p-4 text-center">
@@ -59,7 +60,7 @@
                                         <x-icons.block class="dropdown-item-icon" />
                                         Bloquear Acesso
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" wire:click='deleteStudent({{$student}})' href="#">
                                         <x-icons.trash class="dropdown-item-icon" />
                                         Excluir
                                     </a>
@@ -82,7 +83,6 @@
                                 Histórico de Aulas
                             </a>
                         </li>
-
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
                                 class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}" data-bs-toggle="tab"
@@ -149,7 +149,7 @@
                                     @endforeach
                                 </tbody>
                             </x-table.table>
-                            <div class="mx-3">
+                            <div class="mx-3 mt-3">
                                 {{$classes->links()}}
                             </div>
                         </div>
@@ -198,7 +198,7 @@
                                         @endforeach
                                     </tbody>
                                 </x-table.table>
-                                <div class="mx-3">
+                                <div class="mx-3 mt-3">
                                     {{$transactions->links()}}
                                 </div>
                             </div>

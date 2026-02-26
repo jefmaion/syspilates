@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html wire:poll lang="{{ str_replace('_', '-', app()->getLocale()) }}" @foreach(config('tabler.theme-config') as $key=>
+$value) data-bs-{{$key}}="{{$value}}" @endforeach
+data-bs-theme="{{ session('theme.mode') }}">
 
 <head>
     @include('layouts.parts.header')
@@ -11,14 +13,18 @@
         <livewire:layout.sidebar />
         <livewire:layout.navigation />
         <div class="page-wrapper">
+            {{-- @dd(session()) --}}
             {{ $slot }}
             @include('layouts.parts.footer')
         </div>
     </div>
 
     @include('layouts.parts.scripts')
-
     <script>
+        window.addEventListener('theme-updated', (params) => {
+            document.documentElement.setAttribute('data-bs-theme', params.detail.theme)
+        });
+
         window.addEventListener('show-modal', (params) => {
                 return getModal(params.detail.modal).show()
             });
@@ -47,6 +53,9 @@
                     }, 3000); // Oculta após 3 segundos
                 }
             });
+
+            
+
     </script>
     @stack('scripts')
 </body>

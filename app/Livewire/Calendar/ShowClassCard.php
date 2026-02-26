@@ -13,10 +13,13 @@ use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ShowClassCard extends Component
 {
-    use PaginationTrait;
+    // use PaginationTrait;
+
+    use WithPagination;
 
     public $eventId;
 
@@ -44,6 +47,7 @@ class ShowClassCard extends Component
         $this->eventDatetime = Carbon::parse($datetime);
 
         $this->loadData();
+        $this->resetPage();
 
         $this->dispatch('show-modal', modal: 'modal-show-card');
     }
@@ -118,7 +122,19 @@ class ShowClassCard extends Component
 
     protected function history()
     {
-        return $this->registration?->classes()->where('status', '!=', ClassStatusEnum::SCHEDULED)->orderBy('datetime', 'desc')->paginate(2);
+
+        if (!$this->class) return;
+
+        $ids = Classes::where('modality_id', $this->class?->modality_id)
+            ->where('student_id', $this->class?->student_id)
+            ->where('status', '!=', ClassStatusEnum::SCHEDULED)
+            ->orderBy('datetime', 'desc')
+            ->limit(10)
+            ->pluck('id');
+
+        return Classes::with('instructor.user')->whereIn('id', $ids)
+            ->orderBy('datetime', 'desc')
+            ->paginate(2);
     }
 
     public function render(): View | Closure | string

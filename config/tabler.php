@@ -6,9 +6,8 @@ return [
 
     /** Configure the theme for Tabler.io */
     'theme-config' => [
-        'theme'         => 'light',
         /** light, dark */
-        'theme-base'    => 'slate',
+        'theme-base'    => 'zinc',
         /** slate, gray, zinc, neutral, stone */
         'theme-font'    => 'sans-serif',
         /** sans-serif, serif, monospace, comic */

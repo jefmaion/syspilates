@@ -8,6 +8,7 @@ use App\Actions\GenerateRegistrationClasses;
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
 use App\Livewire\Forms\RegistrationForm;
+use App\Models\Classes;
 use App\Models\Registration;
 use App\Traits\PaginationCollectionTrait;
 use App\Traits\PaginationTrait;
@@ -131,11 +132,15 @@ class RegistrationShow extends Component
             $classes->where($field, $value);
         }
 
+        // dd($this->registration->student->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->get());
+
+        $evolutions = Classes::with(['instructor.user'])->where('student_id', $this->registration->student_id)->where('modality_id',  $this->registration->modality_id)->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(6, pageName: 'evolutions');
+
         return view('livewire.registration.registration-show', [
             'countClasses' => $this->registration->classes->count(),
             'classes'      => $classes->orderBy($this->_sortBy, $this->sortDirection)->paginate(8, pageName: 'classes'),
             'markups'      => $this->registration->makeups()->with('origin.instructor.user')->paginate(6, pageName: 'makeup'),
-            'evolutions'   => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->paginate(6, pageName: 'evolutions'),
+            'evolutions'   => $evolutions,
             'presences'    => $this->registration->classes()->where('status', ClassStatusEnum::PRESENCE)->count(),
             'scheduleds'   => $this->registration->classes()->where('status', ClassStatusEnum::SCHEDULED)->count(),
             'countMakeups' => $this->registration->classes()->where('type', ClassTypesEnum::MAKEUP)->count(),

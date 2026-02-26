@@ -6,7 +6,7 @@
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
-            Matrícula de {{ $registration->student->user->name }} {{ $registration->isActive }}
+            Matrícula de {{ $registration->student->user->name }}
         </h2>
         <x-slot:actions>
 
@@ -230,7 +230,7 @@
                             <div class="tab-pane fade {{ $tab === 'tab-evolution' ? 'active show' : '' }}"
                                 id="tab-evolution" role="tabpanel">
                                 <div class="card-body">
-                                    @if ($markups->isEmpty())
+                                    @if ($evolutions->isEmpty())
                                     <p class="m-3">Nenhuma evolução encontrada.</p>
                                     @else
                                     @include('livewire.registration.parts.evolution-timeline')

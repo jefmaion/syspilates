@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
@@ -36,6 +36,8 @@ return new class () extends Migration
             $table->string('state', 500)->nullable();
             $table->string('avatar', 500)->nullable();
             $table->boolean('active')->default(true);
+            $table->string('theme')->nullable()->default('stone');
+            $table->string('theme_mode')->nullable()->default('light');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

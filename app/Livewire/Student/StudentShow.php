@@ -21,6 +21,8 @@ class StudentShow extends Component
 
     public $tab = 'tabs-home-7';
 
+    public $pages = 10;
+
     public function tabs(string $tab): void
     {
         $this->tab = $tab;
@@ -37,11 +39,34 @@ class StudentShow extends Component
         $this->dispatch('$refresh');
     }
 
+    public function deleteStudent(Student $student): void
+    {
+        $this->student = $student;
+        $this->dispatch('show-modal', modal: 'modal-delete');
+    }
+
+    public function delete(): void
+    {
+
+        if ($this->student->registrations->count()) {
+            lw_alert($this, 'Não é possível excluir esse aluno. Existem matrículas relacionadas à ele');
+            return;
+        }
+
+        $this->student->user()->delete();
+        $this->student->delete();
+        $this->student = null;
+
+        $this->dispatch('student-deleted');
+        $this->dispatch('hide-modal', modal: 'modal-delete');
+        $this->refresh();
+    }
+
     public function render(): View
     {
         return view('livewire.student.student-show', [
-            'classes'      => Classes::with(['instructor.user', 'registration', 'modality'])->where('status', '<>', ClassStatusEnum::SCHEDULED)->where('student_id', $this->student->id)->paginate(10, pageName: 'classes'),
-            'transactions' => Transaction::with('category')->where('student_id', $this->student->id)->paginate(10, pageName: 'transactions'),
+            'classes'      => Classes::with(['instructor.user', 'registration', 'modality'])->where('status', '<>', ClassStatusEnum::SCHEDULED)->where('student_id', $this->student->id)->paginate($this->pages, pageName: 'classes'),
+            'transactions' => Transaction::with('category')->where('student_id', $this->student->id)->paginate($this->pages, pageName: 'transactions'),
         ]);
     }
 }

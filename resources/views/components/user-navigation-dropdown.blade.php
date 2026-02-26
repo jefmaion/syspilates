@@ -1,17 +1,15 @@
 <div>
     <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
         <x-page.avatar size="sm" :user="auth()->user()" />
-        {{-- <span class="avatar avatar-sm">
-            {{ auth()->user()->initials }}
-        </span> --}}
         <div class="d-none d-xl-block ps-2">
             <div>{{ auth()->user()->shortName }}</div>
             <div class="mt-1 small text-secondary">{{ auth()->user()->email }}</div>
         </div>
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-        <a href="?theme=dark" class="dropdown-item hide-theme-dark" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            wire:navigate>
+        @if(session('theme.mode') == 'light')
+        <a href="#" wire:click="theme('dark')" class="dropdown-item hisde-theme-dark" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" wire:navigaste>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="icon icon-1">
@@ -19,8 +17,10 @@
             </svg>
             Modo Dark
         </a>
-        <a href="?theme=light" class="dropdown-item hide-theme-light" data-bs-toggle="tooltip"
-            data-bs-placement="bottom" wire:navigate>
+        @endif
+        @if(session('theme.mode') == 'dark')
+        <a href="#" class="dropdown-item hide-thesme-light" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            wire:navigaste wire:click="theme('light')">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="icon icon-1">
@@ -29,6 +29,7 @@
             </svg>
             Modo Light
         </a>
+        @endif
         @if(!$slot->isEmpty())
         <div class="dropdown-divider"></div>
         {{ $slot }}

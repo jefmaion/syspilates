@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Student;
 
@@ -16,29 +16,11 @@ class StudentPage extends Component
 
     public ?Student $student;
 
-    #[On('delete-student')]
-    public function select(Student $student): void
-    {
-        $this->student = $student;
-        $this->dispatch('show-modal', modal: 'modal-delete');
-    }
-
     #[On('student-created')]
     #[On('student-updated')]
     public function refresh(): void
     {
         $this->dispatch('$refresh');
-    }
-
-    public function delete(): void
-    {
-        $this->student->user()->delete();
-        $this->student->delete();
-        $this->student = null;
-
-        $this->dispatch('student-deleted');
-        $this->dispatch('hide-modal', modal: 'modal-delete');
-        $this->refresh();
     }
 
     public function render(): View
