@@ -96,7 +96,7 @@ class ShowClassCard extends Component
         if ($makeup) {
             $alerts[] = [
                 'type' => 'warning',
-                'text' => 'Reposições à agendar'
+                'text' => $makeup . (($makeup == 1) ? ' reposição' : ' reposições') . ' para agendar.'
             ];
         }
 

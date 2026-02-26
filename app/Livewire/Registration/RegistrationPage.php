@@ -39,7 +39,6 @@ class RegistrationPage extends Component
             $registrations->where('plan_id', $this->plan_id);
         }
 
-
         if (!empty($this->status)) {
             $registrations->current($this->status);
         }

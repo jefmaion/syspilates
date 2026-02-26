@@ -59,8 +59,8 @@
                                 </div>
                             </td>
                             <td>
-                                <x-page.status color="{{ $item->user->active ? 'green' : 'secondary' }}">
-                                    {{$item->user->status }}</x-page.status>
+                                <x-page.badge color="{{ $item->user->active ? 'green' : 'secondary' }}">
+                                    {{$item->user->status }}</x-page.badge>
                             </td>
                             <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         </tr>

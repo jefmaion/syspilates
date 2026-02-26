@@ -61,10 +61,6 @@
                             <div class="dropdown">
                                 <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" wire:click='block' wire:model='active' href="#">
-                                        <x-icons.block class="dropdown-item-icon" />
-                                        Bloquear Acesso
-                                    </a>
                                     <a class="dropdown-item" href="#">
                                         <x-icons.trash class="dropdown-item-icon" />
                                         Excluir

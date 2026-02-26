@@ -30,6 +30,118 @@
         <livewire:transaction.form-transaction />
         <livewire:transaction.pay-transaction />
 
+        <div class="row mb-3">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body d-flex ">
+                        <div class="row">
+                            <div class="col-auto">
+                                <span class="bg-teal text-white avatar avatar-lg">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M18 11l-6 -6"></path>
+                                        <path d="M6 11l6 -6"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total a receber</div>
+                                </div>
+                                <div class="h1">R$ {{ $credit }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body d-flex ">
+                        <div class="row">
+                            <div class="col-auto">
+                                <span class="bg-danger text-white avatar avatar-lg">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-down">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M16 15l-4 4" />
+                                        <path d="M8 15l4 4" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">Total a pagar</div>
+                                </div>
+                                <div class="h1">{{ $debit }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body d-flex ">
+                        <div class="row">
+                            <div class="col-auto">
+                                <span class="bg-teal text-white avatar avatar-lg">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-1">
+                                        <path d="M12 5l0 14"></path>
+                                        <path d="M18 11l-6 -6"></path>
+                                        <path d="M6 11l6 -6"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">À Receber HOJE</div>
+                                </div>
+                                <div class="h1">R$ {{ $creditToday }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body d-flex ">
+                        <div class="row">
+                            <div class="col-auto">
+                                <span class="bg-danger text-white avatar avatar-lg">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-down">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 5l0 14" />
+                                        <path d="M16 15l-4 4" />
+                                        <path d="M8 15l4 4" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center">
+                                    <div class="subheader">À PAGAR HOJE</div>
+                                </div>
+                                <div class="h1">R$ {{ $debitToday }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- <div class="row mb-3">
             @foreach ($box as $title => $data)
             <div class="col">
@@ -167,10 +279,10 @@
 
 
                                     <td>
-                                        {{-- <x-page.status color="{{ $item->type->color() }}">{{ $item->type->label()
-                                            }}
-                                        </x-page.status> --}}
-                                        <span class="text-{{ $item->type->color() }}">
+
+
+                                        <span class="status-{{ $item->type->color() }}">
+                                            <span class="status-dot"></span>
                                             {{$item->type->label()}}
                                         </span>
 

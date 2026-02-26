@@ -126,19 +126,24 @@ class TransactionPage extends Component
         ];
 
 
-        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->whereNotNull('paid_at')->where('type', 'C')->sum('amount');
-        $debit = Transaction::whereBetween('date', [$this->start, $this->end])->current('payed')->sum('amount');
+        $credit =  Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'C')->sum('amount');
+        $debit = Transaction::whereBetween('date', [$this->start, $this->end])->whereNull('paid_at')->where('type', 'D')->sum('amount');
+        $creditToday =  Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->whereNull('paid_at')->where('type', 'C')->sum('amount');
+        $debitToday = Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->whereNull('paid_at')->where('type', 'D')->sum('amount');
 
 
         // $this->resetPage();
         return view('livewire.transaction.transaction-page', [
             'transactions' => $this->filters()->paginate(10),
             'box'          => $box,
-            'credit' => $credit,
-            'debit' => $debit,
+            'credit' => currency($credit),
+            'debit' => currency($debit),
             'today' => Transaction::whereBetween('date', [$this->start, $this->end])->current('today')->sum('amount'),
             'sald' => $this->saldo(),
-            'amount' => ($this->saldo() + $credit) - $debit
+            'amount' => ($this->saldo() + $credit) - $debit,
+
+            'creditToday' => currency($creditToday),
+            'debitToday' => currency($debitToday),
         ]);
     }
 
