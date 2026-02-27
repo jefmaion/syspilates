@@ -6,6 +6,7 @@ use App\Livewire\Admin\PermissionPage;
 use App\Livewire\Calendar\CalendarPage;
 use App\Livewire\Calendar\TodayClass;
 use App\Livewire\Dashboard;
+use App\Livewire\Dashboard\DashboardPage;
 use App\Livewire\Instructor\InstructorForm;
 use App\Livewire\Instructor\InstructorPage;
 use App\Livewire\Instructor\InstructorShow;
@@ -45,7 +46,7 @@ Route::get('/', function () {
 Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
 
 
-    Route::get('dashboard', Dashboard::class)->name('dashboard');
+    Route::get('dashboard', DashboardPage::class)->name('dashboard');
 
     Route::get('modality', ModalityPage::class)->name('modality');
     Route::get('modality/create', CreateModality::class)->name('modality.create');

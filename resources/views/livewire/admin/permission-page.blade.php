@@ -19,11 +19,7 @@
             <x-icons.plus class="icon icon-1" /> Novo
         </a>
 
-        @foreach($permissions as $group => $perms)
         <div class="card mb-3">
-            <div class="card-header">
-                <h2 class="casrd-title">{{ $group }}</h2>
-            </div>
             <div class="card-bodys">
 
                 <x-table.table :search="false">
@@ -36,13 +32,17 @@
                         </tr>
                     </thead>
                     <tbody class="table-tbody">
-                        @foreach($perms as $i => $permission)
+                        @foreach($permissions as $i => $permission)
                         <tr class="align-middle">
                             <td>{{ $permission->label }}</td>
                             @foreach($roles as $role)
                             <td class="text-center ">
                                 <div class="d-flex align-items-middle">
-                                    <x-form.checkbox wire:model='roless' value="{{ $role->id }}.{{ $permission->id}}" />
+                                    <label class="form-check">
+                                        <input type="checkbox" class="form-check-input" wire:click='set($emit->value)'
+                                            wire:model.live="sync.{{$role->id}}.{{$permission->id}}">
+                                        <span class="form-check-label"></span>
+                                    </label>
                                 </div>
                             </td>
                             @endforeach
@@ -52,7 +52,7 @@
                 </x-table.table>
             </div>
         </div>
-        @endforeach
+
     </x-page.page-body>
 
 </div>

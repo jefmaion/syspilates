@@ -71,7 +71,7 @@ class RegistrationShow extends Component
     public function mount(Registration $registration)
     {
 
-        // dd($registration->last_instalment);
+
         $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);
@@ -110,6 +110,9 @@ class RegistrationShow extends Component
 
     public function render(): View | Closure | string
     {
+
+        $this->authorize('view', $this->registration);
+
         $classes = $this->registration->classes();
 
         foreach ($this->filter as $field => $value) {

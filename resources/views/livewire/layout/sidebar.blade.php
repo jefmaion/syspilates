@@ -62,7 +62,9 @@
                     </a>
                 </li>
 
+                @can('list*')
                 <li class="nav-item nav-header ms-3 my-2"><small>CADASTROS</small></li>
+                @endcan
 
                 @can('list student')
                 <li class="nav-item {{ request()->routeIs('student*') ? 'active' : '' }}">

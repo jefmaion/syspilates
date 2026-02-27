@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 return [
 
@@ -168,7 +168,7 @@ return [
      * See documentation to understand supported syntax.
      */
 
-    'enable_wildcard_permission' => false,
+    'enable_wildcard_permission' => true,
 
     /*
      * The class to use for interpreting wildcard permissions.
