@@ -62,9 +62,9 @@
                     </a>
                 </li>
 
-                @can('list*')
+
                 <li class="nav-item nav-header ms-3 my-2"><small>CADASTROS</small></li>
-                @endcan
+
 
                 @can('list student')
                 <li class="nav-item {{ request()->routeIs('student*') ? 'active' : '' }}">
@@ -121,6 +121,16 @@
                     </a>
                 </li>
                 @endif
+
+                <li class="nav-item nav-header ms-3 my-2"><small>OSTEOPATIA</small></li>
+                <li class="nav-item {{ request()->routeIs('osteopathy*') ? 'active' : '' }}">
+                    <a class="nav-link" wire:navigate href="{{ route('osteopathy') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <x-icons.list />
+                        </span>
+                        <span class="nav-link-title"> Avaliações</span>
+                    </a>
+                </li>
 
                 @role('Administrador')
 

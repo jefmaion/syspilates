@@ -116,7 +116,7 @@ class CalendarPage extends Component
                 'id'                 => 'class-' . $class->id,
                 'start'              => $class->datetime->format('Y-m-d H:i:s'),
                 'title'              => $badge . ' ' . ($class->student->user->nickname ?? $class->student->user->shortName),
-                'className'          => $eventClass . $bgColor,
+                'className'          => $eventClass . $bgColor . ' ',
                 'textColor'          => 'white',
                 'event_id'           => $class->id,
                 'type'               => $class->type,

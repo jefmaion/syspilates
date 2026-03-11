@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             RegistrationPlanSeeder::class,
             CategorySeeder::class,
             TransactionSeeder::class,
+            AssessmentsSeeder::class
         ]);
 
         User::factory()->create([

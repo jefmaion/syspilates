@@ -13,6 +13,9 @@ use App\Livewire\Instructor\InstructorShow;
 use App\Livewire\Modality\CreateModality;
 use App\Livewire\Modality\ModalityPage;
 use App\Livewire\Modality\UpdateModality;
+use App\Livewire\Osteopathy\AssessmentCreate;
+use App\Livewire\Osteopathy\AssessmentForm;
+use App\Livewire\Osteopathy\ClinicalAssessmentPage;
 use App\Livewire\Plan\PlanPage;
 use App\Livewire\Profile;
 use App\Livewire\Registration\CreateRegistration;
@@ -64,6 +67,12 @@ Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
     Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
     Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
     Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
+
+    Route::get('osteopathy', ClinicalAssessmentPage::class)->name('osteopathy');
+    Route::get('osteopathy/create', AssessmentForm::class)->name('assessment.create');
+    Route::get('osteopathy/{assessment}/edit', AssessmentForm::class)->name('assessment.edit');
+    // Route::get('osteopathy/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
+    // Route::get('osteopathy/{instructor}/show', InstructorShow::class)->name('instructor.show');
 
     Route::get('registration', RegistrationPage::class)->name('registration');
     Route::get('registration/create', CreateRegistration::class)->name('registration.create');
