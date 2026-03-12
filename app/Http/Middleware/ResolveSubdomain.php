@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
@@ -26,13 +26,16 @@ class ResolveSubdomain
         $parts = explode('.', $host);
 
 
-
         // default
         $dbName = env('DB_DATABASE');
 
         if (count($parts) >= 3 && $parts[0] !== 'admin') {
             $dbName = $parts[0] . '_app';
         }
+
+        $dbName = $parts[0] . '_app';
+
+        dd($dbName);
 
 
         // 🔥 força o reset total da conexão
@@ -49,7 +52,5 @@ class ResolveSubdomain
         app()->instance('current_db', $dbName);
 
         return $next($request);
-
-
     }
 }

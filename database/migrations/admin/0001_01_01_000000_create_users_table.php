@@ -1,13 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration
+return new class() extends Migration
 {
+    protected $connection = 'admin';
     /**
      * Run the migrations.
      */
@@ -59,8 +60,8 @@ return new class () extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::connection($this->connection)->dropIfExists('users');
+        Schema::connection($this->connection)->dropIfExists('password_reset_tokens');
+        Schema::connection($this->connection)->dropIfExists('sessions');
     }
 };

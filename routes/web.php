@@ -39,6 +39,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Route::group('admin', function () {
+//     dd('opa');
+// });
 
 
 /*
