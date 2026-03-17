@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
-    protected $connection = 'admin';
     /**
      * Run the migrations.
      */
@@ -53,8 +52,8 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::connection($this->connection)->dropIfExists('jobs');
-        Schema::connection($this->connection)->dropIfExists('job_batches');
-        Schema::connection($this->connection)->dropIfExists('failed_jobs');
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('failed_jobs');
     }
 };

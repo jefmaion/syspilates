@@ -177,10 +177,7 @@
                                     @foreach ($instructor->modalities as $modality)
                                     <tr>
                                         <td>{{ $modality->name }}</td>
-                                        <td>{{ $modality->pivot->commission_type == 'fixed'
-                                            ? 'Fixo'
-                                            : 'Percentual
-                                            (%)' }}</td>
+                                        <td>{{ $modality->pivot->commission_type->label() }}</td>
                                         <td>{{ currency($modality->pivot->commission_value, prepend: null) }}</td>
                                         <td>{{ $modality->pivot->calculate_on_justified_absence ? 'Sim' : 'Não' }}
                                         </td>

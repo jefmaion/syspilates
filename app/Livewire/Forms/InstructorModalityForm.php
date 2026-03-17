@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use App\Enums\ComissionTypeEnum;
 use App\Models\Instructor;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
@@ -47,9 +48,13 @@ class InstructorModalityForm extends Form
             $rule->ignore($this->modality_id, 'modality_id');
         }
 
+        $comissionsTypeRule = implode(",", array_map(function ($item) {
+            return $item->value;
+        }, ComissionTypeEnum::cases()));
+
         return [
             'modality_id'                    => ['required', 'exists:modalities,id', $rule],
-            'commission_type'                => ['required', 'in:percent,fixed'],
+            'commission_type'                => ['required', 'in:' . $comissionsTypeRule],
             'commission_value'               => ['required', 'numeric', 'min:0', Rule::when(request('commission_type') === 'percent', fn() => ['lte:100']),],
             'calculate_on_justified_absence' => ['boolean'],
         ];
@@ -64,7 +69,7 @@ class InstructorModalityForm extends Form
             ->pivot;
 
         $this->modality_id                    = $modalityId;
-        $this->commission_type                = $pivot->commission_type;
+        $this->commission_type                = $pivot->commission_type->value;
         $this->commission_value               =  currency($pivot->commission_value, prepend: false);
         $this->calculate_on_justified_absence = (bool) $pivot->calculate_on_justified_absence;
 
@@ -74,6 +79,8 @@ class InstructorModalityForm extends Form
     public function add(): void
     {
         $this->validate();
+
+
 
         $this->instructor->modalities()->attach($this->modality_id, [
             'commission_type'                => $this->commission_type,
@@ -87,6 +94,8 @@ class InstructorModalityForm extends Form
     public function update(): void
     {
         $this->validate();
+
+
 
         $this->instructor->modalities()->updateExistingPivot($this->modality_id, [
             'commission_type'                => $this->commission_type,

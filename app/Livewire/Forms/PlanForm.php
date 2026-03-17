@@ -29,7 +29,7 @@ class PlanForm extends Form
     public function rules(): array
     {
         return [
-            'name'    => ['required', 'max:100', Rule::unique('plans', 'name')->ignore($this->plan?->id)],
+            'name'    => ['required', 'max:100', Rule::unique('tenant.plans', 'name')->ignore($this->plan?->id)],
             'duration' => ['required', 'numeric'],
             'classes_per_week' => ['required', 'numeric'],
             'value' => ['required'],

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
@@ -22,7 +22,7 @@ class ModalityForm extends Form
     public function rules(): array
     {
         return [
-            'name'    => ['required', 'max:100', Rule::unique('modalities', 'name')->ignore($this->modality?->id)],
+            'name'    => ['required', 'max:100', Rule::unique('tenant.modalities', 'name')->ignore($this->modality?->id)],
             'acronym' => ['max:3'],
         ];
     }

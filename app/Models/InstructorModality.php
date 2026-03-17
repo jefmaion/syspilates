@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ComissionTypeEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -14,7 +15,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class InstructorModality extends Pivot
 {
-    //
+    public $casts = [
+        'commission_type' => ComissionTypeEnum::class
+    ];
 
     /**
      * @return Attribute<string, string>

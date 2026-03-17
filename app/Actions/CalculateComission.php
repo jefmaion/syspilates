@@ -35,10 +35,19 @@ class CalculateComission
             return;
         }
 
+
+        if ($comiss->commission_type->value == 'hour'  && (InstructorComission::where('instructor_id', $comiss->instructor_id)->where('datetime', $class->datetime)->count()) > 0) {
+            return;
+        }
+
         $value = $comiss->commission_value;
 
-        if ($comiss->commission_type == 'percent') {
+        if ($comiss->commission_type->value == 'percent') {
             $value = ($comiss->commission_value / 100) * $class->value;
+        }
+
+        if ($comiss->commission_type->value == 'hour') {
+            $value = ($comiss->commission_value / 60) * 50;
         }
 
         InstructorComission::create([

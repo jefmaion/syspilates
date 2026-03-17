@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ResolveSubdomain;
+use App\Http\Middleware\TenantSelector;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,8 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(EnsureUserIsActive::class);
-        $middleware->prependToGroup('web', ResolveSubdomain::class);
-        $middleware->alias(['resolve.subdomain' => ResolveSubdomain::class,]);
+
+
+        $middleware->prependToGroup('web', TenantSelector::class);
+        $middleware->alias(['tenant' => TenantSelector::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

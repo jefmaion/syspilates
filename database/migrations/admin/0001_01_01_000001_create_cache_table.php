@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
-    protected $connection = 'admin';
+
     /**
      * Run the migrations.
      */
@@ -32,7 +32,7 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::connection($this->connection)->dropIfExists('cache');
-        Schema::connection($this->connection)->dropIfExists('cache_locks');
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
     }
 };

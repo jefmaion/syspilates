@@ -5,9 +5,9 @@
                 <h5 class="modal-title align-items-center" id="modalTitleId">
                     <x-icons.users />
                     @if ($edit)
-                        Editar
+                    Editar
                     @else
-                        Adicionar
+                    Adicionar
                     @endif Modalidade
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -23,17 +23,20 @@
                         <x-form.select wire:model='form.commission_type' name="form.commission_type">
                             <option value="percent">Percentual de aula (%)</option>
                             <option value="fixed">Valor fixo</option>
+                            <option value="hour">Hora Aula</option>
                         </x-form.select>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label required">Valor</label>
-                        <x-form.input-text wire:model="form.commission_value" class="currency" name="form.commission_value" />
+                        <x-form.input-text wire:model="form.commission_value" class="currency"
+                            name="form.commission_value" />
                     </div>
 
                     <div class="col-md-12">
                         <div>
                             <label class="form-check">
-                                <input class="form-check-input" type="checkbox" wire:model='form.calculate_on_justified_absence' value="1">
+                                <input class="form-check-input" type="checkbox"
+                                    wire:model='form.calculate_on_justified_absence' value="1">
                                 <span class="form-check-label">Calcular comissão na falta justificada</span>
                             </label>
 

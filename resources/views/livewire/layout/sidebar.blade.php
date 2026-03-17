@@ -42,6 +42,16 @@
 
             <ul class="navbar-nav pt-lg-3">
 
+                <li class="nav-item nav-header ms-3 my-2"><small>OSTEOPATIA</small></li>
+                <li class="nav-item {{ request()->routeIs('tenant*') ? 'active' : '' }}">
+                    <a class="nav-link" wire:navigate href="{{ route('tenant') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <x-icons.list />
+                        </span>
+                        <span class="nav-link-title"> Clientes</span>
+                    </a>
+                </li>
+
                 <li class="nav-item nav-header ms-3 my-2"><small>Aulas</small></li>
 
                 <li class="nav-item {{ request()->routeIs('calendar*') ? 'active' : '' }}">
