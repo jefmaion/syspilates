@@ -37,10 +37,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
         ])->assignRole('Administrador');
 
-        User::factory()->create([
-            'name'  => 'professor',
-            'email' => 'prof@prof.com',
-        ])->assignRole('Professor');
+
 
         User::factory()->create([
             'name'  => 'Aluno',

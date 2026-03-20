@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('company_name')->unique();
             $table->string('subdomain')->unique();
             $table->string('database');
-            $table->integer('active')->default(1);
+            $table->boolean('active')->default(true);
         });
     }
 

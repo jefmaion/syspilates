@@ -35,6 +35,13 @@ class TenantSelector
 
         $database = 'syspilates_' . $subdomain;
 
+        $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
+
+        if (!$tenant) {
+            abort('404', 'Tenant not found');
+        }
+
+        $database = $tenant->database;
 
 
         // echo $database;

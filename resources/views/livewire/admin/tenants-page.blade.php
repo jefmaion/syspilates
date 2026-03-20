@@ -45,13 +45,31 @@
                         @foreach ($tenants as $item)
                         <tr class="alsign-middle">
                             <td>{{ $item->company_name }}</td>
-                            <td>{{ $item->subdomain }}.{{ getenv('APP_SERVER') }}</td>
+                            <td><a href="http://{{ $item->subdomain }}.{{ getenv('APP_SERVER') }}:8000"
+                                    target="_blank">{{
+                                    $item->subdomain }}.{{ getenv('APP_SERVER') }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->phone }}</td>
                             <td></td>
                             <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                             <td>
-                                <a href="#" wire:click='edit({{$item}})'>Editar</a>
+                                <label class="form-check form-switch form-switch-3">
+                                    <input class="form-check-input" type="checkbox" @if($item->active) checked="checked"
+                                    @endif
+                                    wire:change='setStatus({{$item}})'>
+                                    <span class="form-check-label"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="btn btn-action" wire:click='edit({{$item}})'>
+                                    <x-icons.edit class="icon icon-1" />
+                                </a>
+                                <a class="btn btn-action" wire:click='createDatabase({{$item}})'>
+                                    <x-icons.database class="icon icon-1" />
+                                </a>
+                                <a class="btn btn-action" wire:click='deleteTenant({{$item}})'>
+                                    <x-icons.trash class="icon icon-1" />
+                                </a>
                             </td>
                         </tr>
                         @endforeach
@@ -67,4 +85,6 @@
 
 
     </x-page.page-body>
+
+    <x-modal.modal-delete />
 </div>

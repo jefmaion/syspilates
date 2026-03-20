@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Actions\CreateDatabase;
 use App\Models\Admin\Tenant;
 use App\Models\User;
 use Closure;
@@ -60,52 +61,32 @@ class CreateTenant extends Component
 
     public function save()
     {
-
-
-
         $this->validate();
-
-
         if (!empty($this->tenant)) {
             $this->tenant->update($this->all());
         } else {
-
             $data = $this->all();
-
             $data['database'] = "syspilates_" . $this->subdomain;
-
-            Tenant::create($data);
-
+            $tenant  = Tenant::create($data);
             if ($this->create_database) {
-                Config::set('database.connections.tenant.database', $data['database']);
-
-                DB::statement("CREATE DATABASE " . $data['database']);
-                DB::purge('tenant');
-
-                Artisan::call('migrate:fresh', [
-                    '--database' => 'tenant'
-                ]);
-
-                Artisan::call('db:seed', [
-                    '--database' => 'tenant',
-                    '--class' => 'RoleAndPermissionsSeeder'
-                ]);
-
-                User::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'phone1' => $this->phone,
-                    'password' => Hash::make('password')
-                ])->assignRole('Administrador');
+                $this->createDatabase($tenant);
             }
         }
-
-
-
         $this->dispatch('hide-modal', modal: 'modal-form-tenant');
         $this->dispatch('$refresh');
     }
 
+    public function createDatabase(Tenant $tenant)
+    {
+        CreateDatabase::run($tenant);
+
+        User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone1' => $this->phone,
+            'password' => Hash::make('password')
+        ])->assignRole('Administrador');
+    }
 
     public function render(): View|Closure|string
     {

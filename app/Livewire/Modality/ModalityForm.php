@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\modality;
 
@@ -21,17 +21,18 @@ class ModalityForm extends Component
     #[On('create-modality')]
     public function create(): void
     {
-        // $this->reset();
+        $this->authorize('create', Modality::class);
         $this->resetValidation();
-        $this->dispatch('show-modal', modal:'modal-form-modality');
+        $this->dispatch('show-modal', modal: 'modal-form-modality');
     }
 
     #[On('edit-modality')]
     public function edit(Modality  $modality): void
     {
+        $this->authorize('update', $modality);
         $this->mount($modality);
         $this->resetValidation();
-        $this->dispatch('show-modal', modal:'modal-form-modality');
+        $this->dispatch('show-modal', modal: 'modal-form-modality');
     }
 
     public function mount(?Modality  $modality): void
@@ -49,18 +50,19 @@ class ModalityForm extends Component
     {
         $this->form->store();
 
-        $this->dispatch('hide-modal', modal:'modal-form-modality');
-        $this->dispatch('show-alert', message:'Modalidade cadastrada com sucesso!');
+        $this->dispatch('hide-modal', modal: 'modal-form-modality');
+        $this->dispatch('show-alert', message: 'Modalidade cadastrada com sucesso!');
         $this->dispatch('modality-created');
     }
 
     public function update(): void
     {
+        $this->authorize('update', $this->form->modality);
         $this->validate();
         $this->form->update();
 
-        $this->dispatch('hide-modal', modal:'modal-form-modality');
-        $this->dispatch('show-alert', message:'Dados alterados com sucesso!');
+        $this->dispatch('hide-modal', modal: 'modal-form-modality');
+        $this->dispatch('show-alert', message: 'Dados alterados com sucesso!');
         $this->dispatch('modality-updated');
     }
 

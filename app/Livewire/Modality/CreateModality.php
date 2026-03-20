@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Modality;
 
@@ -12,12 +12,13 @@ class CreateModality extends Component
 {
     public ModalityForm $form;
 
-    public function mount()
-    {
-    }
+    public function mount() {}
 
     public function save(): void
     {
+
+
+
         $this->form->store();
 
         $this->redirect(route('modality'), navigate: true);

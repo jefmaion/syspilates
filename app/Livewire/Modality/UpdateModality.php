@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Modality;
 
@@ -27,6 +27,8 @@ class UpdateModality extends Component
 
     public function render(): View
     {
+
+
         return view('livewire.modality.update-modality');
     }
 }

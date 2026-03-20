@@ -42,7 +42,7 @@
 
             <ul class="navbar-nav pt-lg-3">
 
-                <li class="nav-item nav-header ms-3 my-2"><small>OSTEOPATIA</small></li>
+
                 <li class="nav-item {{ request()->routeIs('tenant*') ? 'active' : '' }}">
                     <a class="nav-link" wire:navigate href="{{ route('tenant') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -72,9 +72,7 @@
                     </a>
                 </li>
 
-
                 <li class="nav-item nav-header ms-3 my-2"><small>CADASTROS</small></li>
-
 
                 @can('list student')
                 <li class="nav-item {{ request()->routeIs('student*') ? 'active' : '' }}">
@@ -132,19 +130,10 @@
                 </li>
                 @endif
 
-                <li class="nav-item nav-header ms-3 my-2"><small>OSTEOPATIA</small></li>
-                <li class="nav-item {{ request()->routeIs('osteopathy*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('osteopathy') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.list />
-                        </span>
-                        <span class="nav-link-title"> Avaliações</span>
-                    </a>
-                </li>
 
                 @role('Administrador')
-
                 <li class="nav-item nav-header ms-3 my-2"><small>FINANCEIRO</small></li>
+                @endrole
 
                 @can('list transaction')
                 <li class="nav-item {{ request()->routeIs('transaction*') ? 'active' : '' }}">
@@ -156,6 +145,7 @@
                     </a>
                 </li>
                 @endcan
+
                 @can('view cashbook')
                 <li class="nav-item {{ request()->routeIs('cashbook*') ? 'active' : '' }}">
                     <a class="nav-link" wire:navigate href="{{ route('cashbook') }}">
@@ -187,7 +177,7 @@
                     </a>
                 </li>
 
-                @endrole
+
 
             </ul>
             {{--
