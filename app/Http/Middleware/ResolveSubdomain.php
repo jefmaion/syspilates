@@ -33,9 +33,10 @@ class ResolveSubdomain
             $dbName = $parts[0] . '_app';
         }
 
-        $dbName = $parts[0] . '_app';
+        // $dbName = $parts[0] . '_app';
+        $dbName = getenv('DB_DATABASE');
 
-        dd($dbName);
+
 
 
         // 🔥 força o reset total da conexão

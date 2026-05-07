@@ -49,7 +49,7 @@ Route::get('/', function () {
 | TENANT → {tenant}.lvh.me
 |--------------------------------------------------------------------------
 */
-Route::middleware(['resolve.subdomain', 'web',  'auth'])->group(function () {
+Route::middleware([ 'web',  'auth'])->group(function () {
 
 
     Route::get('dashboard', DashboardPage::class)->name('dashboard');
