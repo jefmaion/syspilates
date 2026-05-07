@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
+use App\Enums\ComissionTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration
+return new class() extends Migration
 {
     /**
      * Run the migrations.
@@ -22,7 +23,7 @@ return new class () extends Migration
             $table->unique(['instructor_id', 'modality_id']);
 
             // Campos extras da pivot
-            $table->enum('commission_type', ['percent', 'fixed']);
+            $table->enum('commission_type', ComissionTypeEnum::cases());
             $table->decimal('commission_value', 8, 2);
             $table->boolean('calculate_on_justified_absence')->default(false);
 

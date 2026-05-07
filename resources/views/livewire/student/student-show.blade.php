@@ -53,6 +53,7 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('student') }}" class="btn btn-link me-2" wire:navigate>Voltar</a>
+                            @can('delete student')
                             <div class="dropdown">
                                 <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                 <div class="dropdown-menu">
@@ -66,6 +67,7 @@
                                     </a>
                                 </div>
                             </div>
+                            @endcan
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -11,7 +11,7 @@ class BaseModel extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
 
-    // protected $connection = 'tenant';
+    protected $connection = 'tenant';
 
     public $casts = [
         'created_at' => 'datetime',

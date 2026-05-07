@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ComissionTypeEnum;
 use App\Models\Modality;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -34,9 +35,9 @@ class InstructorFactory extends Factory
             // cria entre 1 e 3 modalidades
 
             // foreach ($modalities as $modality) {
-            for ($i = 1;$i <= $count;$i++) {
+            for ($i = 1; $i <= $count; $i++) {
                 $instructor->modalities()->attach(Modality::inRandomOrder()->first()->id, [
-                    'commission_type'                => fake()->randomElement(['percent', 'fixed']),
+                    'commission_type'                => fake()->randomElement(ComissionTypeEnum::cases()),
                     'commission_value'               => fake()->randomFloat(2, 5, 50),
                     'calculate_on_justified_absence' => fake()->boolean(),
                 ]);

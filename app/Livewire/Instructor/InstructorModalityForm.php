@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Instructor;
 
+use App\Enums\ComissionTypeEnum;
 use App\Livewire\Forms\InstructorModalityForm as FormsInstructorModalityForm;
 use App\Models\Instructor;
 use Closure;
@@ -39,7 +40,7 @@ class InstructorModalityForm extends Component
         $this->edit       = false;
         $this->form->edit = $this->edit;
         $this->dispatch('hide-modal', modal: 'modal-form-instructor-modality');
-        $this->dispatch('show-alert', message:'Modalidade alterada com sucesso!');
+        $this->dispatch('show-alert', message: 'Modalidade alterada com sucesso!');
         $this->dispatch('modality-updated');
     }
 
@@ -57,7 +58,7 @@ class InstructorModalityForm extends Component
     {
         $this->form->add();
         $this->dispatch('hide-modal', modal: 'modal-form-instructor-modality');
-        $this->dispatch('show-alert', message:'Modalidade adicionada com sucesso!');
+        $this->dispatch('show-alert', message: 'Modalidade adicionada com sucesso!');
         $this->dispatch('modality-attached');
     }
 
@@ -65,12 +66,13 @@ class InstructorModalityForm extends Component
     public function remove(int $modalityId): void
     {
         $this->instructor->modalities()->detach($modalityId);
-        $this->dispatch('show-alert', message:'Modalidade removida com sucesso!');
+        $this->dispatch('show-alert', message: 'Modalidade removida com sucesso!');
         $this->dispatch('modality-removed');
     }
 
     public function render(): View | Closure | string
     {
+
         return view('livewire.instructor.instructor-modality-form');
     }
 }

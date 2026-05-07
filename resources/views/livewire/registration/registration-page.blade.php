@@ -8,7 +8,7 @@
         <x-slot name="actions">
             <div class="btn-list">
                 <a href="#" wire:click='$dispatch("create-registration")'
-                    class="btn btn-primary btn-5 d-none d-sm-inline-block">
+                    class="btn btn-primary btn-1 d-none d-sm-inline-block">
                     <x-icons.plus class="icon icon-1" /> Nova Matrícula
                 </a>
                 <a wire:click='$dispatch("create-registration")' class="btn btn-primary btn-6 d-sm-none btn-icon"

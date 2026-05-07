@@ -14,21 +14,37 @@
                         <x-form.select-class-status name="status" :except="$exceptOptions" wire:model.live='status' />
                     </div>
 
+                    @role('Administrador')
+                    <div class="mb-3">
+                        <label for="" class="form-label">Professor</label>
+                        <x-form.select-instructor name="instructor_id" wire:model.live='instructor_id' />
+                    </div>
+                    @endrole
+
                     <div class="mb-3">
                         <label class="form-label">Evolução/Comentários</label>
-                        <textarea class="form-control {{ $errors->has('evolution') ? ' is-invalid' : '' }}" rows="10" name="evolution" wire:model="evolution"></textarea>
+                        <textarea class="form-control {{ $errors->has('evolution') ? ' is-invalid' : '' }}" rows="10"
+                            name="evolution" wire:model="evolution"></textarea>
                         @error('evolution')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     @if (in_array($status, $makeupConditions))
-                        <div class="mb-3">
-                            <label class="form-check">
-                                <input class="form-check-input" wire:model='canMakeup' type="checkbox" checked>
-                                <span class="form-check-label">Permitir reposição</span>
-                            </label>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="form-check">
+                                    <input class="form-check-input" wire:model='canMakeup' type="checkbox" checked>
+                                    <span class="form-check-label">Permitir reposição</span>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Data Limite</label>
+                                <x-form.input-text type="date" wire:model='markupDateLimit' name="markupDateLimit" />
+                            </div>
                         </div>
+                    </div>
                     @endif
                 </div>
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ComissionTypeEnum;
 use App\Policies\InstructorPolicy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,8 @@ class Instructor extends BaseModel
     use HasFactory;
 
     public $guarded = ['id'];
+
+
 
     /**
      * @return BelongsTo<User, $this>

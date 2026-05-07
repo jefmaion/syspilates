@@ -16,13 +16,14 @@ class CreateRegistration
     public static function run(array $data, bool $firstPay = false)
     {
         $schedules = $data['schedule'] ?? null;
+        $installments = $data['installments'] ?? null;
+
+
+
         unset($data['schedule']);
-
-
+        unset($data['installments']);
 
         $registration = Registration::create($data);
-
-
 
         $registration->schedule()->createMany($schedules);
 
@@ -34,39 +35,60 @@ class CreateRegistration
 
         $firstDueDate = $date->copy();
 
-        for ($i = 1; $i <= $duration; $i++) {
+        if (empty($installments)) {
 
-            $payed = null;
 
-            if ($i == 1 && $firstPay) {
-                $payed = $registration->start;
+
+
+            for ($i = 1; $i <= $duration; $i++) {
+
+                $payed = null;
+
+                if ($i == 1 && $firstPay) {
+                    $payed = $registration->start;
+                }
+
+                if ($date->isSaturday()) {
+                    $date->addDays(2);
+                }
+
+                if ($date->isSunday()) {
+                    $date->addDays(1);
+                }
+
+                $last = Transaction::create([
+                    'category_id'     => 1,
+                    'payment_method'  => null,
+                    'registration_id' => $registration->id,
+                    'student_id'      => $registration->student_id,
+                    'date'            => $date->format('Y-m-d'),
+                    'amount'          => $registration->value,
+                    'origin_amount'   => $registration->value,
+                    'type'            => TransactionTypeEnum::CREDIT,
+                    'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
+                    'paid_at' => $payed,
+                    'reference_type' => 'installment'
+                ]);
+
+                $date->addMonth();
             }
-
-            if ($date->isSaturday()) {
-                $date->addDays(2);
+        } else {
+            foreach ($installments as $k => $installment) {
+                $last = Transaction::create([
+                    'category_id'     => 1,
+                    'payment_method'  => null,
+                    'registration_id' => $registration->id,
+                    'student_id'      => $registration->student_id,
+                    'date'            => $installment['date'],
+                    'amount'          => $installment['value'],
+                    'origin_amount'   => $installment['value'],
+                    'type'            => TransactionTypeEnum::CREDIT,
+                    'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . ($k + 1) . '/' . $duration . ')',
+                    'paid_at' => ($installment['payed']) ? $registration->start : null,
+                    'reference_type' => 'installment'
+                ]);
             }
-
-            if ($date->isSunday()) {
-                $date->addDays(1);
-            }
-
-            $last = Transaction::create([
-                'category_id'     => 1,
-                'payment_method'  => null,
-                'registration_id' => $registration->id,
-                'student_id'      => $registration->student_id,
-                'date'            => $date->format('Y-m-d'),
-                'amount'          => $registration->value,
-                'origin_amount'   => $registration->value,
-                'type'            => TransactionTypeEnum::CREDIT,
-                'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
-                'paid_at' => $payed,
-                'reference_type' => 'installment'
-            ]);
-
-            $date->addMonth();
         }
-
 
         $date = $last->date;
 

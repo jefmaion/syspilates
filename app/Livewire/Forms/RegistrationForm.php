@@ -39,10 +39,13 @@ class RegistrationForm extends Form
 
     public $renew = false;
 
+    public $installments = [];
+
 
 
     public function updatedClassPerWeek($value)
     {
+
         if ($value === null || $value === '' || ! is_numeric($value)) {
 
             $this->class_per_week = null;
@@ -55,8 +58,6 @@ class RegistrationForm extends Form
             $this->schedule = [];
             return;
         }
-
-        // $this->schedule = [];
 
         $news = [];
 
@@ -87,7 +88,6 @@ class RegistrationForm extends Form
         }
 
         return [
-
             // registration
             'modality_id' => ['required', $unique],
             'student_id'  => ['required'],
@@ -104,7 +104,6 @@ class RegistrationForm extends Form
             'schedule.*.weekday'       => ['required'],
             'schedule.*.time'          => ['required'],
             'schedule.*.instructor_id' => ['required'],
-
         ];
     }
 
@@ -123,6 +122,7 @@ class RegistrationForm extends Form
         $this->schedule = [];
         $this->paid = false;
         $this->renew = false;
+        $this->installments = [];
     }
 
     public function create()
@@ -144,6 +144,7 @@ class RegistrationForm extends Form
             'end'            => Carbon::parse($this->start)->addDays((int) $this->duration)->format('Y-m-d'),
             'status'         => 'active',
             'schedule'       => $this->schedule,
+            'installments' => $this->installments
         ], $this->paid);
     }
 

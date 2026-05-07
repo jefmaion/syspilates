@@ -30,6 +30,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     use AuditingAuditable;
     use HasRoles;
 
+    protected $connection = 'tenant';
+
     /**
      * The attributes that are mass assignable.
      *

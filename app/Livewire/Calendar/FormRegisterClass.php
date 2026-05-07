@@ -32,6 +32,7 @@ class FormRegisterClass extends Component
     public $data;
 
     public $canMakeup = true;
+    public $markupDateLimit = null;
 
     public Classes $class;
     public $registration_id;
@@ -68,6 +69,8 @@ class FormRegisterClass extends Component
         $this->resetValidation();
 
         $this->class = Classes::find($id);
+        $this->markupDateLimit = now()->addDays(20)->format('Y-m-d');
+        $this->instructor_id = $this->class->instructor_id;
 
         if ($this->class) {
             if ($this->class->status !== ClassStatusEnum::SCHEDULED) {
@@ -90,10 +93,11 @@ class FormRegisterClass extends Component
         $this->class->update([
             'status'    => $this->status,
             'evolution' => $this->evolution,
+            'instructor_id' => $this->instructor_id
         ]);
 
         if ($this->canMakeup) {
-            CreateMarkupClass::run($this->class);
+            CreateMarkupClass::run($this->class, dateLimit: $this->markupDateLimit);
         }
 
 

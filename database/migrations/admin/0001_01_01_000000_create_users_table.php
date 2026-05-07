@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
-    protected $connection = 'admin';
+
     /**
      * Run the migrations.
      */
@@ -60,8 +60,8 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::connection($this->connection)->dropIfExists('users');
-        Schema::connection($this->connection)->dropIfExists('password_reset_tokens');
-        Schema::connection($this->connection)->dropIfExists('sessions');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
     }
 };

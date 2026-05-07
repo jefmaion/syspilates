@@ -9,6 +9,7 @@ use App\Livewire\Forms\RegistrationForm;
 use App\Models\Plan;
 use App\Models\Registration;
 use App\Models\Student;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -43,6 +44,40 @@ class CreateRegistration extends Component
         $this->form->duration = $plan->duration;
         $this->form->class_per_week = (string) $plan->classes_per_week;
         $this->form->value = (string) $plan->value;
+
+        if (!empty($this->form->deadline) && !empty($this->form->duration)) {
+            $this->generateInstallments();
+        }
+    }
+
+    public function generateInstallments()
+    {
+        $times = $this->form->duration / 30;
+        $this->form->installments = [];
+
+
+        $date = Carbon::parse(Carbon::parse($this->form->start)->format('Y-m-' . $this->form->deadline));
+
+        for ($i = 1; $i <= $times; $i++) {
+
+            if ($date->isSaturday()) {
+                $date->addDays(2);
+            }
+
+            if ($date->isSunday()) {
+                $date->addDays(1);
+            }
+
+
+            $this->form->installments[] = [
+                'date' => ($i == 1) ? $this->form->start : $date->format('Y-m-d'),
+                'value' => $this->form->value,
+                'payment_method' => ($i == 1) ? 'debit' : 'credit',
+                'payed' => false
+            ];
+
+            $date->addMonth();
+        }
     }
 
     #[On('student-created')]
@@ -82,6 +117,8 @@ class CreateRegistration extends Component
     #[On('store-registration')]
     public function save()
     {
+
+
         $registration = $this->form->create();
 
         if ($this->form->renew) {

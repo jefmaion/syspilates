@@ -1,13 +1,12 @@
-@props(['disabled' => false, 'name'])
-<input @disabled($disabled) id="{{$name}}" {{ $attributes->merge(['class' => 'form-control' .
-($errors->has($attributes->get('name')) ?
-' is-invalid' : '')]) }}>
+@props(['disabled' => false, 'id' => 'exp'.rand()])
+<input @disabled($disabled) id="{{$id}}" {{ $attributes->merge(['class' => 'form-control' .
+($errors->has($attributes->get('name')) ? ' is-invalid' : '')]) }}>
 @error($attributes->get('name'))<div class="invalid-feedback">{{ $message }}</div>@enderror
 
 @push('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    const el = document.getElementById("{{ $name }}");
+    const el = document.getElementById("{{ $id }}");
     if (el) {
         IMask(el, {
             mask: Number,

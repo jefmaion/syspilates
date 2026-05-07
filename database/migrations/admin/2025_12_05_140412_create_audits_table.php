@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
-    protected $connection = 'admin';
     /**
      * Run the migrations.
      */
@@ -45,6 +44,6 @@ return new class() extends Migration
         $connection = config('audit.drivers.database.connection', config('database.default'));
         $table      = config('audit.drivers.database.table', 'audits');
 
-        Schema::connection($connection)->drop($table);
+        Schema::drop($table);
     }
 };

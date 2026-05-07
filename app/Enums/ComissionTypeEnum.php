@@ -8,12 +8,14 @@ enum ComissionTypeEnum: string
 {
     case PERCENT  = 'percent';
     case FIXED = 'fixed';
+    case TIME = 'hour';
 
     public function label(): string
     {
         return match ($this) {
             self::PERCENT  => 'Percentual (%)',
             self::FIXED => 'Valor Fixo',
+            self::TIME => 'Hora Aula',
         };
     }
 
@@ -22,6 +24,7 @@ enum ComissionTypeEnum: string
         return match ($this) {
             self::PERCENT  => '%',
             self::FIXED => 'R$',
+            self::TIME => 'R$',
         };
     }
 

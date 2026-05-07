@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Livewire\Modality;
 
@@ -23,6 +23,9 @@ class ModalityPage extends Component
 
     public function render(): View
     {
+
+        $this->authorize('viewAny', Modality::class);
+
         return view('livewire.modality.modality-page', [
             'modalities' => Modality::whereLike('name', '%' . $this->search . '%')->orderBy('id', 'desc')->paginate($this->pages),
         ]);

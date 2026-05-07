@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\View\Components\Form;
 
@@ -22,9 +22,10 @@ class SelectInstructor extends Component
      */
     public function __construct()
     {
+
         $this->instructors = Instructor::with('user')->whereHas('user', function ($query) {
             return $query->where('active', 1);
-        })->get();
+        })->get()->sortBy('user.name')->values();
     }
 
     /**
