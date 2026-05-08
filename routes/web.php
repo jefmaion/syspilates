@@ -44,7 +44,7 @@ Route::get('/', function () {
 
 
 
-Route::middleware(['tenant', 'auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::get('tenant', TenantsPage::class)->name('tenant');
 
