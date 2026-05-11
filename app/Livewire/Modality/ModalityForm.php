@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\modality;
+namespace App\Livewire\Modality;
 
 use App\Livewire\Forms\ModalityForm as FormsModalityForm;
 use App\Models\Modality;
