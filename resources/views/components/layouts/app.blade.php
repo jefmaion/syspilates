@@ -13,7 +13,6 @@ data-bs-theme="{{ session('theme.mode') }}">
         <livewire:layout.sidebar />
         <livewire:layout.navigation />
         <div class="page-wrapper">
-            {{-- @dd(session()) --}}
             {{ $slot }}
             @include('layouts.parts.footer')
         </div>
