@@ -19,8 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(EnsureUserIsActive::class);
 
 
-        // $middleware->prependToGroup('web', TenantSelector::class);
-        // $middleware->alias(['tenant' => TenantSelector::class]);
+        $middleware->prependToGroup('web', TenantSelector::class);
+        $middleware->alias(['tenant' => TenantSelector::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
