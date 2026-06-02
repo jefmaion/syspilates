@@ -48,6 +48,7 @@ class TenantSelector
 
             app()->instance('tenant', 'landlord');
 
+
             return $next($request);
         }
 
