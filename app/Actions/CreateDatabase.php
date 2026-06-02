@@ -14,6 +14,7 @@ class CreateDatabase
     public static function run(Tenant $tenant)
     {
         Config::set('database.connections.tenant.database', $tenant->database);
+        Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$tenant->subdomain);
 
         // DB::statement("CREATE DATABASE " . $tenant->database);
 
