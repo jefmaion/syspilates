@@ -80,7 +80,7 @@ new #[Layout('layouts.guest')] class extends Component
     </form>
 
     <x-slot:link>
-        <div class="text-center text-secondary mt-3">{{ __("Don't have an account?") }} <a
-                href="{{ route('register') }}" tabindex="-1">{{ __("Signup") }}</a></div>
+        {{-- <div class="text-center text-secondary mt-3">{{ __("Don't have an account?") }} <a
+                href="{{ route('register') }}" tabindex="-1">{{ __("Signup") }}</a></div> --}}
     </x-slot:link>
 </div>
