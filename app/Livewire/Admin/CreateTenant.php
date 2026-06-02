@@ -66,7 +66,7 @@ class CreateTenant extends Component
             $this->tenant->update($this->all());
         } else {
             $data = $this->all();
-            $data['database'] = "syspilates_" . $this->subdomain;
+            $data['database'] = env('DB_PREFIX') . "_" . $this->subdomain;
             $tenant  = Tenant::create($data);
             if ($this->create_database) {
                 $this->createDatabase($tenant);
