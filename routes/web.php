@@ -36,54 +36,61 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+$domain = env('APP_DOMAIN');
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 
+Route::domain($domain)->group(function () {
+    Route::get('/', TenantsPage::class)->name('tenant');
+});
 
+Route::domain('{tenant}.'.$domain)->middleware('tenant')->group(function () {
 
-Route::middleware(['tenant', 'auth'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
 
-    Route::get('tenant', TenantsPage::class)->name('tenant');
+        Route::get('tenant', TenantsPage::class)->name('tenant');
 
-    Route::get('dashboard', DashboardPage::class)->name('dashboard');
+        Route::get('dashboard', DashboardPage::class)->name('dashboard');
 
-    Route::get('modality', ModalityPage::class)->name('modality');
-    Route::get('modality/create', CreateModality::class)->name('modality.create');
-    Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
+        Route::get('modality', ModalityPage::class)->name('modality');
+        Route::get('modality/create', CreateModality::class)->name('modality.create');
+        Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');
 
-    Route::get('plan', PlanPage::class)->name('plan');
+        Route::get('plan', PlanPage::class)->name('plan');
 
-    Route::get('student', StudentPage::class)->name('student');
-    Route::get('student/create', StudentForm::class)->name('student.create');
-    Route::get('student/{student}/edit', StudentForm::class)->name('student.edit');
-    Route::get('student/{student}/show', StudentShow::class)->name('student.show');
+        Route::get('student', StudentPage::class)->name('student');
+        Route::get('student/create', StudentForm::class)->name('student.create');
+        Route::get('student/{student}/edit', StudentForm::class)->name('student.edit');
+        Route::get('student/{student}/show', StudentShow::class)->name('student.show');
 
-    Route::get('instructor', InstructorPage::class)->name('instructor');
-    Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
-    Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
-    Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
+        Route::get('instructor', InstructorPage::class)->name('instructor');
+        Route::get('instructor/create', InstructorForm::class)->name('instructor.create');
+        Route::get('instructor/{instructor}/edit', InstructorForm::class)->name('instructor.edit');
+        Route::get('instructor/{instructor}/show', InstructorShow::class)->name('instructor.show');
 
-    Route::get('osteopathy', ClinicalAssessmentPage::class)->name('osteopathy');
-    Route::get('osteopathy/create', AssessmentForm::class)->name('assessment.create');
-    Route::get('osteopathy/{assessment}/edit', AssessmentForm::class)->name('assessment.edit');
+        Route::get('osteopathy', ClinicalAssessmentPage::class)->name('osteopathy');
+        Route::get('osteopathy/create', AssessmentForm::class)->name('assessment.create');
+        Route::get('osteopathy/{assessment}/edit', AssessmentForm::class)->name('assessment.edit');
 
-    Route::get('registration', RegistrationPage::class)->name('registration');
-    Route::get('registration/create', CreateRegistration::class)->name('registration.create');
-    Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
+        Route::get('registration', RegistrationPage::class)->name('registration');
+        Route::get('registration/create', CreateRegistration::class)->name('registration.create');
+        Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
 
-    Route::get('transaction', TransactionPage::class)->name('transaction');
-    Route::get('cashbook', CashBook::class)->name('cashbook');
-    Route::get('comission', ComissionPage::class)->name('comission');
-    Route::get('permission', PermissionPage::class)->name('permission');
+        Route::get('transaction', TransactionPage::class)->name('transaction');
+        Route::get('cashbook', CashBook::class)->name('cashbook');
+        Route::get('comission', ComissionPage::class)->name('comission');
+        Route::get('permission', PermissionPage::class)->name('permission');
 
-    Route::get('calendar', CalendarPage::class)->name('calendar');
-    Route::get('today', TodayClass::class)->name('today');
-    Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
+        Route::get('calendar', CalendarPage::class)->name('calendar');
+        Route::get('today', TodayClass::class)->name('today');
+        Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
 
-    Route::get('profile', Profile::class)->name('profile');
+        Route::get('profile', Profile::class)->name('profile');
+    });
+
 });
 
 

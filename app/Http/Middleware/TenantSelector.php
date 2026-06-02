@@ -29,26 +29,35 @@ class TenantSelector
 
         $subdomain = $parts[0];
 
-        if ($subdomain == 'localhost') {
+
+
+
+        if (count($parts) <= 2) {
             return $next($request);
         }
 
-        $database = 'syspilates_' . $subdomain;
 
-        $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
+        $database = env('DB_PREFIX') . '_' . $subdomain;
+        // $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
 
-        if (!$tenant) {
-            abort('404', 'Tenant not found');
-        }
 
-        $database = $tenant->database;
+        // if (!$tenant) {
+        //     abort('404', 'Tenant not found');
+        // }
 
+        app()->instance('tenant', $subdomain);
+
+        URL::defaults([
+            'tenant' => $subdomain
+        ]);
 
         // echo $database;
 
         Config::set('database.connections.tenant.database', $database);
         DB::purge('tenant');
         DB::reconnect('tenant');
+
+
 
         return $next($request);
 

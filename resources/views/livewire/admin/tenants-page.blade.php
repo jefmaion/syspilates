@@ -51,7 +51,7 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->phone }}</td>
                             <td></td>
-                            <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $item->created_at?->format('d/m/Y H:i') }}</td>
                             <td>
                                 <label class="form-check form-switch form-switch-3">
                                     <input class="form-check-input" type="checkbox" @if($item->active) checked="checked"
