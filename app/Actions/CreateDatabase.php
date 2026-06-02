@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CreateDatabase
 {
@@ -15,7 +16,9 @@ class CreateDatabase
         Config::set('database.connections.tenant.database', $tenant->database);
 
         DB::statement("CREATE DATABASE " . $tenant->database);
+
         DB::purge('tenant');
+        DB::reconnect('tenant');
 
         Artisan::call('migrate:fresh', [
             '--database' => 'tenant'
@@ -23,14 +26,21 @@ class CreateDatabase
 
         Artisan::call('db:seed', [
             '--database' => 'tenant',
-            '--class' => 'RoleAndPermissionsSeeder'
+            '--class' => 'TenantSeeder'
         ]);
 
-        // User::create([
-        //     'name' => $this->name,
-        //     'email' => $this->email,
-        //     'phone1' => $this->phone,
-        //     'password' => Hash::make('password')
-        // ])->assignRole('Administrador');
+        $user = new User();
+
+        $user->setConnection('tenant');
+        $user->fill([
+            'name' => $tenant->name,
+            'email' => $tenant->email,
+            'phone1' => $tenant->phone,
+            'password' => Hash::make('password')
+        ]);
+
+        $user->save();
+        $user->setConnection('tenant');
+        $user->assignRole('Administrador');
     }
 }

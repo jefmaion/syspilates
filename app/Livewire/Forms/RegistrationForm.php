@@ -81,7 +81,7 @@ class RegistrationForm extends Form
     public function rules()
     {
 
-        $unique = Rule::unique('registrations', 'modality_id')->whereIn('status', ['active'])->where('student_id', $this->student_id);
+        $unique = Rule::unique('tenant.registrations', 'modality_id')->whereIn('status', ['active'])->where('student_id', $this->student_id);
 
         if ($this->renew) {
             $unique = null;

@@ -45,9 +45,9 @@
                         @foreach ($tenants as $item)
                         <tr class="alsign-middle">
                             <td>{{ $item->company_name }}</td>
-                            <td><a href="http://{{ $item->subdomain }}.{{ getenv('APP_SERVER') }}:8000"
+                            <td><a href="https://{{ $item->subdomain }}.{{ env('APP_DOMAIN') }}"
                                     target="_blank">{{
-                                    $item->subdomain }}.{{ getenv('APP_SERVER') }}</td>
+                                    $item->subdomain }}.{{ env('APP_DOMAIN') }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->phone }}</td>
                             <td></td>

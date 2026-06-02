@@ -72,7 +72,7 @@ return [
         'landlord' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', '127.0.0.1'),
-            'database'  => 'syspilates_landlord',
+            'database'  => env('DB_PREFIX') . '_landlord',
             'username'  => env('DB_USERNAME', 'root'),
             'password'  => env('DB_PASSWORD', ''),
             'charset'   => 'utf8mb4',

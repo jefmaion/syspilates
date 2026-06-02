@@ -12,6 +12,9 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call([
+            RoleAndPermissionsSeeder::class,
+            CategorySeeder::class
+        ]);
     }
 }

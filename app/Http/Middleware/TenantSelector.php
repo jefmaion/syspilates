@@ -25,6 +25,37 @@ class TenantSelector
     {
 
         $host = $request->getHost();
+
+        $domain = env('APP_DOMAIN');
+
+        if ($host === 'admin.' . $domain) {
+
+            config([
+                'database.default' => 'landlord',
+            ]);
+
+             app()->instance('tenant', 'landlord');
+
+            URL::defaults([
+                'tenant' => 'admin'
+            ]);
+
+            // echo $database;
+
+            // Config::set('database.connections.tenant.database', 'syspilates_landlord');
+            DB::purge('landlord');
+            DB::reconnect('landlord');
+
+            app()->instance('tenant', 'landlord');
+
+            return $next($request);
+        }
+
+          // sem subdomínio
+        if ($host === $domain) {
+            abort(404);
+        }
+
         $parts = explode(".", $host);
 
         $subdomain = $parts[0];
@@ -38,14 +69,15 @@ class TenantSelector
 
 
         $database = env('DB_PREFIX') . '_' . $subdomain;
-        // $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
+        $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
 
 
-        // if (!$tenant) {
-        //     abort('404', 'Tenant not found');
-        // }
+        if (!$tenant) {
+            abort('404', 'Tenant not found');
+        }
 
         app()->instance('tenant', $subdomain);
+        app()->instance('tenant_data', $tenant);
 
         URL::defaults([
             'tenant' => $subdomain
@@ -53,6 +85,7 @@ class TenantSelector
 
         // echo $database;
 
+        Config::set('app.name', $tenant->company_name);
         Config::set('database.connections.tenant.database', $database);
         DB::purge('tenant');
         DB::reconnect('tenant');

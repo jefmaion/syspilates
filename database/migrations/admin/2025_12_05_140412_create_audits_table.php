@@ -16,7 +16,7 @@ return new class() extends Migration
         $connection = config('audit.drivers.database.connection', config('database.default'));
         $table      = config('audit.drivers.database.table', 'audits');
 
-        Schema::connection($connection)->create($table, function (Blueprint $table) {
+        Schema::connection('landlord')->create($table, function (Blueprint $table) {
             $morphPrefix = config('audit.user.morph_prefix', 'user');
 
             $table->bigIncrements('id');
@@ -44,6 +44,6 @@ return new class() extends Migration
         $connection = config('audit.drivers.database.connection', config('database.default'));
         $table      = config('audit.drivers.database.table', 'audits');
 
-        Schema::drop($table);
+        Schema::connection('landlord')->drop($table);
     }
 };

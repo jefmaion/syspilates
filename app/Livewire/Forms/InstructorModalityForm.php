@@ -40,7 +40,7 @@ class InstructorModalityForm extends Form
      */
     public function rules(): array
     {
-        $rule = Rule::unique('instructor_modality', 'modality_id')
+        $rule = Rule::unique('tenant.instructor_modality', 'modality_id')
             ->where('instructor_id', $this->instructor->id);
 
         // Se estiver editando, ignora o próprio registro
@@ -53,7 +53,7 @@ class InstructorModalityForm extends Form
         }, ComissionTypeEnum::cases()));
 
         return [
-            'modality_id'                    => ['required', 'exists:modalities,id', $rule],
+            'modality_id'                    => ['required', 'exists:tenant.modalities,id', $rule],
             'commission_type'                => ['required', 'in:' . $comissionsTypeRule],
             'commission_value'               => ['required', 'numeric', 'min:0', Rule::when(request('commission_type') === 'percent', fn() => ['lte:100']),],
             'calculate_on_justified_absence' => ['boolean'],

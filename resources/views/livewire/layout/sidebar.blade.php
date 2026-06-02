@@ -41,8 +41,7 @@
             <!-- BEGIN NAVBAR MENU -->
 
             <ul class="navbar-nav pt-lg-3">
-
-
+                @if(app('tenant')=='landlord')
                 <li class="nav-item {{ request()->routeIs('tenant*') ? 'active' : '' }}">
                     <a class="nav-link" wire:navigate href="{{ route('tenant') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -51,7 +50,7 @@
                         <span class="nav-link-title"> Clientes</span>
                     </a>
                 </li>
-
+                @else
                 <li class="nav-item nav-header ms-3 my-2"><small>Aulas</small></li>
 
                 <li class="nav-item {{ request()->routeIs('calendar*') ? 'active' : '' }}">
@@ -167,6 +166,7 @@
                 </li>
                 @endcan
 
+                @endif
 {{--
                 <li class="nav-item {{ request()->routeIs('permission*') ? 'active' : '' }}">
                     <a class="nav-link" wire:navigate href="{{ route('permission') }}">

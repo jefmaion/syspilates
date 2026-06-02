@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class InstructorModality extends Pivot
 {
+
+    protected $connection = 'tenant';
+
     public $casts = [
         'commission_type' => ComissionTypeEnum::class
     ];

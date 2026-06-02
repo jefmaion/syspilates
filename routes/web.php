@@ -43,15 +43,18 @@ Route::get('/', function () {
 });
 
 
-Route::domain($domain)->group(function () {
-    Route::get('/', TenantsPage::class)->name('tenant');
+Route::domain('admin.'.$domain)->group(function () {
+    // Route::get('/', TenantsPage::class)->name('tenant');
+     Route::get('tenant', TenantsPage::class)->name('tenant');
 });
 
 Route::domain('{tenant}.'.$domain)->middleware('tenant')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::get('tenant', TenantsPage::class)->name('tenant');
+
+
+
 
         Route::get('dashboard', DashboardPage::class)->name('dashboard');
 

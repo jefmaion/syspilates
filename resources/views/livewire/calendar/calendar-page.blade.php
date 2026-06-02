@@ -5,7 +5,7 @@
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
-            Calendário
+            Calendários
         </h2>
 
     </x-page.page-header>

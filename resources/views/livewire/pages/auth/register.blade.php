@@ -32,6 +32,14 @@ new #[Layout('layouts.guest')] class extends Component
 
         Auth::login($user);
 
+
+
+        if(!app()->bound('tenant')) {
+           $this->redirectRoute('tenant');
+            return;
+
+        }
+
         $this->redirect(route('calendar', absolute: false), navigate: false);
     }
 }; ?>
