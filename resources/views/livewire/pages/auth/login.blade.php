@@ -33,7 +33,10 @@ new #[Layout('layouts.guest')] class extends Component
 <div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <h2 class="h2 text-center mb-4">{{ __('Login to your account') }}</h2>
+    @if(app()->bound('tenant_data'))
+    <h1 class="text-center">{{ app('tenant_data')->company_name ?? '' }}</h1>
+    @endif
+    <h4 class="h4 text-center mb-4">{{ __('Login to your account') }}</h4>
     <form wire:submit="login">
         <!-- Email Address -->
         <div class="mb-3">
