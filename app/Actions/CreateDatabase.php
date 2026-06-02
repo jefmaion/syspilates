@@ -15,7 +15,7 @@ class CreateDatabase
     {
         Config::set('database.connections.tenant.database', $tenant->database);
 
-        DB::statement("CREATE DATABASE " . $tenant->database);
+        // DB::statement("CREATE DATABASE " . $tenant->database);
 
         DB::purge('tenant');
         DB::reconnect('tenant');
