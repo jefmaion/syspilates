@@ -87,7 +87,10 @@ class TenantSelector
         // echo $database;
 
         Config::set('app.name', $tenant->company_name);
+
         Config::set('database.connections.tenant.database', $database);
+        Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$domain);
+
         DB::purge('tenant');
         DB::reconnect('tenant');
 
