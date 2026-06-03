@@ -47,7 +47,7 @@ Route::domain('admin.'.$domain)->group(function () {
      Route::get('tenant', TenantsPage::class)->name('tenant');
 });
 
-Route::domain('{tenant}.'.$domain)->middleware(['tenant', 'tenant_routes'])->group(function () {
+Route::domain('{tenant}.'.$domain)->middleware(['tenant'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
         Route::get('dashboard', DashboardPage::class)->name('dashboard');
