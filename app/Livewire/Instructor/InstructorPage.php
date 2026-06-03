@@ -16,6 +16,10 @@ class InstructorPage extends Component
 
     public ?Instructor $instructor;
 
+    public function addMe() {
+        auth()->user()->instructor()->create();
+    }
+
     #[On('delete-instructor')]
     public function select(Instructor $instructor): void
     {
@@ -43,7 +47,15 @@ class InstructorPage extends Component
 
     public function render(): View
     {
+
+        $addMe = false;
+
+        if(auth()->user()->hasRole('Administrador') && !Instructor::where('user_id', auth()->user()->id)->exists()) {
+            $addMe = true;
+        }
+
         return view('livewire.instructor.instructor-page', [
+            'addMe' => $addMe,
             'instructors' => Instructor::with('user')->whereHas('user', function ($query) {
                 return $query->whereLike('name', '%' . $this->search . '%')
                     ->orWhereLike('phone1', '%' . $this->search . '%')

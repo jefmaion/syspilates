@@ -3,8 +3,10 @@
     <x-page.page-header>
         <h2 class="page-title">
             <x-icons.users />
+
             Professores
         </h2>
+        @if($addMe)(<a href="#" wire:click='addMe()'>Me adicionar como professor</a>)@endif
         @can('create instructor')
         <x-slot name="actions">
             <div class="btn-list">
@@ -15,6 +17,7 @@
                 <a wire:click='$dispatch("create-instructor")' class="btn btn-primary btn-6 d-sm-none btn-icon"
                     aria-label="Novo">
                     <x-icons.plus class="icon icon-1" />
+
                 </a>
             </div>
         </x-slot>
