@@ -47,6 +47,7 @@ class TenantSelector
             DB::reconnect('landlord');
 
             app()->instance('tenant', 'landlord');
+            app()->instance('tenant_subdomain', config('app.admin'));
 
 
             return $next($request);
@@ -79,6 +80,7 @@ class TenantSelector
 
         app()->instance('tenant', $subdomain);
         app()->instance('tenant_data', $tenant);
+        app()->instance('tenant_subdomain', $subdomain);
 
         URL::defaults([
             'tenant' => $subdomain
@@ -89,7 +91,10 @@ class TenantSelector
         Config::set('app.name', $tenant->company_name);
 
         Config::set('database.connections.tenant.database', $database);
-        Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$subdomain);
+
+        if(env('APP_DOMAIN') != 'syspilates.test') {
+            Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$subdomain);
+        }
 
         DB::purge('tenant');
         DB::reconnect('tenant');

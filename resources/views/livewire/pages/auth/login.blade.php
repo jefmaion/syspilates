@@ -26,6 +26,13 @@ new #[Layout('layouts.guest')] class extends Component
         ]]);
 
         // $this->redirectIntended(default: route('dashboard', ['tenant' => app('tenant'), 'absolute' => false]), navigate: false);
+
+        if(app('tenant') == 'landlord') {
+           $this->redirectRoute('tenant');
+            return;
+        }
+
+
         $this->redirectIntended(default: route('calendar', ['absolute' => false]), navigate: false);
     }
 }; ?>

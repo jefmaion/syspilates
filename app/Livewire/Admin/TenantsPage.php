@@ -5,6 +5,8 @@ namespace App\Livewire\Admin;
 use App\Actions\CreateDatabase;
 use App\Models\Admin\Tenant;
 use Closure;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Illuminate\View\View;
@@ -32,6 +34,31 @@ class TenantsPage extends Component
     public function createDatabase(Tenant $tenant)
     {
         CreateDatabase::run($tenant);
+    }
+
+    public function runMigrations() {
+
+        $tenants = Tenant::get();
+
+        foreach($tenants as $tenant) {
+
+            Config::set('database.connections.tenant.database', $tenant->database);
+
+            if(env('APP_DOMAIN') != 'syspilates.test') {
+                Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$tenant->subdomain);
+            }
+
+            DB::purge('tenant');
+            DB::reconnect('tenant');
+
+            Artisan::call('migrate', [
+                '--database' => 'tenant'
+            ]);
+
+        }
+
+        $this->dispatch('show-alert', message: 'Migrations executadas!');
+
     }
 
     public function deleteTenant(Tenant $tenant)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\ResolveSubdomain;
 use App\Http\Middleware\TenantSelector;
+use App\Http\Middleware\VerifyTenantRoutes;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->prependToGroup('web', TenantSelector::class);
         $middleware->alias(['tenant' => TenantSelector::class]);
+
+        $middleware->alias(['tenant_routes' => VerifyTenantRoutes::class]);
+        $middleware->appendToGroup('web', VerifyTenantRoutes::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

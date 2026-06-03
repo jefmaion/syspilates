@@ -44,20 +44,13 @@ Route::get('/', function () {
 
 
 Route::domain('admin.'.$domain)->group(function () {
-    // Route::get('/', TenantsPage::class)->name('tenant');
      Route::get('tenant', TenantsPage::class)->name('tenant');
 });
 
-Route::domain('{tenant}.'.$domain)->middleware('tenant')->group(function () {
+Route::domain('{tenant}.'.$domain)->middleware(['tenant', 'tenant_routes'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
-
-
-
-
-
         Route::get('dashboard', DashboardPage::class)->name('dashboard');
-
         Route::get('modality', ModalityPage::class)->name('modality');
         Route::get('modality/create', CreateModality::class)->name('modality.create');
         Route::get('modality/{modality}/edit', UpdateModality::class)->name('modality.edit');

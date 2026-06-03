@@ -12,6 +12,10 @@
                 <a href="#" wire:click='create()' class="btn btn-primary btn-6 d-sm-none btn-icon" aria-label="Novo">
                     <x-icons.plus class="icon icon-1" />
                 </a>
+
+                <a href="#" wire:click='runMigrations()' class="btn btn-primary btn-5 d-none d-sm-inline-block">
+                    <x-icons.plus class="icon icon-1" /> Rodar Migrations
+                </a>
             </div>
         </x-slot>
 
