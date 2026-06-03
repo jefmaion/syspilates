@@ -23,8 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToGroup('web', TenantSelector::class);
         $middleware->alias(['tenant' => TenantSelector::class]);
 
-        $middleware->alias(['tenant_routes' => VerifyTenantRoutes::class]);
-        $middleware->appendToGroup('web', VerifyTenantRoutes::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
