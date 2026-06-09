@@ -18,20 +18,20 @@ class RoleAndPermissionsSeeder extends Seeder
 
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 2. Disable foreign key checks to avoid constraint errors
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // // 2. Disable foreign key checks to avoid constraint errors
+        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // 3. Clear the main tables
-        Permission::truncate();
-        Role::truncate();
+        // // 3. Clear the main tables
+        // Permission::truncate();
+        // Role::truncate();
 
-        // 4. Clear pivot relationship tables
-        DB::table(config('permission.table_names.model_has_permissions'))->truncate();
-        DB::table(config('permission.table_names.model_has_roles'))->truncate();
-        DB::table(config('permission.table_names.role_has_permissions'))->truncate();
+        // // 4. Clear pivot relationship tables
+        // DB::table(config('permission.table_names.model_has_permissions'))->truncate();
+        // DB::table(config('permission.table_names.model_has_roles'))->truncate();
+        // DB::table(config('permission.table_names.role_has_permissions'))->truncate();
 
-        // 5. Re-enable foreign key checks
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        // // 5. Re-enable foreign key checks
+        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $allPermissions = [];
         foreach (config('roles.permissions') as $group => $permissions) {
