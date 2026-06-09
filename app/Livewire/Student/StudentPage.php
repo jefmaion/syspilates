@@ -16,6 +16,11 @@ class StudentPage extends Component
 
     public ?Student $student;
 
+    public function mount()
+    {
+        $this->authorize('students.view');
+    }
+
     #[On('student-created')]
     #[On('student-updated')]
     public function refresh(): void

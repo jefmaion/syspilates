@@ -7,7 +7,7 @@
             Professores
         </h2>
         @if($addMe)(<a href="#" wire:click='addMe()'>Me adicionar como professor</a>)@endif
-        @can('create instructor')
+        @can('instructors.create')
         <x-slot name="actions">
             <div class="btn-list">
                 <a href="#" wire:click='$dispatch("create-instructor")'

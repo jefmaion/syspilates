@@ -14,6 +14,7 @@ new #[Layout('layouts.guest')] class extends Component
      */
     public function login(): void
     {
+        // dd(app('tenant_db'));
         $this->validate();
 
         $this->form->authenticate();
@@ -28,6 +29,7 @@ new #[Layout('layouts.guest')] class extends Component
         // $this->redirectIntended(default: route('dashboard', ['tenant' => app('tenant'), 'absolute' => false]), navigate: false);
 
         if(app('tenant') == 'landlord') {
+
            $this->redirectRoute('tenant');
             return;
         }

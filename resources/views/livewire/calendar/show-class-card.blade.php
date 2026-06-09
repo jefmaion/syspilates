@@ -111,13 +111,15 @@
         <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
             Fechar
         </button>
+        @can('register.class')
         @if ($class->status == App\Enums\ClassStatusEnum::SCHEDULED)
         <button type="button" data-bs-dissmiss="modal" wire:click="registerClass()" class="btn btn-primary">
             <span class="d-flex align-items-center">
-                <x-icons.success class="me-2" /> <span>Registrar Aula</span>
+                <x-icons.success class="me-2" /> <span>Registrar Aulas</span>
             </span>
         </button>
         @endif
+        @endcan
         @if ($class->status !== App\Enums\ClassStatusEnum::SCHEDULED && $class->canEdit)
         <button type="button" data-bs-dissmiss="modal" wire:click="editRegister()" class="btn btn-teal">
             <span class="d-flex align-items-center">

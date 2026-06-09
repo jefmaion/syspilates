@@ -39,5 +39,9 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(! app()->isProduction());
         Carbon::setLocale(config('app.locale')); // usa o locale do Laravel
         date_default_timezone_set(config('app.timezone'));
+
+          Gate::before(function ($user, string $ability) {
+            return $user->hasRole('Super') ? true : null;
+        });
     }
 }

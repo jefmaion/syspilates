@@ -6,6 +6,8 @@ namespace App\Livewire\Forms;
 
 use App\Models\Instructor;
 use App\Models\User;
+use App\Notifications\InstructorCreated;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Form;
 
 class InstructorForm extends Form
@@ -20,7 +22,14 @@ class InstructorForm extends Form
 
     public function create(User $user): Instructor
     {
-        return $user->instructor()->create($this->all());
+        $user->instructor()->create($this->all());
+        $user->update(['password' => Hash::make('password')]);
+        $user->assignRole('Professor');
+
+
+
+
+        return $user->instructor;
     }
 
     public function update(): bool

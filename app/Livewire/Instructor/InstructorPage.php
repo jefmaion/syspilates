@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Livewire\Instructor;
 
 use App\Models\Instructor;
+use App\Notifications\InstructorCreated;
 use App\Traits\PaginationTrait;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -47,6 +48,8 @@ class InstructorPage extends Component
 
     public function render(): View
     {
+
+
 
         $addMe = false;
 

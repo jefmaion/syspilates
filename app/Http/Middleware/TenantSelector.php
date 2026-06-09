@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Actions\SetDatabase;
 use App\Models\Admin\Tenant;
+use App\Tenant\TenantDatabaseManager;
+use App\Tenant\TenantResolver;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -16,6 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TenantSelector
 {
+    public function __construct(
+        private TenantResolver $resolver,
+        private TenantDatabaseManager $db
+    ) {}
+
     /**
      * Handle an incoming request.
      *
@@ -28,49 +36,37 @@ class TenantSelector
 
         $domain = env('APP_DOMAIN');
 
-        if ($host === 'admin.' . $domain) {
-
-            config([
-                'database.default' => 'landlord',
-            ]);
-
-             app()->instance('tenant', 'landlord');
-
-            URL::defaults([
-                'tenant' => 'admin'
-            ]);
-
-            // echo $database;
-
-            // Config::set('database.connections.tenant.database', 'syspilates_landlord');
-            DB::purge('landlord');
-            DB::reconnect('landlord');
-
-            app()->instance('tenant', 'landlord');
-            app()->instance('tenant_subdomain', config('app.admin'));
-
-
-            return $next($request);
-        }
-
-          // sem subdomínio
+        // sem subdomínio
         if ($host === $domain) {
             abort(404);
         }
 
         $parts = explode(".", $host);
-
         $subdomain = $parts[0];
-
-
-
 
         if (count($parts) <= 2) {
             return $next($request);
         }
 
+         if ($host === 'admin.' . $domain) {
 
-        $database = env('DB_PREFIX') . '_' . $subdomain;
+             config(['database.default' => 'landlord']);
+             URL::defaults(['tenant' => 'admin']);
+
+             app()->instance('tenant', 'landlord');
+            app()->instance('tenant_subdomain', config('app.admin'));
+            app()->instance('tenant_db', 'landlord');
+
+             app()->instance('tenant', 'landlord');
+
+            DB::purge('landlord');
+            DB::reconnect('landlord');
+
+
+            return $next($request);
+         }
+
+
         $tenant = Tenant::where('subdomain', $subdomain)->where('active', 1)->first();
 
 
@@ -78,62 +74,10 @@ class TenantSelector
             abort('404', 'Tenant not found');
         }
 
-        app()->instance('tenant', $subdomain);
-        app()->instance('tenant_data', $tenant);
-        app()->instance('tenant_subdomain', $subdomain);
-
-        URL::defaults([
-            'tenant' => $subdomain
-        ]);
-
-        // echo $database;
-
-        Config::set('app.name', $tenant->company_name);
-
-        Config::set('database.connections.tenant.database', $database);
-
-        if(env('APP_DOMAIN') != 'syspilates.test') {
-            Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$subdomain);
-        }
-
-        DB::purge('tenant');
-        DB::reconnect('tenant');
-
+        SetDatabase::run($tenant);
 
 
         return $next($request);
 
-
-
-        // $host = str_replace('www.', '', $request->getHost());
-        // $parts = explode('.', $host);
-
-
-        // // default
-        // $dbName = env('DB_DATABASE');
-
-        // if (count($parts) >= 3 && $parts[0] !== 'admin') {
-        //     $dbName = $parts[0] . '_app';
-        // }
-
-        // $dbName = $parts[0] . '_app';
-
-        // dd($dbName);
-
-
-        // // 🔥 força o reset total da conexão
-        // DB::purge('mysql');
-
-        // config(['database.connections.mysql.database' => $dbName]);
-
-        // DB::reconnect('mysql');
-
-
-        // // 🔥 força o Eloquent a usar a nova conexão
-        // Model::setConnectionResolver(app('db'));
-
-        // app()->instance('current_db', $dbName);
-
-        // return $next($request);
     }
 }

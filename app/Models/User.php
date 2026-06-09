@@ -30,7 +30,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     use AuditingAuditable;
     use HasRoles;
 
-    protected $connection = 'tenant';
+    // protected $connection = 'tenant';
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +55,13 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         'birthdate'         => 'date',
     ];
 
+
+    public function notifications()
+    {
+        return $this->morphMany(config('notifications.model', \Illuminate\Notifications\DatabaseNotification::class), 'notifiable')
+                    ->orderBy('created_at', 'desc')
+                    ->setConnection('landlord'); // Enforces the tenant DB connection
+    }
     /**
      * Get the attributes that should be cast.
      *

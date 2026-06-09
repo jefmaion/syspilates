@@ -14,7 +14,7 @@
                 <x-form.input-text type="date" wire:model.live='end' />
             </span>
         </div>
-        @can('create transaction')
+        @can('transactions.create')
         <x-slot name="actions">
             <a href="#" class="btn btn-primary" wire:click="$dispatch('create-transaction')">
                 <x-icons.success /> Novo Lançamento
@@ -302,7 +302,7 @@
                                             <x-icons.money class="icon icon-1" />
                                         </button>
 
-                                        @can('edit transaction')
+                                        @can('transactions.edit')
                                         <button type="button" class="btn  btn-action"
                                             wire:click="$dispatch('edit-transaction', {id: {{ $item->id }}})">
                                             <!-- Download SVG icon from http://tabler.io/icons/icon/edit -->
@@ -310,7 +310,7 @@
                                         </button>
                                         @endcan
 
-                                        @can('delete transaction')
+                                        @can('transactions.delete')
                                         <button type="button" class="btn  btn-action"
                                             wire:click="deleteTransaction({{ $item->id }})">
                                             <!-- Download SVG icon from http://tabler.io/icons/icon/x -->

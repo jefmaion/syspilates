@@ -53,7 +53,7 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('student') }}" class="btn btn-link me-2" wire:navigate>Voltar</a>
-                            @can('delete student')
+                            @can('students.delete')
                             <div class="dropdown">
                                 <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                 <div class="dropdown-menu">
@@ -85,6 +85,7 @@
                                 Histórico de Aulas
                             </a>
                         </li>
+                        @can('transactions.view')
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-activity-7" wire:click.prevent="tabs('tabs-activity-7')"
                                 class="nav-link {{ $tab === 'tabs-activity-7' ? 'active' : '' }}" data-bs-toggle="tab"
@@ -93,6 +94,7 @@
                                 Financeiro
                             </a>
                         </li>
+                        @endcan
                         <li class="nav-item" role="presentation">
                             <a href="#tabs-profile-7" wire:click.prevent="tabs('tabs-profile-7')"
                                 class="nav-link {{ $tab === 'tabs-profile-7' ? 'active' : '' }}" data-bs-toggle="tab"
@@ -159,6 +161,7 @@
                             role="tabpanel">
                             <livewire:student.student-form :modal="false" :student="$student" />
                         </div>
+                        @can('transactions.view')
                         <div class="tab-pane {{ $tab === 'tabs-activity-7' ? 'active show' : '' }}" id="tabs-activity-7"
                             role="tabpanel">
 
@@ -205,6 +208,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
                     </div>
                 </div>
             </div>

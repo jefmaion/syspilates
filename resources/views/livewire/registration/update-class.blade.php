@@ -19,11 +19,12 @@
                 <x-form.select-time type="time" name="time" wire:model='time' />
             </div>
 
+            @can('change.class.instructor')
             <div class="col-12 mb-3">
                 <label class="form-label">Professor</label>
                 <x-form.select-instructor name="instructor_id" wire:model='instructor_id' />
             </div>
-
+            @endcan
             {{-- <div class="col-12 mb-3">
                 <label for="" class="form-label">Status</label>
                 <x-form.select-class-status name="status" wire:model.live='status' />

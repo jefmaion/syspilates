@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 class Permission extends SpatiePermission
 {
     public $guarded = ['id'];
+    protected $connection = 'tenant';
 
     //
 }

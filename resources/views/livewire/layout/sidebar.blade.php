@@ -40,10 +40,12 @@
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <!-- BEGIN NAVBAR MENU -->
 
+
             <ul class="navbar-nav pt-lg-3">
+
                 @if(app('tenant')=='landlord')
                 <li class="nav-item {{ request()->routeIs('tenant*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('tenant') }}">
+                    <a class="nav-link"  href="{{ route('tenant') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <x-icons.list />
                         </span>
@@ -51,135 +53,58 @@
                     </a>
                 </li>
                 @else
-                <li class="nav-item nav-header ms-3 my-2"><small>Aulas</small></li>
 
-                <li class="nav-item {{ request()->routeIs('calendar*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('calendar') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.calendar />
-                        </span>
-                        <span class="nav-link-title"> Calendário</span>
-                    </a>
-                </li>
+            @foreach(config('sidebar.menu') as $title => $group)
 
-                <li class="nav-item {{ request()->routeIs('today*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('today') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.calendar />
-                        </span>
-                        <span class="nav-link-title"> Aulas do Dia</span>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-header ms-3 my-2"><small>CADASTROS</small></li>
-
-                @can('list student')
-                <li class="nav-item {{ request()->routeIs('student*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('student') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.users />
-                        </span>
-                        <span class="nav-link-title"> Alunos</span>
-                    </a>
-                </li>
-                @endcan
-
-                @can('list instructor')
-                <li class="nav-item {{ request()->routeIs('instructor*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('instructor') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.instructor />
-                        </span>
-                        <span class="nav-link-title"> Professores</span>
-                    </a>
-                </li>
-                @endcan
-
-
-                @can('list registration')
-                <li class="nav-item {{ request()->routeIs('registration*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('registration') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.registration />
-                        </span>
-                        <span class="nav-link-title"> Matrículas</span>
-                    </a>
-                </li>
-                @endcan
-
-                @can('list modality')
-                <li class="nav-item {{ request()->routeIs('modality*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('modality') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.list />
-                        </span>
-                        <span class="nav-link-title"> Modalidades</span>
-                    </a>
-                </li>
+                @if(isset($group['permission'])  && !auth()->user()->can($group['permission']))
+                    @continue;
                 @endif
 
-                @can('list modality')
-                <li class="nav-item {{ request()->routeIs('plan*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('plan') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.list />
-                        </span>
-                        <span class="nav-link-title"> Planos</span>
-                    </a>
-                </li>
-                @endif
+            <li class="nav-item nav-header ms-3 my-2"><small>{{ $title }}</small></li>
 
+                @foreach($group['items'] as $label => $item)
 
-                @role('Administrador')
-                <li class="nav-item nav-header ms-3 my-2"><small>FINANCEIRO</small></li>
-                @endrole
+                    @if(isset($item['permission'])  && !auth()->user()->can($item['permission']))
+                        @continue;
+                    @endif
 
-                @can('list transaction')
-                <li class="nav-item {{ request()->routeIs('transaction*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('transaction') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.money />
-                        </span>
-                        <span class="nav-link-title"> Lançamentos</span>
-                    </a>
-                </li>
-                @endcan
+                    <li class="nav-item {{ request()->routeIs($item['route'].'*') ? 'active' : '' }}">
+                        <a class="nav-link"  href="{{ route($item['route']) }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
 
-                @can('view cashbook')
-                <li class="nav-item {{ request()->routeIs('cashbook*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('cashbook') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.users />
-                        </span>
-                        <span class="nav-link-title"> Livro Caixa</span>
-                    </a>
-                </li>
-                @endcan
-                @can('calculate comission')
-                <li class="nav-item {{ request()->routeIs('comission*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('comission') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.users />
-                        </span>
-                        <span class="nav-link-title"> Comissões</span>
-                    </a>
-                </li>
-                @endcan
+                                @if(isset($item['icon']))
+                                <x-dynamic-component component="{{$item['icon']}}" />
+                                @endif
+                            </span>
+                            <span class="nav-link-title"> {{ $label }}</span>
+                        </a>
+                    </li>
 
-                @endif
-{{--
-                <li class="nav-item {{ request()->routeIs('permission*') ? 'active' : '' }}">
-                    <a class="nav-link" wire:navigate href="{{ route('permission') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <x-icons.users />
-                        </span>
-                        <span class="nav-link-title"> Permissões</span>
-                    </a>
-                </li> --}}
+                @endforeach
 
+            @endforeach
 
-
+            @endif
             </ul>
+            {{-- foreach ($menu as $group) {
+
+                if (!auth()->user()->can($group['permission'])) {
+                    continue;
+                }
+
+                // mostra título
+
+                foreach ($group['items'] as $item) {
+
+                    if (!auth()->user()->can($item['permission'])) {
+                        continue;
+                    }
+
+                    // mostra item
+                }
+            } --}}
+
+
             {{--
             <ul class="navbar-nav pt-lg-3">
                 @foreach($sidebarMenu as $title => $item)

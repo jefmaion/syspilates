@@ -6,7 +6,10 @@ namespace App\Livewire\Calendar;
 
 use App\Enums\TransactionTypeEnum;
 use App\Models\ExperimentalClass;
+use App\Models\Instructor;
 use App\Models\Transaction;
+use App\Notifications\ExperimentalClassCreated;
+use App\Notifications\SendEmailToExperimentalClass;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\View\View;
@@ -123,6 +126,17 @@ class CreateExperimentalClass extends Component
                     'reference_type' => 'experimental',
                 ]);
             }
+
+            $instructor = Instructor::with('user')->find($this->instructor_id);
+
+            $instructor->user->notify(
+                new ExperimentalClassCreated(
+                    email: $instructor->user->email,
+                    name: $instructor->user->name
+                )
+             );
+
+
         } else {
             $this->update();
         }

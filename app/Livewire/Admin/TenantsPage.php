@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Actions\CreateDatabase;
+use App\Actions\SetDatabase;
 use App\Models\Admin\Tenant;
 use Closure;
 use Illuminate\Support\Facades\Artisan;
@@ -42,18 +43,25 @@ class TenantsPage extends Component
 
         foreach($tenants as $tenant) {
 
-            Config::set('database.connections.tenant.database', $tenant->database);
+            // Config::set('database.connections.tenant.database', $tenant->database);
 
-            if(env('APP_DOMAIN') != 'syspilates.test') {
-                Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$tenant->subdomain);
-            }
+            // if(env('APP_DOMAIN') != 'syspilates.test') {
+            //     Config::set('database.connections.tenant.username', env('DB_PREFIX').'_'.$tenant->subdomain);
+            // }
 
-            DB::purge('tenant');
-            DB::reconnect('tenant');
+            // DB::purge('tenant');
+            // DB::reconnect('tenant');
+
+            SetDatabase::run($tenant);
 
             Artisan::call('migrate', [
                 '--database' => 'tenant'
             ]);
+
+            Artisan::call('db:seed', [
+            '--database' => 'tenant',
+            '--class' => 'RoleAndPermissionsSeeder'
+        ]);
 
         }
 

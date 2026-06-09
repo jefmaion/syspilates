@@ -5,7 +5,7 @@
             Modalidades
         </h2>
         <x-slot name="actions">
-            @can('create modality')
+            @can('modalities.create')
             <div class="btn-list">
                 <a href="#" wire:click='$dispatch("create-modality")'
                     class="btn btn-primary btn-5 d-none d-sm-inline-block">
@@ -50,14 +50,14 @@
                             </td>
                             <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                             <td class="btn-actions">
-                                @can('edit modality')
+                                @can('modalities.edit')
                                 <a class="btn btn-action"
                                     wire:click="$dispatch('edit-modality', {modality: {{ $item }}})">
                                     <x-icons.edit class="icon icon-1" />
                                 </a>
                                 @endcan
 
-                                @can('delete modality')
+                                @can('modalities.delete')
                                 <a class="btn btn-action"
                                     wire:click="$dispatch('delete-modality', { modality: {{ $item->id }} })">
                                     <x-icons.trash class="icon icon-1" />

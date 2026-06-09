@@ -227,7 +227,7 @@
                                             </div>
 
                                             <div>
-                                                <button type="button" class="btn btn-primary">
+                                                <button type="button" wire:click='sendAccess()' class="btn btn-primary">
                                                     Resetar e reenviar senha de acesso
                                                 </button>
                                             </div>

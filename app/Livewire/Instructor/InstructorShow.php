@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Instructor;
 
+use App\Actions\SendInstructorCreated;
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\Instructor;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Notifications\InstructorCreated;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -54,6 +57,22 @@ class InstructorShow extends Component
     public function _refresh(): void
     {
         $this->dispatch('$refresh');
+    }
+
+    public function sendAccess() {
+
+
+        $user = $this->instructor->user;
+
+        $user->notify(
+            new InstructorCreated(
+                email: $user->email,
+                name: $user->name,
+                password: 'password',
+                subdomain: app('tenant_subdomain')
+            )
+        );
+
     }
 
     public function render(): View

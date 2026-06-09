@@ -12,7 +12,7 @@ class ModalityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('list modality');
+        return $user->can('modalities.list');
     }
 
     /**
@@ -20,7 +20,7 @@ class ModalityPolicy
      */
     public function view(User $user, Modality $modality): bool
     {
-        return $user->can('list modality');
+        return $user->can('modalities.list');
     }
 
     /**
@@ -28,7 +28,7 @@ class ModalityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create modality');
+        return $user->can('modalities.create');
     }
 
     /**
@@ -37,7 +37,7 @@ class ModalityPolicy
     public function update(User $user, Modality $modality): bool
     {
 
-        return $user->can('edit modality');
+        return $user->can('modalities.edit');
     }
 
     /**
@@ -45,7 +45,7 @@ class ModalityPolicy
      */
     public function delete(User $user, Modality $modality): bool
     {
-        return $user->can('delete modality');
+        return $user->can('modalities.delete');
     }
 
     /**

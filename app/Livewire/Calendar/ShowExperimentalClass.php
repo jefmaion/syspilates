@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Livewire\Calendar;
 
 use App\Models\ExperimentalClass;
+use App\Notifications\ExperimentalClassCanceled;
 use Closure;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -49,11 +50,23 @@ class ShowExperimentalClass extends Component
 
     public function delete()
     {
+
+        $user = $this->class->instructor->user;
+
         $this->class->delete();
 
         $this->dispatch('hide-modal', modal:'modal-delete');
         $this->dispatch('hide-modal', modal:'modal-show-experimental');
         $this->dispatch('refresh-calendar');
+
+
+
+        $user->notify(
+            new ExperimentalClassCanceled(
+                email: $user->email,
+                name: $user->name
+            )
+        );
     }
 
     public function render(): View | Closure | string

@@ -14,12 +14,12 @@
                         <x-form.select-class-status name="status" :except="$exceptOptions" wire:model.live='status' />
                     </div>
 
-                    @role('Administrador')
+                    @can('change.class.instructor')
                     <div class="mb-3">
                         <label for="" class="form-label">Professor</label>
                         <x-form.select-instructor name="instructor_id" wire:model.live='instructor_id' />
                     </div>
-                    @endrole
+                    @endcan
 
                     <div class="mb-3">
                         <label class="form-label">Evolução/Comentários</label>

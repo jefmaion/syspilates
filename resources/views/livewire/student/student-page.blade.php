@@ -10,7 +10,7 @@
             <x-icons.users />
             Alunos
         </h2>
-        @can('create student')
+        @can('students.create')
         <x-slot name="actions">
             <div class="btn-list">
                 <a href="#" wire:click.prevent='$dispatch("create-student")'

@@ -14,8 +14,8 @@
                 </div>
 
                 <div class="modal-body">
-                    
-               
+
+
                     @if($this->action == 'absense')
                         {{-- <div class="mb-3">
                             <label for="" class="form-label">Instrutor</label>

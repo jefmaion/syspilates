@@ -22,12 +22,15 @@ use App\Livewire\Profile;
 use App\Livewire\Registration\CreateRegistration;
 use App\Livewire\Registration\RegistrationPage;
 use App\Livewire\Registration\RegistrationShow;
+use App\Livewire\Role\RoleForm;
+use App\Livewire\Role\RolePage;
 use App\Livewire\Student\StudentForm;
 use App\Livewire\Student\StudentPage;
 use App\Livewire\Student\StudentShow;
 use App\Livewire\Transaction\CashBook;
 use App\Livewire\Transaction\ComissionPage;
 use App\Livewire\Transaction\TransactionPage;
+use App\Livewire\User\UserPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,9 +50,9 @@ Route::domain('admin.'.$domain)->group(function () {
      Route::get('tenant', TenantsPage::class)->name('tenant');
 });
 
-Route::domain('{tenant}.'.$domain)->middleware(['tenant'])->group(function () {
+Route::domain('{tenant}.'.$domain)->group(function () {
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth'])->middleware(['tenant'])->group(function () {
         Route::get('dashboard', DashboardPage::class)->name('dashboard');
         Route::get('modality', ModalityPage::class)->name('modality');
         Route::get('modality/create', CreateModality::class)->name('modality.create');
@@ -75,16 +78,21 @@ Route::domain('{tenant}.'.$domain)->middleware(['tenant'])->group(function () {
         Route::get('registration/create', CreateRegistration::class)->name('registration.create');
         Route::get('registration/{registration}/show', RegistrationShow::class)->name('registration.show');
 
-        Route::get('transaction', TransactionPage::class)->name('transaction');
+        Route::get('transaction', TransactionPage::class)->middleware('permission:transactions.view')->name('transaction');
         Route::get('cashbook', CashBook::class)->name('cashbook');
         Route::get('comission', ComissionPage::class)->name('comission');
         Route::get('permission', PermissionPage::class)->name('permission');
 
-        Route::get('calendar', CalendarPage::class)->name('calendar');
-        Route::get('today', TodayClass::class)->name('today');
+        Route::get('calendar', CalendarPage::class)->middleware('permission:calendar.view')->name('calendar');
+        Route::get('today', TodayClass::class)->middleware('permission:calendar.today')->name('today');
         Route::get('calendar/events', [CalendarPage::class, 'events'])->name('events');
 
         Route::get('profile', Profile::class)->name('profile');
+
+        Route::get('roles', RolePage::class)->name('roles');
+        Route::get('roles/{role}/edit', RoleForm::class)->name('roles.edit');
+
+        Route::get('users', UserPage::class)->name('users');
     });
 
 });

@@ -52,6 +52,7 @@
                 <textarea class="form-control" rows="3" name="form.objective" wire:model="form.objective"></textarea>
             </div>
         </div>
+        @can('students.edit')
         <button type="submit" class="btn btn-primary">
             <span wire:loading.remove>Salvar</span>
             <span wire:loading>
@@ -59,6 +60,7 @@
                 Salvando...
             </span>
         </button>
+        @endcan
     </form>
     @endif
 </div>

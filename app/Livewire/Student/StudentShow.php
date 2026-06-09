@@ -55,11 +55,10 @@ class StudentShow extends Component
 
         $this->student->user()->delete();
         $this->student->delete();
-        $this->student = null;
 
         $this->dispatch('student-deleted');
         $this->dispatch('hide-modal', modal: 'modal-delete');
-        $this->refresh();
+        $this->redirect(route('student'), navigate: true);
     }
 
     public function render(): View

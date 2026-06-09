@@ -2,26 +2,25 @@
 
 namespace App\Policies;
 
-use App\Models\Registration;
+use App\Models\Student;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class RegistrationPolicy
+class StudentPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('registrations.view');
+        return $user->can('students.list');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Registration $registration): bool
+    public function view(User $user, Student $student): bool
     {
-        return $user->can('registrations.view');
+        return $user->can('students.list');
     }
 
     /**
@@ -29,29 +28,30 @@ class RegistrationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('registrations.create');
+        return $user->can('students.create');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Registration $registration): bool
+    public function update(User $user, Student $student): bool
     {
-        return $user->can('registration.edit');
+
+        return $user->can('students.edit');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Registration $registration): bool
+    public function delete(User $user, Student $student): bool
     {
-        return $user->can('registrations.delete');
+        return $user->can('students.delete');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Registration $registration): bool
+    public function restore(User $user, Student $student): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class RegistrationPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Registration $registration): bool
+    public function forceDelete(User $user, Student $student): bool
     {
         return false;
     }
