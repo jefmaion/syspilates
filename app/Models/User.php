@@ -98,6 +98,19 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         );
     }
 
+
+    /**
+     * @return Attribute<string, string>
+     */
+    protected function nickname(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return empty($attributes['nickname']) ? $this->shortName() : $attributes['nickname'];
+            }
+        );
+    }
+
     /**
      * @return Attribute<string, string>
      */

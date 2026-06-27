@@ -16,7 +16,7 @@ return [
 
         'Alunos' => [
             'students.access'   => 'Acessar Alunos',
-            'students.view'   => 'Acessar Alunos',
+            'students.view'   => 'Ver Alunos',
             'students.list'   => 'Listar Alunos',
             'students.create' => 'Cadastrar Aluno',
             'students.edit'   => 'Editar Aluno',
@@ -25,7 +25,7 @@ return [
 
         'Modalidades' => [
             'modalities.access'   => 'Acessar Modalidades',
-            'modalities.view'   => 'Acessar Modalidades',
+            'modalities.view'   => 'Ver Modalidades',
             'modalities.list'   => 'Listar Modalidades',
             'modalities.create' => 'Cadastrar Modalidade',
             'modalities.edit'   => 'Editar Modalidade',
