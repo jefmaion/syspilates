@@ -11,6 +11,8 @@ use App\Models\Instructor;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\InstructorCreated;
+use App\Notifications\SendInstructorPass;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -62,16 +64,27 @@ class InstructorShow extends Component
     public function sendAccess() {
 
 
+
         $user = $this->instructor->user;
 
-        $user->notify(
-            new InstructorCreated(
-                email: $user->email,
-                name: $user->name,
-                password: 'password',
-                subdomain: app('tenant_subdomain')
-            )
-        );
+          $status = Password::broker()->sendResetLink([
+                'email' => $this->instructor->user->email,
+            ]);
+
+            if ($status === Password::RESET_LINK_SENT) {
+                $this->dispatch('show-alert', message: 'E-mail de redefinição enviado com sucesso.');
+            } else {
+               $this->dispatch('show-alert', message: $status);
+            }
+
+        // $user->notify(
+        //     new SendInstructorPass(
+        //         email: $user->email,
+        //         name: $user->name,
+        //         password: 'password',
+        //         subdomain: app('tenant_subdomain')
+        //     )
+        // );
 
     }
 

@@ -2,16 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Actions\SetDatabase;
-use App\Models\Admin\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 
-class InstructorCreated extends Notification implements ShouldQueue
+class SendInstructorPass extends Notification
 {
     use Queueable;
 
@@ -23,12 +19,10 @@ class InstructorCreated extends Notification implements ShouldQueue
         protected string $name,
         protected string $email,
         protected string $subdomain
-        )
+    )
     {
-
+        //
     }
-
-
 
     /**
      * Get the notification's delivery channels.
@@ -45,12 +39,9 @@ class InstructorCreated extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-
-
         return (new MailMessage)
-            ->subject('Seu acesso foi criado')
             ->greeting('Olá, '.$this->name)
-            ->line('Seu acesso ao sistema foi criado.')
+            ->line('Reenviando sua senha de acesso')
             ->line('Usuário: '.$this->email)
             ->line('SUB: '.$this->subdomain)
             ->line('Senha temporária: '.$this->password)
