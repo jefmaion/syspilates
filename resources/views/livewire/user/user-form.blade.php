@@ -61,7 +61,7 @@
                 <div class="modal-body">
                     <label class="form-check">
                         <input class="form-check-input" type="checkbox" wire:model="sendEmail">
-                        <span class="form-check-label">Enviar email com senha de primeiro acesso!</span>
+                        <span class="form-check-label">Resetar e enviar email de acesso!</span>
                     </label>
 
                 </div>

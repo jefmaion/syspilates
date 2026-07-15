@@ -13,7 +13,7 @@ class UserPage extends Component
     public function render() : View|Closure|string
     {
 
-        $users = User::has('roles')->with('roles')->get();
+        $users = User::has('roles')->with('roles')->where('id', '<>', auth()->user()->id)->get();
 
         return view('livewire.user.user-page', [
             'users' => $users
