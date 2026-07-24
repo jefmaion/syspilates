@@ -72,7 +72,7 @@
                                 </td>
 
                                 <td>
-
+                                    @if($class['evolutions'])
                                     <table>
                                         @foreach ($class['evolutions'] as $evol)
                                         <tr>
@@ -89,6 +89,7 @@
                                         @break
                                         @endforeach
                                     </table>
+                                    @endif
                                 </td>
                                 <td class="text-end">
                                     <button type="button" data-bs-dissmiss="modal"
