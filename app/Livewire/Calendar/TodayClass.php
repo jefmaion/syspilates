@@ -29,7 +29,7 @@ class TodayClass extends Component
     {
 
         $classes = Classes::with(['student.user', 'instructor.user', 'registration', 'modality'])->whereDate('datetime', $this->date)->orderBy('datetime')->get();
-        $experimentals = ExperimentalClass::with('modality')->whereDate('datetime', $this->date)->orderBy('datetime')->get();
+        $experimentals = ExperimentalClass::with(['modality', 'instructor.user'])->whereDate('datetime', $this->date)->orderBy('datetime')->get();
 
 
 
