@@ -72,7 +72,7 @@
                                 </td>
 
                                 <td>
-                                    @if($class['evolutions'])
+                                    @if(isset($class['evolutions']))
                                     <table>
                                         @foreach ($class['evolutions'] as $evol)
                                         <tr>
