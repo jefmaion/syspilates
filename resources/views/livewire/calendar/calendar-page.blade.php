@@ -52,6 +52,7 @@
         <livewire:calendar.show-experimental-class />
         <livewire:calendar.create-experimental-class />
         <livewire:calendar.register-experimental-class />
+        <livewire:registration.update-class />
 
         @if ($showSlotMenu)
         <div class="dropdown-menu show shadow-lg" style="

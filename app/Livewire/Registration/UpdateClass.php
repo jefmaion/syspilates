@@ -58,10 +58,15 @@ class UpdateClass extends Component
         $this->class->update([
             'instructor_id' => $this->instructor_id,
             'datetime'      => Carbon::parse($this->date . ' ' . $this->time),
+            'evolution' => $this->evolution
         ]);
 
         $this->dispatch('hide-modal', modal:'modal-update-class');
         $this->dispatch('refresh-registration');
+        $this->dispatch('class-updated');
+
+        $this->dispatch('show-event-refresh');
+        $this->dispatch('refresh-calendar');
     }
 
     public function render(): View | Closure | string

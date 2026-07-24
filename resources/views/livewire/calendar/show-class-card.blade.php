@@ -111,19 +111,31 @@
         <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">
             Fechar
         </button>
+        <button type="button" data-bs-dissmiss="modal" wire:click="$dispatch('edit-class', {id:{{$class->id}}})" class="btn btn-link link-secondary">
+                Editar Aula
+            </button>
         @can('register.class')
-        @if ($class->status == App\Enums\ClassStatusEnum::SCHEDULED)
-        <button type="button" data-bs-dissmiss="modal" wire:click="registerClass()" class="btn btn-primary">
-            <span class="d-flex align-items-center">
-                <x-icons.success class="me-2" /> <span>Registrar Aulas</span>
-            </span>
-        </button>
-        @endif
+            @if ($class->status == App\Enums\ClassStatusEnum::SCHEDULED)
+            <button type="button" data-bs-dissmiss="modal" wire:click="registerClass()" class="btn btn-primary">
+                <span class="d-flex align-items-center">
+                    <x-icons.success class="me-2" /> <span>Registrar Aulas</span>
+                </span>
+            </button>
+            @endif
         @endcan
-        @if ($class->status !== App\Enums\ClassStatusEnum::SCHEDULED && $class->canEdit)
-        <button type="button" data-bs-dissmiss="modal" wire:click="editRegister()" class="btn btn-teal">
+
+
+
+
+        @if ($class->status !== App\Enums\ClassStatusEnum::SCHEDULED)
+        {{-- <button type="button" data-bs-dissmiss="modal" wire:click="editRegister()" class="btn btn-teal">
             <span class="d-flex align-items-center">
                 <x-icons.edit class="me-2" /> <span>Editar</span>
+            </span>
+        </button> --}}
+        <button type="button"  wire:click="cancelClass({{$class->id}})" class="btn btn-warning">
+            <span class="d-flex align-items-center">
+                <x-icons.edit class="me-2" /> <span>Cancelar {{ $class->status->label() }}</span>
             </span>
         </button>
         @endif

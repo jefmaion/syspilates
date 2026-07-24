@@ -112,6 +112,7 @@ class CreateMakeupClass extends Component
             'is_makeup'         => true,
             'original_class_id' => $makeup->origin_class_id,
             'makeup_credit_id'  => $makeup->id,
+            'class_value' => $origin->class_value
         ]);
 
         // 2) Consome o crédito

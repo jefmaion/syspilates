@@ -7,6 +7,7 @@ namespace App\Livewire\Calendar;
 use App\Enums\ClassStatusEnum;
 use App\Models\Classes;
 use App\Models\ClassMakeup;
+use App\Models\InstructorComission;
 use App\Traits\PaginationTrait;
 use Carbon\Carbon;
 use Closure;
@@ -61,6 +62,27 @@ class ShowClassCard extends Component
     public function editRegister()
     {
         return $this->registerClass();
+    }
+
+    public function cancelClass(Classes $class) {
+
+        if($comiss = InstructorComission::where('class_id', $class->id)->whereNull('transaction_id')->first()) {
+            $comiss->delete();
+        }
+
+        if($markup = ClassMakeup::where('origin_class_id', $class->id)->first()) {
+            $markup->delete();
+        }
+
+        if($classMarkup = Classes::where('is_makeup', 1)->where('original_class_id', $class->id)->where('status', ClassStatusEnum::SCHEDULED)->first()) {
+            $classMarkup->delete();
+        }
+
+        $class->update(['status' => ClassStatusEnum::SCHEDULED]);
+
+        $this->dispatch('show-event-refresh');
+        $this->dispatch('refresh-calendar');
+        $this->dispatch('$refresh');
     }
 
     #[On('class-saved')]

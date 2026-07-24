@@ -105,7 +105,7 @@ return [
             'registrations.edit',
         ],
 
-        // 'Aluno' => [],
+        'Aluno' => [],
     ],
 
     'system_roles' => ['Super', 'Administrador', 'Professor']
