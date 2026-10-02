@@ -37,9 +37,6 @@ class CreateRegistration
 
         if (empty($installments)) {
 
-
-
-
             for ($i = 1; $i <= $duration; $i++) {
 
                 $payed = null;
@@ -65,7 +62,7 @@ class CreateRegistration
                     'amount'          => $registration->value,
                     'origin_amount'   => $registration->value,
                     'type'            => TransactionTypeEnum::CREDIT,
-                    'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . $i . '/' . $duration . ')',
+                    'description'     => 'Mensalidade ' . ($registration->student->user->nickname ?? $registration->student->user->shortName).' - '. $registration->modality->name . ' (' . $i . '/' . $duration . ')',
                     'paid_at' => $payed,
                     'reference_type' => 'installment'
                 ]);
@@ -83,7 +80,7 @@ class CreateRegistration
                     'amount'          => $installment['value'],
                     'origin_amount'   => $installment['value'],
                     'type'            => TransactionTypeEnum::CREDIT,
-                    'description'     => 'Mensalidade ' . $registration->modality->name . ' (' . ($k + 1) . '/' . $duration . ')',
+                    'description'     => 'Mensalidade ' . ($registration->student->user->nickname ?? $registration->student->user->shortName).' - '. $registration->modality->name . ' (' . ($k + 1) . '/' . $duration . ')',
                     'paid_at' => ($installment['payed']) ? $registration->start : null,
                     'reference_type' => 'installment'
                 ]);
