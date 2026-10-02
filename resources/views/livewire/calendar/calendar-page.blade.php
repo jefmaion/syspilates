@@ -45,11 +45,14 @@
             :config="$calendarConfig" />
 
         <livewire:calendar.show-class-card wire:key='{{ $currentId }}' />
+
         <livewire:calendar.form-register-class wire:key='form-{{ $currentId }}' :except="['scheduled']" />
 
         <livewire:calendar.create-makeup-class />
 
+
         <livewire:calendar.show-experimental-class />
+        <livewire:calendar.show-simulated-class />
         <livewire:calendar.create-experimental-class />
         <livewire:calendar.register-experimental-class />
         <livewire:registration.update-class />

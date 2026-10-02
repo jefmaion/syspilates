@@ -115,6 +115,12 @@
                                 return true
                             }
 
+                            if (draggedEvent.extendedProps.type == 'sim') {
+                                return false;
+                            }
+
+                            console.log(draggedEvent.extendedProps.type)
+
                             // pega o dia original e o dia alvo 
                             const originalDay = draggedEvent.start.getDay();
                             // 0=domingo, 1=segunda... 

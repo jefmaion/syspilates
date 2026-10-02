@@ -11,7 +11,7 @@
         <x-slot:actions>
 
             @if($registration->isActive)
-            <a class="btn btn-outline-secondary" wire:click="$dispatch('cancel-registration')">
+            <a class="btn btn-outline-secondary me-1" wire:click="$dispatch('cancel-registration')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -22,7 +22,8 @@
                     <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                 </svg>
                 Cancelar Matrícula</a>
-            <a class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#modal-classes">
+
+            <a class="btn btn-blue me-1" data-bs-toggle="modal" data-bs-target="#modal-classes">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -31,8 +32,9 @@
                     <path d="M13.5 6.5l4 4"></path>
                 </svg>
                 Alterar Dia de aulas</a>
-            @endif
-            @if($registration->daysToExpire <= 7) <a class="btn btn-blue"
+
+
+                @if($registration->daysToExpire <= 7) <a class="btn btn-blue me-1"
                 wire:click='$dispatch("renew-registration", {id: {{$registration->id}} })'>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -46,10 +48,26 @@
                 <livewire:registration.create-registration />
                 @endif
 
+                <a class="btn btn-warning" wire:click="$dispatch('finish-registration')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                    </path>
+                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                </svg>
+                Finalizar Matrícula</a>
+
+            @endif
+            
+
         </x-slot:actions>
     </x-page.page-header>
 
     <livewire:registration.actions.cancel-registration :registration="$registration" />
+    <livewire:registration.actions.finish-registration :registration="$registration" />
 
     <x-page.page-body>
 
