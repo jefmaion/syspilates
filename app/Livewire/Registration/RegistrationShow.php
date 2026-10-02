@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Registration;
 
+use App\Enums\RegistrationStatusEnum;
 use App\Actions\GenerateRegistrationClasses;
 use App\Enums\ClassStatusEnum;
 use App\Enums\ClassTypesEnum;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -68,14 +70,23 @@ class RegistrationShow extends Component
         $this->tab = $tab;
     }
 
-    public function mount(Registration $registration)
+    public function mount(Request $request, Registration $registration)
     {
 
 
         $this->pages        = 5;
         $this->registration = $registration;
         $this->form->populate($this->registration);
+
+
+       $action = $request->query('action'); // Retornará 'renew'
+        
+        if ($action === 'renew') {
+            $this->dispatch('renew-registration', id: $this->registration->id);
+        }
     }
+
+    
 
     public function changeClassDays()
     {

@@ -24,6 +24,10 @@ class CreateRegistration extends Component
 
     public ?Collection $students;
 
+
+    
+
+
     #[On('create-registration')]
     public function create()
     {
