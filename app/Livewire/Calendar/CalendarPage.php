@@ -183,6 +183,10 @@ class CalendarPage extends Component
             foreach($genClass  as $sched) {
                 $current = $start->copy()->startOfDay();
 
+                // if($current->lt($today)) {
+                //     continue;
+                // }
+
 
                 while($current->lte($end)) {
 
