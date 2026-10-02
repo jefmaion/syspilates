@@ -11,6 +11,7 @@ enum ClassStatusEnum: string
     case ABSENSE   = 'absense';
     case JUSTIFIED = 'justified';
     case CANCELED  = 'closed';
+    case FINISH  = 'finish';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum ClassStatusEnum: string
             self::ABSENSE   => 'Falta',
             self::JUSTIFIED => 'Falta Com Aviso',
             self::CANCELED  => 'Falta Professor',
+            self::FINISH    => 'Matricula Finalizada',
         };
     }
 
@@ -31,6 +33,7 @@ enum ClassStatusEnum: string
             self::ABSENSE   => 'danger',
             self::JUSTIFIED => 'warning',
             self::CANCELED  => 'secondary',
+            self::FINISH  => 'secondary',
         };
     }
 
@@ -42,6 +45,7 @@ enum ClassStatusEnum: string
             self::ABSENSE   => 'icons.times',
             self::JUSTIFIED => 'icons.exclamation',
             self::CANCELED  => 'icons.times',
+            self::FINISH  => 'icons.times',
         };
     }
 
