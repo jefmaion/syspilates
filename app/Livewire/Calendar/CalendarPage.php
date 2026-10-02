@@ -169,7 +169,7 @@ class CalendarPage extends Component
        $today = Carbon::today();
        $limit = $today->copy()->addDays(14);
 
-       if(!$end->lt($today)) {
+       // if(!$end->lt($today)) {
 
 
             if($start->lt($today)) {
@@ -215,7 +215,7 @@ class CalendarPage extends Component
                 }
                 
             }
-       }
+       // }
 
 
 
