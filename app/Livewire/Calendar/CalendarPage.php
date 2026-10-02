@@ -71,7 +71,7 @@ class CalendarPage extends Component
 
 
         $genClass = RegistrationSchedules::with(['registration.student.user', 'registration.classes'])->whereHas('registration', function ($q) {
-            return $q->whereIn('status', ['active']);
+            return $q->whereIn('status', ['active', 'scheduled']);
         });
 
 
@@ -169,7 +169,7 @@ class CalendarPage extends Component
        $today = Carbon::today();
        $limit = $today->copy()->addDays(14);
 
-       // if(!$end->lt($today)) {
+       if(!$end->lt($today)) {
 
 
             if($start->lt($today)) {
@@ -219,7 +219,7 @@ class CalendarPage extends Component
                 }
                 
             }
-       // }
+       }
 
 
 
