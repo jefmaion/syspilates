@@ -8,6 +8,7 @@ use App\Enums\ClassTypesEnum;
 use App\Enums\RegistrationStatusEnum;
 use App\Models\Classes;
 use App\Models\ExperimentalClass;
+use App\Models\RegistrationSchedules;
 use App\Models\Student;
 use Carbon\Carbon;
 use Closure;
@@ -64,24 +65,37 @@ class CalendarPage extends Component
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-        $class = Classes::with(['student.user', 'registration'])->whereBetween('scheduled_datetime', [$start, $end])->whereHas('registration', function ($q) {
+        $class = Classes::with(['student.user', 'registration.schedule'])->whereBetween('scheduled_datetime', [$start, $end])->whereHas('registration', function ($q) {
             return $q->justActives();
+        })->whereNotIn('status', ['finish']);
+
+
+        $genClass = RegistrationSchedules::with(['registration.student.user', 'registration.classes'])->whereHas('registration', function ($q) {
+            return $q->whereIn('status', ['active']);
         });
+
 
         $experimental = ExperimentalClass::with('modality')->whereBetween('datetime', [$start, $end]);
 
         if (request()->filled('modality_id')) {
             $class->where('modality_id', request()->get('modality_id'));
             $experimental->where('modality_id', request()->get('modality_id'));
+            $genClass->whereHas('registration', function($q) {
+                return $q->where('modality_id', request()->get('modality_id'));
+            });
         }
 
         if (request()->filled('student')) {
             $class->where('student_id', request()->get('student'));
+            $genClass->whereHas('registration', function($q) {
+                return $q->where('student_id', request()->get('student'));
+            });
         }
 
         if (request()->filled('instructor')) {
             $class->where('instructor_id', request()->get('instructor'));
             $experimental->where('instructor_id', request()->get('instructor'));
+            $genClass->where('instructor_id', request()->get('instructor'));
         }
 
         if (request()->filled('status')) {
@@ -99,8 +113,17 @@ class CalendarPage extends Component
         $events = [];
 
         $eventClass = 'p-1 mt-1 me-1 rounded-3 ';
+        $ultimaDataConfirmada = null;
 
+
+
+
+
+        $exitsEvents = [];
         foreach ($classes as $class) {
+
+
+
             $badge   = null;
             $bgColor = 'bg-' . $class->status->color() .  ' text-' . $class->status->color() . '-lt-fg';
 
@@ -112,9 +135,21 @@ class CalendarPage extends Component
                 $badge = '<span class="badge bg-dark text-dark-fg">' . $class->type->nick() . '</span> ';
             }
 
+
+            // if($class->datetime->format('Y-m-d') == $class->registration->lastClass->datetime->format('Y-m-d')) {
+            //     $bgColor = 'bg-dark';
+            // }
+
+            $key = $class->registration->id.'.'.$class->datetime->format('Y-m-d\\TH:i:s');
+
+            // dd(array_keys($events), $key);
+
+         
+            $exitsEvents[] = $key;
+
             $events[] = [
                 'id'                 => 'class-' . $class->id,
-                'start'              => $class->datetime->format('Y-m-d H:i:s'),
+                'start'              => $class->datetime->format('Y-m-d\\TH:i:s'),
                 'title'              => $badge . ' ' . ($class->student->user->nickname ?? $class->student->user->shortName),
                 'className'          => $eventClass . $bgColor . ' ',
                 'textColor'          => 'white',
@@ -126,6 +161,67 @@ class CalendarPage extends Component
                 '_type'              => $class->type->value,
             ];
         }
+
+     
+
+       $genClass = $genClass->get();
+
+       $today = Carbon::today();
+       $limit = $today->copy()->addDays(14);
+
+       if(!$end->lt($today)) {
+
+
+            if($start->lt($today)) {
+                $start = $today->copy();
+            }
+
+            // if($end->gt($limit)) {
+            //     $end = $limit;
+            // }
+
+            foreach($genClass  as $sched) {
+                $current = $start->copy()->startOfDay();
+
+
+                while($current->lte($end)) {
+
+                    if($current->dayOfWeek != $sched->weekday->value) {
+                        $current->addDay();
+                        continue;
+                    }
+
+                    $dt = $current->format('Y-m-d');
+                    $k = $sched->registration->id.'.'.$dt.'T'.$sched->time;
+
+                    if(in_array($k, $exitsEvents)) {
+                        $current->addDay();
+                        continue;
+                    }
+
+                    $events[] = [
+                        'id'                 => 'class-0',
+                        'title'              => ($sched->registration->student->user->nickname ?? $sched->registration->student->user->shortName),
+                        'className'          => $eventClass . 'bg-azure-light text-secondary',
+                        'start' => $dt.'T'.$sched->time,
+                        'textColor'          => 'secondary',
+                        'registration_id' => $sched->registration->id,
+                        'type'              => 'sim', //simulated
+                    ];
+                    
+
+                    $current->addDay();
+                    
+                }
+                
+            }
+       }
+
+
+
+        
+
+        
 
         $events = array_values($events);
 
@@ -142,6 +238,8 @@ class CalendarPage extends Component
                 $eventClass
             );
         }
+
+
 
         return response()->json($events);
     }
@@ -172,6 +270,10 @@ class CalendarPage extends Component
             return $this->dispatch('show-experimental-class', id: $props['event_id']);
         }
 
+        if ($props['type'] == 'sim') {
+            return $this->dispatch('show-sim-class', registration: $props['registration_id'], datetime:$start);
+        }
+
         $this->dispatch('show-class-card', id: $props['event_id'], type: $props['type'], datetime: $props['datetime']);
     }
 
@@ -187,7 +289,14 @@ class CalendarPage extends Component
     #[On('calendar-event-dropped')]
     public function createClassOnMove($id, $start, $props)
     {
+
+        if ($props['type'] == 'sim') {
+            return;
+        }
+
         $event = Classes::find($props['event_id']);
+
+        
 
         if ($props['type'] == ClassTypesEnum::EXPERIMENTAL->value) {
             $event = ExperimentalClass::find($props['event_id']);

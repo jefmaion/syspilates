@@ -55,6 +55,7 @@ class FormRegisterClass extends Component
 
     public $exceptOptions = [
         ClassStatusEnum::SCHEDULED,
+        ClassStatusEnum::FINISH
     ];
 
     public $makeupConditions = [
