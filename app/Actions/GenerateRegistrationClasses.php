@@ -21,7 +21,13 @@ class GenerateRegistrationClasses
         foreach ($period as $date) {
             foreach ($registration->schedule as $schedule) {
                 if ($date->dayOfWeek === $schedule->weekday->value) {
-                    $classes[] = Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time);
+
+                    $classes[] = [
+                        'datetime' => Carbon::parse($date->format('Y-m-d') . ' ' . $schedule->time),
+                        'schedule_id' => $schedule->id,
+                        'instructor_id' => $schedule->instructor_id,
+                    ];
+
                     $countClasses++;
                 }
             }
@@ -33,10 +39,10 @@ class GenerateRegistrationClasses
             $registration->classes()->create([
                 'student_id'               => $registration->student_id,
                 'modality_id'              => $registration->modality_id,
-                'datetime'                 => $class,
-                'scheduled_datetime'       => $class,
-                'instructor_id'            => $schedule->instructor_id,
-                'registration_schedule_id' => $schedule->id,
+                'datetime'                 => $class['datetime'],
+                'scheduled_datetime'       => $class['datetime'],
+                'instructor_id'            => $class['instructor_id'],
+                'registration_schedule_id' => $class['schedule_id'],
                 'value'                    => $classValue,
                 'type'                     => ClassTypesEnum::REGULAR,
                 'status'                   => ClassStatusEnum::SCHEDULED,
