@@ -92,16 +92,29 @@ class RegistrationShow extends Component
     {
         $nextClass = $this->registration->nextClass;
 
+        if(!$nextClass) {
+
+            $this->dispatch('hide-modal', modal: 'modal-classes');
+
+            lw_alert($this, 'Não existem aulas para serem ajustadas.', 'warning');
+
+            return;
+        }
+
+
         $this->registration->schedule()->delete();
         $this->registration->schedule()->createMany($this->form->schedule);
-        $this->registration->classes()->whereDate('datetime', '>=', $nextClass->datetime)->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
+
+        if($nextClass) {
+            $this->registration->classes()->whereDate('datetime', '>=', $nextClass->datetime)->where('status', ClassStatusEnum::SCHEDULED)->where('type', ClassTypesEnum::REGULAR)->delete();
+        }
 
         GenerateRegistrationClasses::run($this->registration, $nextClass->datetime, $this->registration->end);
-
 
         $this->dispatch('hide-modal', modal: 'modal-classes');
 
         lw_alert($this, 'Dias de aulas alteradas com sucesso');
+        
 
         return $this->dispatch('$refresh');
     }
@@ -145,6 +158,8 @@ class RegistrationShow extends Component
 
             $classes->where($field, $value);
         }
+
+        // dd($classes->orderBy($this->_sortBy, $this->sortDirection)->get());
 
         // dd($this->registration->student->classes()->where('status', ClassStatusEnum::PRESENCE)->orderBy('datetime', 'desc')->get());
 
