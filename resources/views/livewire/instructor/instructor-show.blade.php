@@ -132,6 +132,7 @@
                                         <th>Dia</th>
                                         <th>Hora</th>
                                         <th>Modalidade</th>
+                                        <th>Aluno</th>
                                         <th>Tipo de Aula</th>
                                         <th>Status</th>
                                     </tr>
@@ -142,6 +143,15 @@
                                     <td>{{ ucfirst($class->datetime->isoFormat('dddd')) }}</td>
                                     <td>{{ $class->datetime->format('H:i') }}</td>
                                     <td>{{ $class->modality->name }}</td>
+                                    <td>
+                                        <x-page.user-avatar size="xs" :user="$class->student->user">
+                                            <span class="small">
+                                                {{ $class->student->user->shortName }}
+                                            </span>
+                                        </x-page.user-avatar>    
+
+
+                                    </td>
                                     <td>{{ $class->type->label() }}</td>
                                     <td>
                                         <x-page.badge color="{{ $class->status->color() }}">{{ $class->status->label()
