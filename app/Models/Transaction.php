@@ -197,6 +197,11 @@ class Transaction extends BaseModel
         return $this->belongsTo(Category::class);
     }
 
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class);
+    }
+
     public function comissions()
     {
         return $this->hasMany(InstructorComission::class);
