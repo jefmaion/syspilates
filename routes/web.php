@@ -6,6 +6,7 @@ use App\Livewire\Admin\PermissionPage;
 use App\Livewire\Admin\TenantsPage;
 use App\Livewire\Calendar\CalendarPage;
 use App\Livewire\Calendar\TodayClass;
+use App\Livewire\Calendar\Events;
 use App\Livewire\Dashboard;
 use App\Livewire\Dashboard\DashboardPage;
 use App\Livewire\Instructor\InstructorForm;
@@ -28,6 +29,7 @@ use App\Livewire\Student\StudentForm;
 use App\Livewire\Student\StudentPage;
 use App\Livewire\Student\StudentShow;
 use App\Livewire\Transaction\CashBook;
+use App\Livewire\Fullcalendar\Fullcalendar;
 use App\Livewire\Transaction\ComissionPage;
 use App\Livewire\Transaction\TransactionPage;
 use App\Livewire\User\UserPage;
@@ -93,6 +95,9 @@ Route::domain('{tenant}.'.$domain)->group(function () {
         Route::get('roles/{role}/edit', RoleForm::class)->name('roles.edit');
 
         Route::get('users', UserPage::class)->name('users');
+
+        Route::get('fc', Fullcalendar::class)->name('calendar');
+        Route::get('events', Events::class)->name('events');
     });
 
 });
