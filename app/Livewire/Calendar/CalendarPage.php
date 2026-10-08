@@ -140,7 +140,7 @@ class CalendarPage extends Component
             //     $bgColor = 'bg-dark';
             // }
 
-            $key = $class->registration->id.'.'.$class->datetime->format('Y-m-d\\TH:i:s');
+            $key = $class->modality_id.'.'.$class->student_id.'.'.$class->datetime->format('Y-m-d\\TH:i:s');
 
             // dd(array_keys($events), $key);
 
@@ -169,7 +169,7 @@ class CalendarPage extends Component
        $today = Carbon::today();
        $limit = $today->copy()->addDays(14);
 
-       if(!$end->lt($today)) {
+       // if(!$end->lt($today)) {
 
 
             if($start->lt($today)) {
@@ -196,7 +196,11 @@ class CalendarPage extends Component
                     }
 
                     $dt = $current->format('Y-m-d');
-                    $k = $sched->registration->id.'.'.$dt.'T'.$sched->time;
+
+
+                    // $key = $class->modality_id->id.'.'.$class->student_id.'.'.$class->datetime->format('Y-m-d\\TH:i:s');
+
+                    $k = $sched->registration->modality_id.'.'.$sched->registration->student_id.'.'.$dt.'T'.$sched->time;
 
                     if(in_array($k, $exitsEvents)) {
                         $current->addDay();
@@ -219,7 +223,7 @@ class CalendarPage extends Component
                 }
                 
             }
-       }
+       // }
 
 
 
