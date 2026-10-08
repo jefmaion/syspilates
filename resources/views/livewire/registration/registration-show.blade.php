@@ -50,8 +50,8 @@
 
             @endif
 
-
-            @if($registration->status->value != 'canceled' && ($registration->status->value == 'active' && $registration->daysToExpire <= 7))
+        
+            @if($registration->status->value != 'canceled' || ($registration->status->value == 'active' && $registration->daysToExpire <= 7))
                 <a class="btn btn-blue me-1"
                     wire:click='$dispatch("renew-registration", {id: {{$registration->id}} })'>
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil"
