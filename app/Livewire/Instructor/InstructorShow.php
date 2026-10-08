@@ -91,7 +91,7 @@ class InstructorShow extends Component
     public function render(): View
     {
         return view('livewire.instructor.instructor-show', [
-            'classes' => Classes::with('modality')->where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10),
+            'classes' => Classes::with(['modality', 'student.user'])->where('instructor_id', $this->instructor->id)->where('status', '<>', ClassStatusEnum::SCHEDULED)->paginate(10),
             'transactions' => Transaction::where('instructor_id', $this->instructor->id)->paginate(10, pageName: 'transactions')
         ]);
     }
