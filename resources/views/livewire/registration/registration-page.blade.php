@@ -179,7 +179,7 @@
                             <option value="active">Ativo</option>
                             <option value="canceled">Cancelado</option>
                             <option value="expired">Expirado</option>
-                            <option value="closed">Finalizado</option>
+                            <option value="finished">Finalizado</option>
                             <option value="today">Hoje</option>
                             <option value="week">Semana</option>
                             <option value=""></option>
