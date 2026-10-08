@@ -114,6 +114,7 @@ class CreateRegistration extends Component
         $this->registration->start = $start;
 
         $this->form->populate($this->registration);
+        $this->generateInstallments();
 
         $this->dispatch('show-modal', modal: 'modal-create-registration');
     }
