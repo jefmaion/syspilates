@@ -71,7 +71,7 @@ class CalendarPage extends Component
 
 
         $genClass = RegistrationSchedules::with(['registration.student.user', 'registration.classes'])->whereHas('registration', function ($q) {
-            return $q->whereIn('status', ['active', 'scheduled']);
+            return $q->whereIn('status', ['active', 'scheduled', 'closed']);
         });
 
 
@@ -144,7 +144,7 @@ class CalendarPage extends Component
 
             // dd(array_keys($events), $key);
 
-         
+
             $exitsEvents[] = $key;
 
             $events[] = [
@@ -162,7 +162,7 @@ class CalendarPage extends Component
             ];
         }
 
-     
+
 
        $genClass = $genClass->get();
 
@@ -216,20 +216,20 @@ class CalendarPage extends Component
                         'registration_id' => $sched->registration->id,
                         'type'              => 'sim', //simulated
                     ];
-                    
+
 
                     $current->addDay();
-                    
+
                 }
-                
+
             }
        // }
 
 
 
-        
 
-        
+
+
 
         $events = array_values($events);
 
@@ -304,7 +304,7 @@ class CalendarPage extends Component
 
         $event = Classes::find($props['event_id']);
 
-        
+
 
         if ($props['type'] == ClassTypesEnum::EXPERIMENTAL->value) {
             $event = ExperimentalClass::find($props['event_id']);

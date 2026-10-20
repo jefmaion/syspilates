@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Registration;
 
-use App\Enums\RegistrationStatusEnum;
 use App\Models\Registration;
 use App\Traits\PaginationTrait;
 use Closure;
@@ -21,6 +20,13 @@ class RegistrationPage extends Component
     public $plan_id = null;
 
     public $status;
+
+    public function updated(string $property, mixed $value): void
+    {
+        if (in_array($property, ['search', 'modality_id', 'plan_id', 'status'], true)) {
+            $this->resetPage();
+        }
+    }
 
     #[On('refresh-registrations')]
     public function _refresh() {}
@@ -39,7 +45,7 @@ class RegistrationPage extends Component
             $registrations->where('plan_id', $this->plan_id);
         }
 
-        if (!empty($this->status)) {
+        if (filled($this->status)) {
             $registrations->current($this->status);
         }
 

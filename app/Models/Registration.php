@@ -281,19 +281,17 @@ class Registration extends BaseModel
         });
     }
 
-    public function scopeCurrent($q, $filter)
+    public function scopeCurrent(Builder $query, string $filter): Builder
     {
         return match ($filter) {
-            'active' => $q->actives()->count(),
-            'today' => $q->dueToday()->count(),
-            'finished' => $q->finisheds()->count(),
-            'expired' => $q->late()->count(),
-            'canceled' => $q->canceled()->count(),
-            'week' => $q->dueWeek()->count(),
-            default => $q
+            'active' => $query->actives(),
+            'today' => $query->dueToday(),
+            'finished' => $query->finisheds(),
+            'expired' => $query->late(),
+            'canceled' => $query->canceled(),
+            'week' => $query->dueWeek(),
+            default => $query,
         };
-
-        return $q;
     }
 
     public function isCanceled()

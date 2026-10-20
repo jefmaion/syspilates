@@ -174,19 +174,18 @@
                 <div class="row flex-fill">
                     <div class="col-auto">
                         <label class="form-label">Status</label>
-                        <x-form.select wire:model.live='status' placeholder="opa">
-                            <option value=""></option>
+                        <x-form.select wire:model.live="status">
+                            <option value="">Todos os status</option>
                             <option value="active">Ativo</option>
                             <option value="canceled">Cancelado</option>
                             <option value="expired">Expirado</option>
                             <option value="finished">Finalizado</option>
                             <option value="today">Hoje</option>
                             <option value="week">Semana</option>
-                            <option value=""></option>
                         </x-form.select>
                     </div>
                     <div class="col-auto">
-                        <label class="form-label">Período</label>
+                        <label class="form-label">Plano</label>
                         {{--
                         <x-form.select-duration wire:model.live='duration' placeholder="opa" /> --}}
                         <x-form.select-plan name="plan_id" wire:model.live='plan_id' />
