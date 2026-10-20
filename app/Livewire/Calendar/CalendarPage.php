@@ -71,7 +71,7 @@ class CalendarPage extends Component
 
 
         $genClass = RegistrationSchedules::with(['registration.student.user', 'registration.classes'])->whereHas('registration', function ($q) {
-            return $q->whereIn('status', ['active', 'scheduled', 'closed']);
+            return $q->whereIn('status', ['active', 'scheduled']);
         });
 
 
