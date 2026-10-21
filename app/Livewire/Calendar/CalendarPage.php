@@ -76,6 +76,7 @@ class CalendarPage extends Component
            $q->whereIn('id', function ($sub) {
                 $sub->selectRaw('MAX(id)')
                     ->from('registrations')
+                    ->whereDate('end', '>=', now()->subDays(10)->toDateString())
                     ->whereNotIn('status', ['canceled'])
                     ->groupBy('student_id', 'modality_id');
             });
