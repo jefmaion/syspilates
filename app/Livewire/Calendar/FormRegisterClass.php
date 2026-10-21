@@ -108,9 +108,9 @@ class FormRegisterClass extends Component
         $registration = Registration::find($this->class->registration_id);
 
 
-        if ($registration->classesScheduled == 0) {
-            $registration->setStatus(RegistrationStatusEnum::CLOSED->value);
-        }
+        // if ($registration->classesScheduled == 0) {
+        //     $registration->setStatus(RegistrationStatusEnum::CLOSED->value);
+        // }
 
 
         $this->dispatch('hide-modal', modal: 'modal-register-class');
