@@ -30,11 +30,15 @@ class CancelRegistration extends Component
 
     public function cancel()
     {
+
+
         $this->registration->update([
             'status'          => RegistrationStatusEnum::CANCELED,
             'cancel_date'     => now(),
             'cancel_comments' => $this->cancel_comments,
         ]);
+
+        $this->registration->transactions()->whereNull('paid_at')->delete();
 
         lw_alert($this, 'Salvo com sucesso!');
 

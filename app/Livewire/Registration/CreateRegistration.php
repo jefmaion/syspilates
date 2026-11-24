@@ -25,7 +25,7 @@ class CreateRegistration extends Component
     public ?Collection $students;
 
 
-    
+
 
 
     #[On('create-registration')]
@@ -48,7 +48,8 @@ class CreateRegistration extends Component
         $this->form->duration = $plan->duration;
         $this->form->class_per_week = (string) $plan->classes_per_week;
         $this->form->value = (string) $plan->value;
-
+        // $this->form->schedule = [];
+        $this->form->updatedClassPerWeek($plan->classes_per_week);
         if (!empty($this->form->deadline) && !empty($this->form->duration)) {
             $this->generateInstallments();
         }
