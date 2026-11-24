@@ -48,6 +48,11 @@
                                                 <x-page.badge color="orange">Reposição</x-page.badge>
                                             </div>
                                             @endif
+                                            @if ($class['isSingle'] ?? false)
+                                            <div class="me-1">
+                                                <x-page.badge color="gray">Aula Avulsa - {{ currency($class['value'], 0, 'R$ ') }}</x-page.badge>
+                                            </div>
+                                            @endif
                                             <x-page.badge color="{{ $class['status']->color() }}">{{
                                                 $class['status']->label() }}</x-page.badge>
                                         </x-slot:side-title>

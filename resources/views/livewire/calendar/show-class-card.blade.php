@@ -14,8 +14,8 @@
 
 
 
-        <x-common.user-block initials="{{ $data?->student->initials }}" size="lg"
-            avatar="{{ $data?->student->avatar }}">
+        <x-common.user-block initials="{{ $data?->student?->initials }}" size="lg"
+            avatar="{{ $data?->student?->avatar }}">
             @if ($class && $class->is_makeup)
             <x-slot:prepend>
                 <div class="me-1 mb-2 float-end">
@@ -24,9 +24,11 @@
             </x-slot:prepend>
             @endif
             <x-slot:title>
-                <a href="{{ route('registration.show', $class->registration_id) }}" wire:navigate> {{
-                    $data?->student?->shortName ??
-                    null }}</a>
+                @if ($class->registration_id)
+                    <a href="{{ route('registration.show', $class->registration_id) }}" wire:navigate>{{ $data?->student?->shortName }}</a>
+                @else
+                    {{ $data?->student?->shortName ?? 'Aula avulsa sem aluno' }}
+                @endif
             </x-slot:title>
             <x-slot:side-title>
                 <div class="d-flex justify-content-end">
@@ -37,10 +39,14 @@
             </x-slot:side-title>
             <x-slot:subtitle>
                 <div class="text-muted text-sm mb-2">
+                    @if ($class->type === App\Enums\ClassTypesEnum::SINGLE)
+                        <x-page.badge color="gray">Aula Avulsa</x-page.badge> |
+                        <strong>Valor: {{ currency($data?->value, 0, 'R$ ') }}</strong> |
+                    @endif
                     <x-icons.modality /> {{ $data?->modality }} |
                     <x-icons.time /> {{ $eventDatetime ? $eventDatetime->format('H\h') : '' }} |
-                    <x-icons.phone /> {{ $data?->student->phone1 ?? null }} |
-                    <x-page.avatar size="xs" :user="$data?->instructor" /> {{ $data?->instructor->shortName ?? null }}
+                    @if ($data?->student)<x-icons.phone /> {{ $data->student->phone1 }} |@endif
+                    <x-page.avatar size="xs" :user="$data?->instructor" /> {{ $data?->instructor?->shortName }}
                 </div>
 
             </x-slot:subtitle>
@@ -48,9 +54,11 @@
     </div>
 
     <div class="modal-body">
+        @if ($data?->objective)
         <div>
             <strong>Objetivo: </strong> {{ $data?->objective }}
         </div>
+        @endif
 
         @if ($data->alerts)
         <div class="d-flex justify-content-between">

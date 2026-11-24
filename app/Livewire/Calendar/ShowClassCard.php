@@ -103,11 +103,13 @@ class ShowClassCard extends Component
         $this->class        = Classes::with(['student.user', 'modality', 'instructor.user', 'registration.classes'])->find($this->eventId);
         $this->registration = $this->class->registration;
 
-        $makeup = ClassMakeup::with('origin.student.user')->where('status', 'active')->where('student_id', $this->class->student_id)->where('expires_at', '>=', now())->count();
+        $makeup = $this->class->student_id
+            ? ClassMakeup::where('status', 'active')->where('student_id', $this->class->student_id)->where('expires_at', '>=', now())->count()
+            : 0;
 
         $alerts = [];
 
-        if ($this->class->student->user->isBirthday) {
+        if ($this->class->student?->user?->isBirthday) {
             $alerts[] = [
                 'icon' => 'icons.cake',
                 'type' => 'info',
@@ -122,7 +124,7 @@ class ShowClassCard extends Component
             ];
         }
 
-        if ($this->registration->hasLastUnpaidTransactions) {
+        if ($this->registration?->hasLastUnpaidTransactions) {
             $alerts[] = [
                 'type' => 'danger',
                 'text' => 'Existem mensalidades em aberto!'
@@ -132,11 +134,13 @@ class ShowClassCard extends Component
 
 
         $this->data = (object) [
-            'objective'  => $this->class->student->objective ?? null,
-            'instructor' => $this->class->instructor->user,
-            'student'    => $this->class?->student->user,
-            'modality'   => $this->class->modality->name,
+            'objective'  => $this->class->student?->objective,
+            'instructor' => $this->class->instructor?->user,
+            'student'    => $this->class->student?->user,
+            'modality'   => $this->class->modality?->name,
             'status'     => $this->class->status,
+            'type'       => $this->class->type,
+            'value'      => $this->class->value,
             'makeup'     => $makeup,
             'alerts' => $alerts
         ];
@@ -146,6 +150,10 @@ class ShowClassCard extends Component
     {
 
         if (!$this->class) return;
+
+        if (! $this->class->student_id) {
+            return collect();
+        }
 
         $ids = Classes::where('modality_id', $this->class?->modality_id)
             ->where('student_id', $this->class?->student_id)

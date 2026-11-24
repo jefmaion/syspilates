@@ -65,9 +65,11 @@ class CalendarPage extends Component
         $start = Carbon::parse(request()->get('start'));
         $end   = Carbon::parse(request()->get('end'));
 
-        $class = Classes::with(['student.user', 'registration.schedule'])->whereBetween('scheduled_datetime', [$start, $end])->whereHas('registration', function ($q) {
-            return $q->justActives();
-        })->whereNotIn('status', ['finish']);
+        $class = Classes::with(['student.user', 'registration.schedule'])->whereBetween('scheduled_datetime', [$start, $end])
+            ->where(function ($query) {
+                $query->whereHas('registration', fn ($registration) => $registration->justActives())
+                    ->orWhere('type', ClassTypesEnum::SINGLE);
+            })->whereNotIn('status', ['finish']);
 
 
         $genClass = RegistrationSchedules::with(['registration.student.user', 'registration.classes'])->whereHas('registration', function ($q) {
@@ -136,7 +138,7 @@ class CalendarPage extends Component
             $badge   = null;
             $bgColor = 'bg-' . $class->status->color() .  ' text-' . $class->status->color() . '-lt-fg';
 
-            if ($class->registration->status == RegistrationStatusEnum::CANCELED) {
+            if ($class->registration?->status == RegistrationStatusEnum::CANCELED) {
                 $bgColor .= '-lt';
             }
 
@@ -159,7 +161,7 @@ class CalendarPage extends Component
             $events[] = [
                 'id'                 => 'class-' . $class->id,
                 'start'              => $class->datetime->format('Y-m-d\\TH:i:s'),
-                'title'              => $badge . ' ' . ($class->student->user->nickname ?? $class->student->user->shortName),
+                'title'              => $badge . ' ' . ($class->student?->user?->nickname ?? $class->student?->user?->shortName ?? ClassTypesEnum::SINGLE->label()),
                 'className'          => $eventClass . $bgColor . ' ',
                 'textColor'          => 'white',
                 'event_id'           => $class->id,

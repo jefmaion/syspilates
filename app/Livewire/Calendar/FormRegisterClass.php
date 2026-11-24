@@ -72,6 +72,7 @@ class FormRegisterClass extends Component
         $this->class = Classes::find($id);
         $this->markupDateLimit = now()->addDays(20)->format('Y-m-d');
         $this->instructor_id = $this->class->instructor_id;
+        $this->canMakeup = $this->class->type !== ClassTypesEnum::SINGLE;
 
         if ($this->class) {
             if ($this->class->status !== ClassStatusEnum::SCHEDULED) {
@@ -97,7 +98,7 @@ class FormRegisterClass extends Component
             'instructor_id' => $this->instructor_id
         ]);
 
-        if ($this->canMakeup) {
+        if ($this->canMakeup && $this->class->registration_id) {
             CreateMarkupClass::run($this->class, dateLimit: $this->markupDateLimit);
         }
 

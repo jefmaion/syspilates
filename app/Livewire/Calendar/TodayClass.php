@@ -40,18 +40,20 @@ class TodayClass extends Component
             $rs[$class->datetime->format('H')][] = [
                 'isClass' => true,
                 'isReposition' => $class->is_makeup,
+                'isSingle' => $class->type->value === 'single',
+                'value' => $class->value,
                 'id' => $class->id,
                 'type' => $class->type,
-                'student' => $class->student->user,
-                'initials' => $class->student->user->initials,
-                'avatar' => $class->student->user->avatar,
+                'student' => $class->student?->user,
+                'initials' => $class->student?->user?->initials ?? initials('Aula Avulsa'),
+                'avatar' => $class->student?->user?->avatar,
                 'status' => $class->status,
-                'modality' => $class->modality->name,
-                'phone' => $class->student->user->phone1,
-                'instructor' => $class->instructor->user,
-                'instructor_name' => $class->instructor->user->shortName,
-                'objective' => $class->student->objective,
-                'evolutions' => $class->student->getLastEvolutions($class->registration_id)
+                'modality' => $class->modality?->name,
+                'phone' => $class->student?->user?->phone1,
+                'instructor' => $class->instructor?->user,
+                'instructor_name' => $class->instructor?->user?->shortName,
+                'objective' => $class->student?->objective,
+                'evolutions' => $class->student?->getLastEvolutions($class->registration_id) ?? collect()
             ];
         }
 

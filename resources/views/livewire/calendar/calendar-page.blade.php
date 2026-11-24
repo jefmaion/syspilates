@@ -54,6 +54,7 @@
         <livewire:calendar.show-experimental-class />
         <livewire:calendar.show-simulated-class />
         <livewire:calendar.create-experimental-class />
+        <livewire:calendar.create-single-class />
         <livewire:calendar.register-experimental-class />
         <livewire:registration.update-class />
 
@@ -74,6 +75,13 @@
                 wire:click="$set('showSlotMenu', false)">
                 <x-icons.calendar class="dropdown-item-icon" />
                 Agendar Aula Experimental
+            </a>
+
+            <a href="#" class="dropdown-item"
+                wire:click.prevent="$dispatch('create-single-class', { datetime: '{{ $slotDatetime }}' })"
+                wire:click="$set('showSlotMenu', false)">
+                <x-icons.calendar class="dropdown-item-icon" />
+                Agendar Aula Avulsa
             </a>
 
             <a href="#" class="dropdown-item"
